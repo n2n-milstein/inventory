@@ -1,0 +1,28 @@
+{
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    }
+  ],
+  "editor.formatOnSave": false,
+  "vetur.validation.template": false,
+  "eslint.autoFixOnSave": true
+  // "eslint.trace.server": "messages"
+}

@@ -13,7 +13,7 @@ yarn-error.log*
 
 # Editor directories and files
 .idea
-.vscode
+# .vscode - commented out so that linting config can be shared
 *.suo
 *.ntvs*
 *.njsproj
@@ -21,6 +21,8 @@ yarn-error.log*
 *.sw?
 
 # Firebase
-# *.json
-/.firebase
 *.cache
+.firebase/**
+firebase.json
+
+.env*
