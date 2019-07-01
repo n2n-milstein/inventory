@@ -28,21 +28,44 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 
 @Component
 export default class Approval extends Vue {
-  pending = [
+  pending: Furniture[] = [
     {
-      datetime: "2019-06-22 18:50",
-      name: "Alice",
-      address: "17 E Green St Ithaca, NY",
-      notes: "need to pick up soon"
-    },
-    {
-      datetime: "2019-06-22 18:50",
-      name: "Bob",
-      address: "179 E Green St Ithaca, NY",
-      notes: "need to pick up soon"
+      donor: {
+        name: "hi",
+        phone: "123",
+        email: "123",
+        address: "124",
+        zone: "cornell"
+      },
+      physical: {
+        class: FClass.Chair,
+        size: 5,
+        material: Material.Wood,
+        set: false,
+        hasFrame: false,
+        hasBoxSpring: false,
+        numChairs: 0,
+        heavy: false
+      },
+      timing: {
+        urgent: false,
+        pickupBy: new Date(2019, 7, 21),
+        dateOffered: new Date(2019, 7, 1)
+      },
+      attributes: {
+        originalOwner: true,
+        smokeFree: true,
+        petFree: true,
+        donateToFriend: true,
+        age: 2
+      },
+      status: Status.OnTruck,
+      images: [{ url: "no" }],
+      comments: "hi"
     }
   ];
 }
