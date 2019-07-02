@@ -57,6 +57,11 @@ const router = new Router({
           path: "/hello",
           name: "hello",
           component: () => import("./views/Hello.vue")
+        },
+        {
+          path: "/rejected",
+          name: "rejected",
+          component: () => import("./views/Rejected.vue")
         }
       ]
     }

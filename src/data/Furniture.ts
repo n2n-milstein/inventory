@@ -4,21 +4,21 @@
  * Represents the class of a furniture item
  */
 export enum FClass {
-  Bed,
-  Chair,
-  Table,
-  Set,
-  Dresser
+  Bed = "Bed",
+  Chair = "Chair",
+  Table = "Table",
+  Set = "Set",
+  Dresser = "Dresser"
 }
 
 /**
  * Represents the material of a furniture item
  */
 export enum Material {
-  Wood,
-  Metal,
-  Glass,
-  Plastic
+  Wood = "Wood",
+  Metal = "Metal",
+  Glass = "Glass",
+  Plastic = "Plastic"
 }
 
 /**
@@ -126,6 +126,7 @@ class Timing {
  * Attributes used to generate ratings for a furniture item
  */
 class Attributes {
+  [key: string]: any;
   originalOwner: boolean;
   smokeFree: boolean;
   petFree: boolean;
