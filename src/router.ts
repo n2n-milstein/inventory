@@ -1,23 +1,43 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
       path: "/",
       name: "login",
-      component: Login
+      component: Login,
+      beforeEnter(to, from, next) {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            next("/home");
+          } else {
+            next();
+          }
+        });
+      }
     },
     {
       path: "/home",
       name: "home",
       component: () => import("./views/Home.vue"),
       redirect: { name: "hello" },
+      beforeEnter(to, from, next) {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            next();
+          } else {
+            next("/");
+          }
+        });
+      },
       children: [
         {
           path: "/about",
@@ -42,3 +62,5 @@ export default new Router({
     }
   ]
 });
+
+export default router;

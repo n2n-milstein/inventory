@@ -9,7 +9,6 @@ import "firebase/firestore";
 
 Vue.config.productionTip = false;
 
-let app: any = "";
 const firebaseConfig = {
   apiKey: "AIzaSyAG4FPlVFT20lLKjErXY2LH0AICB070gsI",
   authDomain: "neighbor-to-neighbor-da5ce.firebaseapp.com",
@@ -23,11 +22,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged(() => {
-  if (!app) {
-    app = new Vue({
-      router,
-      render: h => h(App)
-    }).$mount("#app");
-  }
-});
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount("#app");

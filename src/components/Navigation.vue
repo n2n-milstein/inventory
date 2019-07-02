@@ -79,14 +79,28 @@
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
-      <v-btn icon large>
-        <v-avatar size="32px" tile>
-          <img
-            src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-            alt="Vuetify"
-          />
-        </v-avatar>
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn icon large v-on="on">
+            <v-avatar size="32px" tile>
+              <img
+                src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
+                alt="Vuetify"
+              />
+            </v-avatar>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-tile
+            v-for="(item, i) in profileItems"
+            :key="i"
+            @click="item.action"
+          >
+            <v-icon class="mr-2">{{ item.icon }}</v-icon>
+            <v-list-tile-title>{{ item.text }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar>
   </div>
 </template>
@@ -94,11 +108,16 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 @Component
 export default class Navigation extends Vue {
   dialog = false;
   drawer = null;
+  profileItems = [
+    { icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() }
+  ];
   items = [
     { icon: "home", text: "Home", route: "hello" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
@@ -122,6 +141,16 @@ export default class Navigation extends Vue {
 
   goTo(route: string) {
     this.$router.push({ name: route });
+  }
+
+  signOut() {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log("signed out");
+        this.$router.push({ path: "/" });
+      });
   }
 }
 </script>
