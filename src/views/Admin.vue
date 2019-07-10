@@ -73,7 +73,7 @@ export default class Admin extends Vue {
 
   addFurn() {
     this.dialog = false;
-    var collection = firebase.firestore().collection("Furniture");
+    var collection = firebase.firestore().collection("furniture");
     for (let data of this.sampleData) {
       collection.add(data);
       collection.add(data);
