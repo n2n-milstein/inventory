@@ -49,12 +49,20 @@
             <p class="d-info">{{ request.donor.email }}</p>
             <p class="d-info">{{ request.donor.address }}</p>
           </v-flex>
-          <v-flex xs12 class="text-xs-center mt-2">
-            <v-btn block flat class="mb-0">
-              <v-icon>keyboard_arrow_down</v-icon>
-            </v-btn>
-          </v-flex>
         </v-layout>
+        <v-flex xs12 class="text-xs-center mt-2">
+          <v-expansion-panel expand>
+            <v-expansion-panel-content>
+              <template v-slot:header>
+                <div>
+                  <v-text class="title">Details</v-text></div>
+              </template>
+              <v-card>
+                <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-flex>
       </v-card>
     </v-flex>
   </v-layout>
