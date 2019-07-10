@@ -120,6 +120,7 @@ export default class Navigation extends Vue {
   ];
   items = [
     { icon: "home", text: "Home", route: "hello" },
+    { icon: "view_list", text: "Inventory", route: "inventory" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
     {
       icon: "keyboard_arrow_up",
@@ -132,7 +133,7 @@ export default class Navigation extends Vue {
       ]
     },
     { icon: "settings", text: "Settings" },
-    { icon: "chat_bubble", text: "Send feedback" },
+    { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
     { icon: "help", text: "Help" },
     { icon: "info", text: "About", route: "about" }
   ];

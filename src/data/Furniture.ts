@@ -25,8 +25,8 @@ export enum Material {
  * Represents the status/location of a furniture item
  */
 export enum Status {
-  Donor,
-  OnTruck,
+  Donor, // 0
+  OnTruck, // 1
   Shed,
   Delivered,
   Unknown

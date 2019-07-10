@@ -38,7 +38,13 @@ const router = new Router({
           }
         });
       },
+      // TODO: this is where most of the routes should be added
       children: [
+        {
+          path: "/inventory",
+          name: "inventory",
+          component: () => import("./views/Inventory.vue")
+        },
         {
           path: "/about",
           name: "about",
@@ -62,6 +68,17 @@ const router = new Router({
           path: "/rejected",
           name: "rejected",
           component: () => import("./views/Rejected.vue")
+        },
+        {
+          path: "/feedback",
+          name: "feedback",
+          component: () => import("./views/Feedback.vue")
+        },
+        // TODO: delete this admin view when deploying
+        {
+          path: "/admin",
+          name: "admin",
+          component: () => import("./views/Admin.vue")
         }
       ]
     }

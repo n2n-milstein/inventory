@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-start align-start>
-    <v-flex md9 xs12>
+    <v-flex lg8 md9 xs12>
       <v-card
         light
         color="white"
@@ -175,6 +175,7 @@ export default class Approval extends Vue {
 
 .f-rating {
   color: #000;
+  font-size: 1.5rem;
 }
 
 .d-info {
