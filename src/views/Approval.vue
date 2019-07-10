@@ -49,20 +49,37 @@
             <p class="d-info">{{ request.donor.email }}</p>
             <p class="d-info">{{ request.donor.address }}</p>
           </v-flex>
-        </v-layout>
-        <v-flex xs12 class="text-xs-center mt-2">
-          <v-expansion-panel expand>
-            <v-expansion-panel-content>
-              <template v-slot:header>
-                <div>
-                  <v-text class="title">Details</v-text></div>
-              </template>
-              <v-card>
-                <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-              </v-card>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-flex>
+          <v-flex xs12 class="text-xs-center mt-2">
+          <v-btn icon v-on:click="show = !show">
+            <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+          </v-btn>
+
+
+          <v-slide-y-transition>
+            <div class="text-xs-left">
+            <v-card-text v-show="show">
+              <v-text class="title">Images</v-text>
+              <v-img height="150" width="150" src="https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg"></v-img>
+              <p></p>
+              <v-text class="title">Notes</v-text>
+              <v-textarea outline readonly
+                      name="input-7-4"
+                      value="Default text"
+              ></v-textarea>
+
+            </v-card-text>
+            </div>
+          </v-slide-y-transition>
+            <v-layout align-end justify-end>
+              <v-flex xs4>
+                <v-card-actions>
+                  <v-btn flat color="green">Approve</v-btn>
+                  <v-btn flat color="red">Reject</v-btn>
+                </v-card-actions>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          </v-layout>
       </v-card>
     </v-flex>
   </v-layout>
@@ -75,6 +92,7 @@ import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 
 @Component
 export default class Approval extends Vue {
+  show: boolean = false;
   pending: Furniture[] = [
     {
       donor: {
