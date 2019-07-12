@@ -1,7 +1,21 @@
 <template>
   <v-flex xs12 class="inventory">
-    <v-data-table :headers="headers" :items="furniture">
+    <v-data-table
+      v-model="selected"
+      select-all
+      :headers="headers"
+      :items="furniture"
+      :pagination.sync="pagination"
+      item-key="physical.class"
+    >
       <template v-slot:items="props">
+        <td>
+          <v-checkbox
+            v-model="props.selected"
+            primary
+            hide-details
+          ></v-checkbox>
+        </td>
         <td>{{ props.item.physical.class }}</td>
         <td>
           {{ props.item.timing.dateAdded.toLocaleDateString() }}
@@ -21,138 +35,18 @@ import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 
 @Component
 export default class Inventory extends Vue {
+  selected = [];
+  pagination = {
+    rowsPerPage: -1
+  };
   headers = [
-    { text: "Class", value: "class" },
-    { text: "Date Added", value: "dateAdded" },
-    { text: "Zone", value: "zone" },
-    { text: "Size", value: "size" },
+    { text: "Class", value: "physical.class" },
+    { text: "Date Added", value: "timing.dateAdded" },
+    { text: "Zone", value: "donor.zone" },
+    { text: "Size", value: "physical.size" },
     { text: "Status", value: "status" }
   ];
 
-  furniture = [
-    {
-      donor: {
-        name: "John Smith",
-        phone: "(123) 124-2145",
-        email: "js14@gmail.com",
-        address: "124 Cornell St Ithaca, NY 14853",
-        zone: "Cornell"
-      },
-      physical: {
-        class: FClass.Chair,
-        size: 5,
-        material: Material.Plastic,
-        set: false,
-        hasFrame: false,
-        hasBoxSpring: false,
-        numChairs: 0,
-        heavy: false
-      },
-      timing: {
-        urgent: false,
-        pickupBy: new Date(2019, 6, 21),
-        dateOffered: new Date(2019, 6, 1),
-        dateAdded: new Date(2019, 6, 11)
-      },
-      attributes: {
-        originalOwner: true,
-        smokeFree: true,
-        petFree: false,
-        donateToFriend: true,
-        age: 6
-      },
-      status: Status.OnTruck,
-      images: [
-        {
-          url:
-            "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-          caption: "test caption 2"
-        }
-      ],
-      comments: "hi"
-    },
-    {
-      donor: {
-        name: "John Smith",
-        phone: "(123) 124-2145",
-        email: "js14@gmail.com",
-        address: "124 Cornell St Ithaca, NY 14853",
-        zone: "Cornell"
-      },
-      physical: {
-        class: FClass.Chair,
-        size: 5,
-        material: Material.Plastic,
-        set: false,
-        hasFrame: false,
-        hasBoxSpring: false,
-        numChairs: 0,
-        heavy: false
-      },
-      timing: {
-        urgent: false,
-        pickupBy: new Date(2019, 6, 21),
-        dateOffered: new Date(2019, 6, 1),
-        dateAdded: new Date(2019, 6, 16)
-      },
-      attributes: {
-        originalOwner: true,
-        smokeFree: true,
-        petFree: false,
-        donateToFriend: true,
-        age: 6
-      },
-      status: Status.OnTruck,
-      images: [
-        {
-          url:
-            "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-          caption: "test caption 2"
-        }
-      ],
-      comments: "hi"
-    },
-    {
-      donor: {
-        name: "John Smith",
-        phone: "(123) 124-2145",
-        email: "js14@gmail.com",
-        address: "124 Cornell St Ithaca, NY 14853",
-        zone: "Cornell"
-      },
-      physical: {
-        class: FClass.Chair,
-        size: 5,
-        material: Material.Plastic,
-        set: false,
-        hasFrame: false,
-        hasBoxSpring: false,
-        numChairs: 0,
-        heavy: false
-      },
-      timing: {
-        urgent: false,
-        pickupBy: new Date(2019, 6, 21),
-        dateOffered: new Date(2019, 6, 1),
-        dateAdded: new Date(2019, 6, 11)
-      },
-      attributes: {
-        originalOwner: true,
-        smokeFree: true,
-        petFree: false,
-        donateToFriend: true,
-        age: 6
-      },
-      status: Status.OnTruck,
-      images: [
-        {
-          url:
-            "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-          caption: "test caption 2"
-        }
-      ],
-      comments: "hi"
-    }
-  ];
+  furniture: Furniture[] = [];
 }
 </script>

@@ -60,50 +60,13 @@ import { Status, FClass, Material, Furniture } from "../data/Furniture";
 @Component({})
 export default class Admin extends Vue {
   dialog = false;
-  sampleData: Furniture[] = [
-    {
-      donor: {
-        name: "John Smith",
-        phone: "(123) 124-2145",
-        email: "js14@gmail.com",
-        address: "124 Cornell St Ithaca, NY 14853",
-        zone: "Cornell"
-      },
-      physical: {
-        class: FClass.Chair,
-        size: 5,
-        material: Material.Wood,
-        set: false,
-        hasFrame: false,
-        hasBoxSpring: false,
-        numChairs: 0,
-        heavy: false
-      },
-      timing: {
-        urgent: false,
-        pickupBy: new Date(2019, 6, 21),
-        dateOffered: new Date(2019, 6, 1)
-      },
-      attributes: {
-        originalOwner: true,
-        smokeFree: true,
-        petFree: false,
-        donateToFriend: true,
-        age: 2
-      },
-      status: Status.OnTruck,
-      images: [{ url: "no" }],
-      comments: "hi"
-    }
-  ];
+  sampleData: Furniture[] = [];
 
   addTo(col: string) {
     this.dialog = false;
     console.log("writing to " + col);
     var collection = firebase.firestore().collection(col);
     for (let data of this.sampleData) {
-      collection.add(data);
-      collection.add(data);
       collection.add(data);
     }
   }

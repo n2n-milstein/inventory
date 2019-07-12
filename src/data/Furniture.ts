@@ -127,24 +127,30 @@ class Timing {
  */
 class Attributes {
   [key: string]: any;
-  originalOwner: boolean;
+  partsIntact: boolean;
+  finishIntact: boolean;
   smokeFree: boolean;
   petFree: boolean;
+  bedbugFree: boolean;
+  mildewFree: boolean;
   donateToFriend: boolean;
-  age?: number;
 
   constructor(
-    originalOwner: boolean,
+    partsIntact: boolean,
+    finishIntact: boolean,
     smokeFree: boolean,
     petFree: boolean,
-    donateToFriend: boolean,
-    age?: number
+    bedbugFree: boolean,
+    mildewFree: boolean,
+    donateToFriend: boolean
   ) {
-    this.originalOwner = originalOwner;
+    this.partsIntact = partsIntact;
+    this.finishIntact = finishIntact;
     this.smokeFree = smokeFree;
     this.petFree = petFree;
+    this.bedbugFree = bedbugFree;
+    this.mildewFree = mildewFree;
     this.donateToFriend = donateToFriend;
-    if (age) this.age = age;
   }
 }
 
@@ -165,6 +171,7 @@ class Image {
  * Represents a furniture donation record
  */
 export class Furniture {
+  id: string;
   donor: Donor;
   physical: Physical;
   timing: Timing;
@@ -176,6 +183,7 @@ export class Furniture {
   comments: string;
 
   constructor(
+    id: string,
     donor: Donor,
     physical: Physical,
     timing: Timing,
@@ -184,6 +192,7 @@ export class Furniture {
     images: Image[],
     comments: string
   ) {
+    this.id = id;
     this.donor = donor;
     this.physical = physical;
     this.timing = timing;

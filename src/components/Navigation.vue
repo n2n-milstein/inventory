@@ -129,12 +129,11 @@ export default class Navigation extends Vue {
       model: false,
       children: [
         { icon: "check_circle", text: "Pending", route: "approval" },
-        { icon: "cancel", text: "Rejected" }
+        { icon: "cancel", text: "Rejected", route: "rejected" }
       ]
     },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    { icon: "help", text: "Help" },
     { icon: "info", text: "About", route: "about" }
   ];
   @Prop({ default: "" })
