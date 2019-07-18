@@ -6,6 +6,7 @@
     frameborder="0"
     marginheight="0"
     marginwidth="0"
+    class="my-3"
     >Loading...</iframe
   >
 </template>

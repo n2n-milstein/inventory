@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout justify-start align-start>
+      <view-title title="Pending Approvals" />
       <v-flex lg8 md9 xs12>
         <approval-card
           v-for="(request, i) in pending"
@@ -17,10 +18,12 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 import ApprovalCard from "@/components/ApprovalCard.vue";
+import ViewTitle from "@/components/ViewTitle.vue";
 
 @Component({
   components: {
-    ApprovalCard
+    ApprovalCard,
+    ViewTitle
   }
 })
 export default class Approval extends Vue {

@@ -2,7 +2,7 @@ import { Furniture, FClass, Material, Status } from "./Furniture";
 
 export const Approvals: Furniture[] = [
   {
-    id: "1025970192saf",
+    id: "",
     donor: {
       name: "John Smith",
       phone: "(123) 124-2145",
@@ -91,18 +91,18 @@ export const Approvals: Furniture[] = [
     staffNotes: ""
   },
   {
-    id: "1025970192saf",
+    id: "",
     donor: {
       name: "John Smith",
       phone: "(123) 124-2145",
       email: "js14@gmail.com",
       address: "124 Cornell St Ithaca, NY 14853",
-      zone: "Cornell"
+      zone: "Fall Creek"
     },
     physical: {
       class: FClass.Chair,
-      size: 5,
-      material: Material.Wood,
+      size: 2,
+      material: Material.Plastic,
       set: false,
       hasFrame: false,
       hasBoxSpring: false,
@@ -116,14 +116,14 @@ export const Approvals: Furniture[] = [
     },
     attributes: {
       partsIntact: true,
-      finishIntact: true,
-      smokeFree: true,
+      finishIntact: false,
+      smokeFree: false,
       petFree: false,
       bedbugFree: true,
       mildewFree: true,
       donateToFriend: true
     },
-    status: Status.OnTruck,
+    status: Status.Donor,
     images: [
       {
         url:
@@ -164,16 +164,6 @@ export const Approvals: Furniture[] = [
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
         caption: "test caption 1.7"
-      },
-      {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.8"
-      },
-      {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.9"
       }
     ],
     comments: "this is a comment that the donor has made",

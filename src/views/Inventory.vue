@@ -1,8 +1,22 @@
 <template>
   <v-flex xs12 class="inventory">
+    <v-layout row mb-3 px-4 align-baseline>
+      <view-title title="Inventory" />
+      <v-spacer />
+      <v-flex xs6>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Search inventory"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
     <v-data-table
       v-model="selected"
       select-all
+      :search="search"
       :headers="headers"
       :items="inventory"
       :pagination.sync="pagination"
@@ -31,11 +45,16 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ViewTitle from "@/components/ViewTitle.vue";
 import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
-@Component
+@Component({
+  components: {
+    ViewTitle
+  }
+})
 export default class Inventory extends Vue {
   db = firebase.firestore();
   selected = [];
@@ -49,6 +68,8 @@ export default class Inventory extends Vue {
     { text: "Size", value: "physical.size" },
     { text: "Status", value: "status" }
   ];
+
+  search = "";
 
   inventory: Furniture[] = [];
 
