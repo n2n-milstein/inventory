@@ -55,19 +55,23 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
-import { Status, FClass, Material, Furniture } from "../data/Furniture";
+import { Status, FClass, Material, Furniture } from "@/data/Furniture";
+import { Approvals } from "@/data/Sample";
 
 @Component({})
 export default class Admin extends Vue {
   dialog = false;
-  sampleData: Furniture[] = [];
+  sampleData: Furniture[] = Approvals;
 
   addTo(col: string) {
     this.dialog = false;
     console.log("writing to " + col);
-    var collection = firebase.firestore().collection(col);
+    const collection = firebase.firestore().collection(col);
     for (let data of this.sampleData) {
-      collection.add(data);
+      let dataRef = collection.doc();
+      data.id = dataRef.id;
+      data.timing.dateAdded = new Date();
+      dataRef.set(data);
     }
   }
 }

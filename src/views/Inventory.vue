@@ -4,9 +4,9 @@
       v-model="selected"
       select-all
       :headers="headers"
-      :items="furniture"
+      :items="inventory"
       :pagination.sync="pagination"
-      item-key="physical.class"
+      item-key="id"
     >
       <template v-slot:items="props">
         <td>
@@ -18,7 +18,7 @@
         </td>
         <td>{{ props.item.physical.class }}</td>
         <td>
-          {{ props.item.timing.dateAdded.toLocaleDateString() }}
+          {{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}
         </td>
         <td>{{ props.item.donor.zone }}</td>
         <td>{{ props.item.physical.size }}</td>
@@ -32,9 +32,12 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { FClass, Material, Status, Furniture } from "@/data/Furniture";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
 
 @Component
 export default class Inventory extends Vue {
+  db = firebase.firestore();
   selected = [];
   pagination = {
     rowsPerPage: -1
@@ -47,6 +50,19 @@ export default class Inventory extends Vue {
     { text: "Status", value: "status" }
   ];
 
-  furniture: Furniture[] = [];
+  inventory: Furniture[] = [];
+
+  mounted() {
+    this.getInventory();
+  }
+
+  getInventory() {
+    const furniture = this.db.collection("furniture");
+    furniture.get().then(snapshot => {
+      snapshot.forEach(doc => {
+        this.inventory.push(doc.data() as Furniture);
+      });
+    });
+  }
 }
 </script>

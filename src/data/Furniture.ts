@@ -181,6 +181,7 @@ export class Furniture {
 
   images: Image[];
   comments: string;
+  staffNotes: string;
 
   constructor(
     id: string,
@@ -190,7 +191,8 @@ export class Furniture {
     attributes: Attributes,
     status: Status,
     images: Image[],
-    comments: string
+    comments: string,
+    staffNotes: string
   ) {
     this.id = id;
     this.donor = donor;
@@ -200,6 +202,7 @@ export class Furniture {
     this.status = status;
     this.images = images;
     this.comments = comments;
+    this.staffNotes = staffNotes;
   }
 }
 
