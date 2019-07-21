@@ -73,17 +73,17 @@ export default class Inventory extends Vue {
 
   inventory: Furniture[] = [];
 
-  mounted() {
-    this.getInventory();
-  }
-
   getInventory() {
     const furniture = this.db.collection("furniture");
-    furniture.get().then(snapshot => {
+    furniture.onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         this.inventory.push(doc.data() as Furniture);
       });
     });
+  }
+
+  mounted() {
+    this.getInventory();
   }
 }
 </script>

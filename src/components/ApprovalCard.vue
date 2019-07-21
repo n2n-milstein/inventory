@@ -3,7 +3,7 @@
     <v-layout wrap class="pt-3 px-3">
       <v-flex xs12 class="mb-1">
         <h4 class="date">
-          {{ request.timing.dateOffered.toLocaleDateString() }}
+          {{ request.timing.dateOffered.toDate().toLocaleDateString() }}
         </h4>
       </v-flex>
       <v-flex xs6>
@@ -13,7 +13,7 @@
           {{ request.physical.class.toLowerCase() }}
           {{ request.physical.set ? ", set" : "" }}
         </h3>
-        <v-tooltip left>
+        <!-- <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-flex v-on="on">
               <v-icon
@@ -22,7 +22,7 @@
                 :key="index"
                 >star</v-icon
               >
-              <!-- TODO: create way to handle half-stars -->
+              TODO: create way to handle half-stars
               <v-icon
                 class="f-rating"
                 v-for="(i, index) in 5 - getRating(request)"
@@ -33,7 +33,7 @@
           </template>
           <span>Rating</span>
         </v-tooltip>
-        <p hidden>{{ getRating(request) }}</p>
+        <p hidden>{{ getRating(request) }}</p> -->
       </v-flex>
       <v-flex xs6>
         <p class="d-info">{{ request.donor.name }}</p>
@@ -82,23 +82,30 @@
                 </v-tooltip>
               </div>
             </v-layout>
-            <h3 class="pt-4 pb-2">Notes</h3>
+            <h3 class="pt-4 pb-2">Donor Comments</h3>
             <div class="f-comments py-2 px-3">
               {{ request.comments }}
             </div>
-            <!-- <v-textarea
-              solo
-              readonly
-              :value="request.comments"
-            ></v-textarea> -->
+            <h3 class="pt-4 pb-2">Staff Notes</h3>
+            <v-textarea
+              label="Staff Notes"
+              auto-grow
+              box
+              :value="request.staffNotes"
+              @change="updateNotes"
+            ></v-textarea>
           </div>
         </v-slide-y-transition>
       </v-flex>
     </v-layout>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn flat color="red">Deny</v-btn>
-      <v-btn flat color="green">Approve</v-btn>
+      <v-btn v-if="isPending" flat color="red" @click="$emit('deny', request)">
+        Deny
+      </v-btn>
+      <v-btn flat color="green" @click="$emit('approve', request)">
+        Approve
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -112,6 +119,10 @@ import { Furniture } from "../data/Furniture";
 export default class ApprovalCard extends Vue {
   @Prop()
   request!: Furniture;
+
+  @Prop({ default: true })
+  isPending!: boolean;
+
   show = false;
   pros: string[] = [];
   cons: string[] = [];
@@ -150,11 +161,6 @@ export default class ApprovalCard extends Vue {
     this.pros = pros;
   }
 
-  mounted() {
-    this.genPros(this.request);
-    this.genCons(this.request);
-  }
-
   genCons(furn: Furniture) {
     const attributes = furn.attributes;
     let cons = [];
@@ -164,6 +170,17 @@ export default class ApprovalCard extends Vue {
     }
 
     this.cons = cons;
+  }
+
+  updateNotes(notes: string) {
+    // console.log("Input changed to: " + notes);
+    this.request.staffNotes = notes;
+    this.$emit("notes", this.request);
+  }
+
+  mounted() {
+    this.genPros(this.request);
+    this.genCons(this.request);
   }
 }
 </script>
