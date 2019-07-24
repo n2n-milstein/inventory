@@ -55,12 +55,14 @@
             <v-layout row>
               <v-flex xs4 class="f-pros">
                 <div v-for="attr in pros" :key="attr">
-                  {{ attr }}
+                  <v-icon class="f-attr-icon">check</v-icon>
+                  {{ prettyAttr(attr) }}
                 </div>
               </v-flex>
               <v-flex xs4 class="f-cons">
                 <div v-for="attr in cons" :key="attr">
-                  {{ attr }}
+                  <v-icon class="f-attr-icon">clear</v-icon>
+                  {{ prettyAttr(attr) }}
                 </div>
               </v-flex>
             </v-layout>
@@ -104,7 +106,7 @@
         Deny
       </v-btn>
       <v-btn flat color="green" @click="$emit('approve', request)">
-        Approve
+        {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -113,7 +115,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { Furniture } from "../data/Furniture";
+import { Furniture, AttributesDict } from "../data/Furniture";
 
 @Component
 export default class ApprovalCard extends Vue {
@@ -127,6 +129,24 @@ export default class ApprovalCard extends Vue {
   pros: string[] = [];
   cons: string[] = [];
 
+  /**
+   * Returns the "prettier" version of an attribute.
+   * @param attr - a Furniture Attribute name (probably in camelCase)
+   * @returns a "prettier" representation of attribute `attr`
+   */
+  prettyAttr(attr: string) {
+    for (let key in AttributesDict) {
+      if (key === attr) return AttributesDict[key];
+    }
+    return "Invalid attribute";
+  }
+
+  /**
+   * TODO: needs to be fixed. Attributes have changed.
+   * Returns the rating of a piece of furniture.
+   * @param furn - a given Furniture object
+   * @returns the rating of the furniture `furn`
+   */
   getRating(furn: Furniture) {
     const attributes = furn.attributes;
     let rating = 0;
@@ -134,18 +154,16 @@ export default class ApprovalCard extends Vue {
     for (let attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
         let value = attributes[attr];
-        if (typeof value === "number") {
-          if (value <= 3) rating += 1;
-          // TODO: implement way to show handle half stars
-          // else if (value <= 5) rating += 0.5;
-        } else if (value) {
-          rating += 1;
-        }
+        if (value) rating += 1;
       }
     }
     return rating;
   }
 
+  /**
+   * Gets the pros of the given furniture and sets it to the local variable.
+   * @param furn - a given Furniture object
+   */
   genPros(furn: Furniture) {
     const attributes = furn.attributes;
     let pros = [];
@@ -161,6 +179,10 @@ export default class ApprovalCard extends Vue {
     this.pros = pros;
   }
 
+  /**
+   * Gets the cons of the given furniture and sets it to the local variable.
+   * @param furn - a given Furniture object
+   */
   genCons(furn: Furniture) {
     const attributes = furn.attributes;
     let cons = [];
@@ -172,8 +194,11 @@ export default class ApprovalCard extends Vue {
     this.cons = cons;
   }
 
+  /**
+   * Updates the furniture's `Staff Notes` field and emits `notes`.
+   * @param notes - the notes that have been written
+   */
   updateNotes(notes: string) {
-    // console.log("Input changed to: " + notes);
     this.request.staffNotes = notes;
     this.$emit("notes", this.request);
   }
@@ -202,6 +227,11 @@ export default class ApprovalCard extends Vue {
 .f-rating {
   color: #000;
   font-size: 1.5rem;
+}
+
+.f-attr-icon {
+  font-size: 1.35rem;
+  color: inherit;
 }
 
 .f-pros {

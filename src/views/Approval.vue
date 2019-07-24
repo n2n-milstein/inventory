@@ -37,6 +37,10 @@ export default class Approval extends Vue {
   pending: Furniture[] = [];
   db = firebase.firestore();
 
+  /**
+   * Gets a snapshot of the `pending` collection and sets it to the local
+   * variable.
+   */
   getPending() {
     const pending = this.db.collection("pending");
     pending.onSnapshot(snapshot => {
@@ -47,11 +51,23 @@ export default class Approval extends Vue {
     });
   }
 
+  /**
+   * Writes changes in the `Staff Notes` section to the document of a specified
+   * furniture `furn`.
+   * @param furn - a given Furniture object
+   */
   updateNotes(furn: Furniture) {
     const furnRef = this.db.collection("pending").doc(furn.id);
     furnRef.update({ staffNotes: furn.staffNotes });
   }
 
+  /**
+   * Moves furniture furn to the `furniture` collection if approved and to
+   * the `rejected` collection otherwise.
+   * @param furn - a given Furniture object
+   * @param approve - true if the given Furniture object is approved, false
+   * otherwise
+   */
   pushPending(furn: Furniture, approve: boolean) {
     const col = approve ? "furniture" : "rejected";
     const collection = this.db.collection(col);
@@ -66,6 +82,9 @@ export default class Approval extends Vue {
       .delete();
   }
 
+  /**
+   * Calls functions when the page is loaded.
+   */
   mounted() {
     this.getPending();
   }

@@ -19,6 +19,7 @@ import "firebase/auth";
 @Component({})
 export default class Login extends Vue {
   checkUser() {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$router.push({ name: "hello" });

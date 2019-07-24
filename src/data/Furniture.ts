@@ -155,6 +155,24 @@ class Attributes {
 }
 
 /**
+ * Dictionary type with string values
+ */
+type Dict = { [key: string]: string };
+
+/**
+ * Dictionary that maps attribute names to their "pretty" string representation
+ */
+export const AttributesDict: Dict = {
+  partsIntact: "Parts Intact",
+  finishIntact: "Finish Intact",
+  smokeFree: "Smoke Free",
+  petFree: "Pet Free",
+  bedbugFree: "Bedbug Free",
+  mildewFree: "Mildew Free",
+  donateToFriend: "Donate to Friend"
+};
+
+/**
  * Images associated with a furniture item
  */
 class Image {
@@ -205,46 +223,3 @@ export class Furniture {
     this.staffNotes = staffNotes;
   }
 }
-
-/**
- * DEPRECATED: do not use, this is here for reference because it is easier to
- * read
- */
-type FurnitureType = {
-  // donor location info
-  donorName: string;
-  phoneNumber: string;
-  emailAddress: string;
-  address: string;
-  zone: string; // of Tompkins County
-
-  // physical attributes
-  class: FClass;
-  size: number; // 1-5 (small-big)
-  material: Material;
-  set: boolean;
-  hasFrame?: boolean;
-  hasBoxSpring?: boolean;
-  numChairs?: number;
-  heavy: boolean;
-
-  urgent: boolean;
-  pickupBy: Date;
-  confirmedPickupDate: Date;
-  dateOffered: Date;
-  dateAdded: Date;
-  dateCollected: Date;
-
-  attributes: {
-    originalOwner: boolean;
-    smokeFree: boolean;
-    petFree: boolean;
-    donateToFriend: boolean;
-    age?: number;
-  };
-
-  status: Status;
-
-  images: [{ url: string; caption?: string }];
-  comments: string;
-};

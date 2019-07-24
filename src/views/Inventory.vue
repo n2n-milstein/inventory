@@ -13,6 +13,9 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
+    <v-btn fab color="primary" bottom right absolute @click="dialog = !dialog">
+      <v-icon>add</v-icon>
+    </v-btn>
     <v-data-table
       v-model="selected"
       select-all
@@ -36,7 +39,7 @@
         </td>
         <td>{{ props.item.donor.zone }}</td>
         <td>{{ props.item.physical.size }}</td>
-        <td>{{ props.item.status }}</td>
+        <td>{{ status[props.item.status] }}</td>
       </template>
     </v-data-table>
   </v-flex>
@@ -56,6 +59,7 @@ import "firebase/firestore";
   }
 })
 export default class Inventory extends Vue {
+  status = Status;
   db = firebase.firestore();
   selected = [];
   pagination = {

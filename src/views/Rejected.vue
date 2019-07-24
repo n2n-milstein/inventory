@@ -9,6 +9,7 @@
           :request="request"
           :key="request.id"
           :is-pending="false"
+          @approve="pushPending"
         ></approval-card>
       </v-flex>
     </v-layout>
@@ -35,6 +36,10 @@ export default class Approval extends Vue {
   rejected: Furniture[] = [];
   db = firebase.firestore();
 
+  /**
+   * Gets a snapshot of the "rejected" collection and sets it to the local
+   * variable.
+   */
   getRejected() {
     const rejected = this.db.collection("rejected");
     rejected.onSnapshot(snapshot => {
@@ -45,33 +50,22 @@ export default class Approval extends Vue {
     });
   }
 
-  // TODO: make this approval push to furniture collection
-  pushPending(furn: Furniture, approve: boolean) {
-    const col = approve ? "furniture" : "rejected";
-    const collection = this.db.collection(col);
-    furn.timing.dateAdded = new Date();
-    collection
-      .doc(furn.id)
-      .set(furn)
-      .then(() => {
-        console.log("Copied furniture to " + col);
-      })
-      .catch(error => {
-        console.error("Error copying doc: ", error);
-      });
+  /**
+   * Moves the furniture "furn" to the "pending" collection.
+   */
+  pushPending(furn: Furniture) {
+    const collection = this.db.collection("pending");
+    collection.doc(furn.id).set(furn);
 
     this.db
       .collection("rejected")
       .doc(furn.id)
-      .delete()
-      .then(() => {
-        console.log("Removed from pending");
-      })
-      .catch(error => {
-        console.error("Error removing doc: ", error);
-      });
+      .delete();
   }
 
+  /**
+   * Calls functions when the page is loaded.
+   */
   mounted() {
     this.getRejected();
   }
