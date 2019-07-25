@@ -22,5 +22,7 @@ import EditCard from "@/components/EditCard.vue";
 @Component({
   components: { AdminDialog, EditCard }
 })
-export default class Admin extends Vue {}
+export default class Admin extends Vue {
+  dialog = false;
+}
 </script>

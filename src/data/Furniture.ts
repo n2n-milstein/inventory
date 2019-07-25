@@ -95,6 +95,35 @@ class Physical {
 }
 
 /**
+ * Specifies the meaning of the sizes (1-5) for each furniture class
+ */
+export const Size = {
+  Bed: ["Smaller than Twin (baby)", "Twin/XL", "Full", "Queen", "King+"],
+  Chair: [
+    "Single person chair (desk chair)",
+    "1 cushion (armchair style)",
+    "2 cushions",
+    "3 cushions",
+    "4+ cushions (large couch set)"
+  ],
+  Table: [
+    "Small table (night stand, coffee table)",
+    "1 person table (desk)",
+    "2 person table",
+    "3-4 person table",
+    "5+ person table"
+  ],
+  Set: [
+    "Table & 1 chair",
+    "Table & 2 chairs",
+    "Table & 3 chairs",
+    "Table & 4 chairs",
+    "Table & 5+ chairs"
+  ],
+  Dresser: ["1 drawer", "2 drawers", "3 drawers", "4 drawers", "5+ drawers"]
+};
+
+/**
  * Dates and timing information associated with a furniture item
  */
 class Timing {
