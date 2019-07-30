@@ -33,7 +33,10 @@
             hide-details
           ></v-checkbox>
         </td>
-        <td>{{ props.item.physical.class }}</td>
+        <td>
+          {{ props.item.physical.class
+          }}{{ props.item.physical.set ? ", Set" : "" }}
+        </td>
         <td>
           {{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}
         </td>

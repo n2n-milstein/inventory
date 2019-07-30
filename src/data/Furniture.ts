@@ -6,8 +6,8 @@
 export enum FClass {
   Bed = "Bed",
   Chair = "Chair",
+  Couch = "Couch",
   Table = "Table",
-  Set = "Set",
   Dresser = "Dresser"
 }
 
@@ -106,19 +106,13 @@ export const Size = {
     "3 cushions",
     "4+ cushions (large couch set)"
   ],
+  Couch: [],
   Table: [
     "Small table (night stand, coffee table)",
     "1 person table (desk)",
     "2 person table",
     "3-4 person table",
     "5+ person table"
-  ],
-  Set: [
-    "Table & 1 chair",
-    "Table & 2 chairs",
-    "Table & 3 chairs",
-    "Table & 4 chairs",
-    "Table & 5+ chairs"
   ],
   Dresser: ["1 drawer", "2 drawers", "3 drawers", "4 drawers", "5+ drawers"]
 };
@@ -133,6 +127,7 @@ class Timing {
   confirmedPickupDate?: Date;
   dateAdded?: Date;
   dateCollected?: Date;
+  dateDelivered?: Date;
 
   constructor(
     urgent: boolean,
@@ -140,7 +135,8 @@ class Timing {
     dateOffered: Date,
     confirmedPickupDate?: Date,
     dateAdded?: Date,
-    dateCollected?: Date
+    dateCollected?: Date,
+    dateDelivered?: Date
   ) {
     this.urgent = urgent;
     this.pickupBy = pickupBy;
@@ -148,6 +144,7 @@ class Timing {
     if (confirmedPickupDate) this.confirmedPickupDate = confirmedPickupDate;
     if (dateAdded) this.dateAdded = dateAdded;
     if (dateCollected) this.dateCollected = dateCollected;
+    if (dateDelivered) this.dateDelivered = dateDelivered;
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout wrap>
     <admin-dialog collection="furniture"></admin-dialog>
     <admin-dialog collection="rejected"></admin-dialog>
     <admin-dialog collection="pending"></admin-dialog>
@@ -10,6 +10,10 @@
       </template>
       <edit-card></edit-card>
     </v-dialog>
+
+    <v-flex xs12>
+      <edit-card></edit-card>
+    </v-flex>
   </v-layout>
 </template>
 

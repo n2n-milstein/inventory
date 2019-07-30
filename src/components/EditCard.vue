@@ -10,7 +10,7 @@
         <v-flex xs12>
           <v-form ref="edit-form" v-model="valid" lazy-validation>
             <!-- Donor Info -->
-            <div>Donor Info</div>
+            <h3>Donor Info</h3>
 
             <v-text-field
               v-model="donorName"
@@ -47,9 +47,10 @@
               required
             ></v-text-field>
 
-            <v-divider />
+            <v-divider class="my-3" />
+
             <!-- Physical Attributes -->
-            <div>Physical Attributes</div>
+            <h3>Physical Attributes</h3>
             <v-select
               v-model="fclass"
               :items="classOptions"
@@ -59,6 +60,46 @@
             ></v-select>
 
             <physical-attr :fclass="fclass"></physical-attr>
+
+            <v-divider class="my-3" />
+
+            <!-- Attributes -->
+            <h3>Attributes</h3>
+
+            <!-- Timing -->
+            <h3>Timing</h3>
+
+            <date-picker-menu
+              label="Date Offered"
+              @date="dateOffered = $event"
+            ></date-picker-menu>
+
+            <date-picker-menu
+              label="Pickup By Date"
+              @date="pickupBy = $event"
+            ></date-picker-menu>
+
+            <v-checkbox v-model="urgent" label="Urgent?"></v-checkbox>
+
+            <conditional-date
+              question="Has the pickup date been confirmed?"
+              label="Confirmed Pickup Date"
+              @date="confirmedPickupDate = $event"
+            ></conditional-date>
+
+            <conditional-date
+              question="Has the furniture been collected?"
+              label="Date Collected"
+              @date="dateCollected = $event"
+            ></conditional-date>
+
+            <conditional-date
+              question="Has the furniture been delivered?"
+              label="Date Delivered"
+              @date="dateDelivered = $event"
+            ></conditional-date>
+
+            <v-divider class="my-3" />
           </v-form>
         </v-flex>
       </v-layout>
@@ -78,10 +119,14 @@ import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
 import { FClass } from "@/data/Furniture";
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
+import ConditionalDate from "./EditCard/ConditionalDate.vue";
+import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 
 @Component({
   components: {
-    PhysicalAttr
+    PhysicalAttr,
+    ConditionalDate,
+    DatePickerMenu
   }
 })
 export default class EditCard extends Vue {
@@ -105,13 +150,20 @@ export default class EditCard extends Vue {
 
   fclass = "";
   classOptions = Object.keys(FClass);
-  size = -1;
-  material = "";
-  materialAlt = "";
-  set = false;
-  hasFrame = false;
-  hasBoxSpring = false;
-  numChairs = -1;
-  heavy = false;
+  // size = -1;
+  // material = "";
+  // materialAlt = "";
+  // set = false;
+  // hasFrame = false;
+  // hasBoxSpring = false;
+  // numChairs = -1;
+  // heavy = false;
+
+  dateOffered = new Date().toISOString().substr(0, 10);
+  pickupBy = new Date().toISOString().substr(0, 10);
+  urgent = false;
+  confirmedPickupDate = "";
+  dateCollected = "";
+  dateDelivered = "";
 }
 </script>
