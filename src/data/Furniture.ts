@@ -100,13 +100,19 @@ class Physical {
 export const Size = {
   Bed: ["Smaller than Twin (baby)", "Twin/XL", "Full", "Queen", "King+"],
   Chair: [
-    "Single person chair (desk chair)",
-    "1 cushion (armchair style)",
+    "Dining chair",
+    "Desk chair",
+    "Living room chair",
+    "Recliner",
+    "Chair and a half (or larger)"
+  ],
+  Couch: [
+    "Love seat",
+    "Futon",
     "2 cushions",
     "3 cushions",
     "4+ cushions (large couch set)"
   ],
-  Couch: [],
   Table: [
     "Small table (night stand, coffee table)",
     "1 person table (desk)",
