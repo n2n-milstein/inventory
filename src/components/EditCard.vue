@@ -66,6 +66,15 @@
             <!-- Attributes -->
             <h3>Attributes</h3>
 
+            <attribute-question
+              v-for="attr in attributes"
+              :key="attr"
+              :attribute="attr"
+              @answer="updateAttr(attr, $event)"
+            ></attribute-question>
+
+            <v-divider class="my-3" />
+
             <!-- Timing -->
             <h3>Timing</h3>
 
@@ -100,6 +109,32 @@
             ></conditional-date>
 
             <v-divider class="my-3" />
+
+            <h3>Images</h3>
+
+            <!-- TODO: think of some way to host images -->
+            <p>Feature in development...</p>
+
+            <v-divider class="my-3" />
+
+            <h3>Comments</h3>
+            <v-textarea
+              label="Comments"
+              v-model="comments"
+              auto-grow
+              box
+            ></v-textarea>
+
+            <div v-if="isStaff">
+              <h3>Staff Notes</h3>
+              <v-textarea
+                label="Staff Notes"
+                v-model="staffNotes"
+                auto-grow
+                box
+              >
+              </v-textarea>
+            </div>
           </v-form>
         </v-flex>
       </v-layout>
@@ -117,21 +152,26 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { FClass } from "@/data/Furniture";
+import { FClass, AttributesDict } from "@/data/Furniture";
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
+import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
 
 @Component({
   components: {
     PhysicalAttr,
     ConditionalDate,
-    DatePickerMenu
+    DatePickerMenu,
+    AttributeQuestion
   }
 })
 export default class EditCard extends Vue {
   @Prop({ default: true })
   isEdit!: boolean;
+
+  @Prop({ default: false })
+  isStaff!: boolean;
 
   valid = true;
   required = [(v: any) => !!v || "This is required"];
@@ -165,5 +205,43 @@ export default class EditCard extends Vue {
   confirmedPickupDate = "";
   dateCollected = "";
   dateDelivered = "";
+
+  attributes = Object.keys(AttributesDict);
+  partsIntact = false;
+  finishIntact = false;
+  smokeFree = false;
+  petFree = false;
+  bedbugFree = false;
+  mildewFree = false;
+  donateToFriend = false;
+
+  comments = "";
+  staffNotes = "";
+
+  updateAttr(attr: string, value: boolean) {
+    switch (attr) {
+      case "partsIntact":
+        this.partsIntact = value;
+        break;
+      case "finishIntact":
+        this.finishIntact = value;
+        break;
+      case "smokeFree":
+        this.smokeFree = value;
+        break;
+      case "petFree":
+        this.petFree = value;
+        break;
+      case "bedbugFree":
+        this.bedbugFree = value;
+        break;
+      case "mildewFree":
+        this.mildewFree = value;
+        break;
+      case "donateToFriend":
+        this.donateToFriend = value;
+        break;
+    }
+  }
 }
 </script>

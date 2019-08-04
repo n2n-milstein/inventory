@@ -136,7 +136,7 @@ export default class ApprovalCard extends Vue {
    */
   prettyAttr(attr: string) {
     for (let key in AttributesDict) {
-      if (key === attr) return AttributesDict[key];
+      if (key === attr) return AttributesDict[key].pretty;
     }
     return "Invalid attribute";
   }
@@ -171,6 +171,7 @@ export default class ApprovalCard extends Vue {
     for (let attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
         let value = attributes[attr];
+        // TODO: remove/clean as we no longer have attributes that are numbers
         if (typeof value === "number" && value < 3) pros.push(attr);
         else if (typeof value === "boolean" && value) pros.push(attr);
       }

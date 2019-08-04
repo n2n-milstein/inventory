@@ -189,19 +189,25 @@ class Attributes {
 /**
  * Dictionary type with string values
  */
-type Dict = { [key: string]: string };
+type Dict = { [key: string]: any };
 
 /**
  * Dictionary that maps attribute names to their "pretty" string representation
  */
 export const AttributesDict: Dict = {
-  partsIntact: "Parts Intact",
-  finishIntact: "Finish Intact",
-  smokeFree: "Smoke Free",
-  petFree: "Pet Free",
-  bedbugFree: "Bedbug Free",
-  mildewFree: "Mildew Free",
-  donateToFriend: "Donate to Friend"
+  partsIntact: {
+    pretty: "Parts Intact",
+    question: "Are all the parts intact?"
+  },
+  finishIntact: { pretty: "Finish Intact", question: "Is the finish intact?" },
+  smokeFree: { pretty: "Smoke Free", question: "Does anyone smoke at home?" },
+  petFree: { pretty: "Pet Free", question: "Are there pets in the house?" },
+  bedbugFree: { pretty: "Bedbug Free", question: "Does it have bedbugs?" },
+  mildewFree: { pretty: "Mildew Free", question: "Does it have mildew?" },
+  donateToFriend: {
+    pretty: "Donate to Friend",
+    question: "Would you donate this to a friend?"
+  }
 };
 
 /**
