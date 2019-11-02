@@ -245,3 +245,5 @@ export default class EditCard extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped></style>
