@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^2.6.10",
+    "core-js": "^2.6.11",
     "firebase": "^6.6.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
@@ -31,10 +31,10 @@
     "eslint-loader": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^5.2.3",
-    "prettier": "^1.18.2",
-    "sass": "^1.23.3",
+    "prettier": "^1.19.1",
+    "sass": "^1.23.7",
     "sass-loader": "^7.3.1",
-    "typescript": "^3.6.4",
+    "typescript": "^3.7.3",
     "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.6.10"
   }
