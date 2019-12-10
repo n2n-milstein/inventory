@@ -13,7 +13,7 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
-    <inventory-actions />
+    <inventory-actions :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       select-all
