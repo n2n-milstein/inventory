@@ -13,27 +13,6 @@
           {{ request.physical.class.toLowerCase() }}
           {{ request.physical.set ? ", set" : "" }}
         </h3>
-        <!-- <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-flex v-on="on">
-              <v-icon
-                class="f-rating"
-                v-for="(i, index) in getRating(request)"
-                :key="index"
-                >star</v-icon
-              >
-              TODO: create way to handle half-stars
-              <v-icon
-                class="f-rating"
-                v-for="(i, index) in 5 - getRating(request)"
-                :key="index"
-                >star_border</v-icon
-              >
-            </v-flex>
-          </template>
-          <span>Rating</span>
-        </v-tooltip>
-        <p hidden>{{ getRating(request) }}</p> -->
       </v-flex>
       <v-flex xs6>
         <p class="d-info">{{ request.donor.name }}</p>

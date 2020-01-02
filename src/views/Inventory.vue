@@ -13,9 +13,6 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
-    <v-btn fab color="primary" bottom right absolute @click="dialog = !dialog">
-      <v-icon>add</v-icon>
-    </v-btn>
     <v-data-table
       v-model="selected"
       select-all
@@ -40,8 +37,7 @@
         <td>
           {{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}
         </td>
-        <td>{{ props.item.donor.zone }}</td>
-        <td>{{ props.item.physical.size }}</td>
+        <td>{{ props.item.donor.address }}</td>
         <td>{{ status[props.item.status] }}</td>
       </template>
     </v-data-table>
@@ -71,8 +67,7 @@ export default class Inventory extends Vue {
   headers = [
     { text: "Class", value: "physical.class" },
     { text: "Date Added", value: "timing.dateAdded" },
-    { text: "Zone", value: "donor.zone" },
-    { text: "Size", value: "physical.size" },
+    { text: "Address", value: "donor.address" },
     { text: "Status", value: "status" }
   ];
 
