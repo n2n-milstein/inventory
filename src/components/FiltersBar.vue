@@ -23,7 +23,7 @@
             </template>
             <v-card>
               <v-card-text>
-                <v-radio-group v-model="radios" :mandatory="false">
+                <v-radio-group v-model="typeSelect" :mandatory="false">
                   <v-radio
                     v-for="t in furnType"
                     :key="t"
@@ -33,7 +33,6 @@
                 </v-radio-group>
               </v-card-text>
               <v-card-actions>
-                <!-- TODO: THE APPLY BUTTON CURRENTLY DOES NOTHING -->
                 <v-btn
                   color="primary"
                   :value="submit"
@@ -75,7 +74,7 @@
             </template>
             <v-card>
               <v-card-text>
-                <v-radio-group v-model="radios" :mandatory="false">
+                <v-radio-group v-model="statusSelect" :mandatory="false">
                   <v-radio
                     v-for="s in furnStatus"
                     :key="s"
@@ -126,7 +125,7 @@
             </template>
             <v-card>
               <v-card-text>
-                <v-radio-group v-model="radios" :mandatory="false">
+                <v-radio-group v-model="matSelect" :mandatory="false">
                   <v-radio
                     v-for="m in furnMaterial"
                     :key="m"
@@ -168,6 +167,9 @@ import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 
 @Component
 export default class FiltersBar extends Vue {
+  @Prop()
+  search!: string;
+
   furnType = ["Bed", "Chair", "Couch", "Table", "Dresser"];
   furnStatus = ["Donor", "On Truck", "Shed", "Delivered", "Unknown"];
   furnMaterial = ["Wood", "Glass", "Metal", "Plastic"];
@@ -175,6 +177,10 @@ export default class FiltersBar extends Vue {
   showTypes = false;
   showStatus = false;
   showMaterial = false;
+
+  typeSelect = "";
+  statusSelect = "";
+  matSelect = "";
 
   typeSubmit = false;
   statusSubmit = false;
@@ -184,21 +190,23 @@ export default class FiltersBar extends Vue {
   applyFilter(btn: string) {
     if (btn == "type") {
       this.typeSubmit = true;
+      this.$emit("filter", this.typeSelect);
     } else if (btn == "status") {
       this.statusSubmit = true;
-    }
-    if (btn == "material") {
+    } else if (btn == "material") {
       this.matSubmit = true;
     }
+    // TODO: Modify search function so works with stacked filters and ignores whitespace
   }
 
   clearFilter(btn: string) {
     if (btn == "type") {
       this.typeSubmit = false;
+      this.typeSelect = "";
+      this.$emit("filter", this.typeSelect);
     } else if (btn == "status") {
       this.statusSubmit = false;
-    }
-    if (btn == "material") {
+    } else if (btn == "material") {
       this.matSubmit = false;
     }
   }

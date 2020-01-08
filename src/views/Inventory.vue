@@ -14,7 +14,7 @@
       </v-flex>
     </v-layout>
     <v-layout row mb-3>
-      <FiltersBar @filter="filterSearch(t)" />
+      <FiltersBar v-on:filter="search = $event" />
     </v-layout>
     <v-data-table
       v-model="selected"
