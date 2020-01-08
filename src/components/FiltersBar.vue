@@ -11,7 +11,13 @@
             offset-y
           >
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" flat outline round v-on="on">
+              <v-btn
+                color="primary"
+                round
+                v-on="on"
+                :flat="!typeSubmit"
+                :outline="!typeSubmit"
+              >
                 Type
               </v-btn>
             </template>
@@ -19,7 +25,7 @@
               <v-card-text>
                 <v-radio-group v-model="radios" :mandatory="false">
                   <v-radio
-                    v-for="t in furnTypes"
+                    v-for="t in furnType"
                     :key="t"
                     :label="`${t}`"
                     :value="t"
@@ -33,8 +39,16 @@
                   :value="submit"
                   flat
                   small
-                  @click="$emit(filter, t)"
+                  @click="applyFilter('type')"
                   >Apply Type</v-btn
+                >
+                <v-btn
+                  color="error"
+                  :value="submit"
+                  flat
+                  small
+                  @click="clearFilter('type')"
+                  >Clear</v-btn
                 >
               </v-card-actions>
             </v-card>
@@ -49,7 +63,13 @@
             offset-y
           >
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" flat outline round v-on="on">
+              <v-btn
+                color="primary"
+                v-on="on"
+                round
+                :flat="!statusSubmit"
+                :outline="!statusSubmit"
+              >
                 Status
               </v-btn>
             </template>
@@ -57,7 +77,7 @@
               <v-card-text>
                 <v-radio-group v-model="radios" :mandatory="false">
                   <v-radio
-                    v-for="s in statuses"
+                    v-for="s in furnStatus"
                     :key="s"
                     :label="`${s}`"
                     :value="s"
@@ -70,8 +90,16 @@
                   :value="submit"
                   flat
                   small
-                  @click="$emit(filter, t)"
+                  @click="applyFilter('status')"
                   >Apply Status</v-btn
+                >
+                <v-btn
+                  color="error"
+                  :value="submit"
+                  flat
+                  small
+                  @click="clearFilter('status')"
+                  >Clear</v-btn
                 >
               </v-card-actions>
             </v-card>
@@ -86,7 +114,13 @@
             offset-y
           >
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" flat outline round v-on="on">
+              <v-btn
+                color="primary"
+                round
+                v-on="on"
+                :flat="!matSubmit"
+                :outline="!matSubmit"
+              >
                 Material
               </v-btn>
             </template>
@@ -94,7 +128,7 @@
               <v-card-text>
                 <v-radio-group v-model="radios" :mandatory="false">
                   <v-radio
-                    v-for="m in materials"
+                    v-for="m in furnMaterial"
                     :key="m"
                     :label="`${m}`"
                     :value="m"
@@ -107,8 +141,16 @@
                   :value="submit"
                   flat
                   small
-                  @click="$emit(filter, t)"
+                  @click="applyFilter('material')"
                   >Apply Material</v-btn
+                >
+                <v-btn
+                  color="error"
+                  :value="submit"
+                  flat
+                  small
+                  @click="clearFilter('material')"
+                  >Clear</v-btn
                 >
               </v-card-actions>
             </v-card>
@@ -126,13 +168,40 @@ import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 
 @Component
 export default class FiltersBar extends Vue {
-  furnTypes = ["Bed", "Chair", "Couch", "Table", "Dresser"];
-  statuses = ["Donor", "On Truck", "Shed", "Delivered", "Unknown"];
-  materials = ["Wood", "Glass", "Metal", "Plastic"];
+  furnType = ["Bed", "Chair", "Couch", "Table", "Dresser"];
+  furnStatus = ["Donor", "On Truck", "Shed", "Delivered", "Unknown"];
+  furnMaterial = ["Wood", "Glass", "Metal", "Plastic"];
 
   showTypes = false;
   showStatus = false;
   showMaterial = false;
+
+  typeSubmit = false;
+  statusSubmit = false;
+  matSubmit = false;
+
+  // TODO: Should only apply if a value is selected
+  applyFilter(btn: string) {
+    if (btn == "type") {
+      this.typeSubmit = true;
+    } else if (btn == "status") {
+      this.statusSubmit = true;
+    }
+    if (btn == "material") {
+      this.matSubmit = true;
+    }
+  }
+
+  clearFilter(btn: string) {
+    if (btn == "type") {
+      this.typeSubmit = false;
+    } else if (btn == "status") {
+      this.statusSubmit = false;
+    }
+    if (btn == "material") {
+      this.matSubmit = false;
+    }
+  }
 }
 </script>
 
