@@ -13,6 +13,9 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
+    <v-layout row mb-3>
+      <FiltersBar @filter="filterSearch(t)" />
+    </v-layout>
     <v-data-table
       v-model="selected"
       select-all
@@ -51,10 +54,12 @@ import ViewTitle from "@/components/ViewTitle.vue";
 import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
+import FiltersBar from "@/components/FiltersBar.vue";
 
 @Component({
   components: {
-    ViewTitle
+    ViewTitle,
+    FiltersBar
   }
 })
 export default class Inventory extends Vue {
@@ -82,6 +87,11 @@ export default class Inventory extends Vue {
         this.inventory.push(doc.data() as Furniture);
       });
     });
+  }
+
+  filterSearch(t: string) {
+    console.log("reach");
+    this.search = t;
   }
 
   mounted() {
