@@ -6,6 +6,7 @@
       :disabled="selected"
       :icon="selected"
       :outline="selected"
+      @click="$emit('add')"
     >
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
@@ -15,6 +16,7 @@
       icon
       :disabled="!selected"
       :key="action.icon"
+      @click="$emit(action.emit)"
     >
       <v-icon>{{ action.icon }}</v-icon>
     </v-btn>
@@ -31,9 +33,9 @@ export default class InventoryActions extends Vue {
   selected!: boolean;
 
   actions = [
-    { icon: "archive" },
-    { icon: "cloud_download" },
-    { icon: "playlist_add" }
+    { icon: "archive", emit: "archive" },
+    { icon: "cloud_download", emit: "download" },
+    { icon: "playlist_add", emit: "list-add" }
   ];
 }
 </script>
