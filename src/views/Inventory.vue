@@ -13,6 +13,7 @@
         ></v-text-field>
       </v-flex>
     </v-layout>
+    <inventory-actions :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       select-all
@@ -48,13 +49,15 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import ViewTitle from "@/components/ViewTitle.vue";
+import InventoryActions from "@/components/InventoryActions.vue";
 import { FClass, Material, Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 @Component({
   components: {
-    ViewTitle
+    ViewTitle,
+    InventoryActions
   }
 })
 export default class Inventory extends Vue {
