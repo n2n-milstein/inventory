@@ -26,12 +26,7 @@
               required
             ></v-text-field>
 
-            <v-text-field
-              v-model="email"
-              label="Email"
-              :rules="emailRules"
-              required
-            ></v-text-field>
+            <v-text-field v-model="email" label="Email" :rules="emailRules" required></v-text-field>
 
             <v-text-field
               v-model="address"
@@ -40,12 +35,7 @@
               required
             ></v-text-field>
 
-            <v-text-field
-              v-model="zone"
-              label="Zone"
-              :rules="required"
-              required
-            ></v-text-field>
+            <v-text-field v-model="zone" label="Zone" :rules="required" required></v-text-field>
 
             <v-divider class="my-3" />
 
@@ -78,15 +68,9 @@
             <!-- Timing -->
             <h3>Timing</h3>
 
-            <date-picker-menu
-              label="Date Offered"
-              @date="dateOffered = $event"
-            ></date-picker-menu>
+            <date-picker-menu label="Date Offered" @date="dateOffered = $event"></date-picker-menu>
 
-            <date-picker-menu
-              label="Pickup By Date"
-              @date="pickupBy = $event"
-            ></date-picker-menu>
+            <date-picker-menu label="Pickup By Date" @date="pickupBy = $event"></date-picker-menu>
 
             <v-checkbox v-model="urgent" label="Urgent?"></v-checkbox>
 
@@ -118,22 +102,11 @@
             <v-divider class="my-3" />
 
             <h3>Comments</h3>
-            <v-textarea
-              label="Comments"
-              v-model="comments"
-              auto-grow
-              box
-            ></v-textarea>
+            <v-textarea label="Comments" v-model="comments" auto-grow box></v-textarea>
 
             <div v-if="isStaff">
               <h3>Staff Notes</h3>
-              <v-textarea
-                label="Staff Notes"
-                v-model="staffNotes"
-                auto-grow
-                box
-              >
-              </v-textarea>
+              <v-textarea label="Staff Notes" v-model="staffNotes" auto-grow box> </v-textarea>
             </div>
           </v-form>
         </v-flex>
@@ -174,7 +147,9 @@ export default class EditCard extends Vue {
   isStaff!: boolean;
 
   valid = true;
+
   required = [(v: any) => !!v || "This is required"];
+
   emailRules = [
     (v: any) => !!v || "This is required",
     (v: any) => /.+@.+/.test(v) || "E-mail must be valid"
@@ -183,12 +158,17 @@ export default class EditCard extends Vue {
   id = "";
 
   donorName = "";
+
   phone = "";
+
   email = "";
+
   address = "";
+
   zone = "";
 
   fclass = "";
+
   classOptions = Object.keys(FClass);
   // size = -1;
   // material = "";
@@ -200,22 +180,35 @@ export default class EditCard extends Vue {
   // heavy = false;
 
   dateOffered = new Date().toISOString().substr(0, 10);
+
   pickupBy = new Date().toISOString().substr(0, 10);
+
   urgent = false;
+
   confirmedPickupDate = "";
+
   dateCollected = "";
+
   dateDelivered = "";
 
   attributes = Object.keys(AttributesDict);
+
   partsIntact = false;
+
   finishIntact = false;
+
   smokeFree = false;
+
   petFree = false;
+
   bedbugFree = false;
+
   mildewFree = false;
+
   donateToFriend = false;
 
   comments = "";
+
   staffNotes = "";
 
   updateAttr(attr: string, value: boolean) {

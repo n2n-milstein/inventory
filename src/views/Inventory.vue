@@ -25,16 +25,9 @@
     >
       <template v-slot:items="props">
         <td>
-          <v-checkbox
-            v-model="props.selected"
-            primary
-            hide-details
-          ></v-checkbox>
+          <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
         </td>
-        <td>
-          {{ props.item.physical.class
-          }}{{ props.item.physical.set ? ", Set" : "" }}
-        </td>
+        <td>{{ props.item.physical.class }}{{ props.item.physical.set ? ", Set" : "" }}</td>
         <td>
           {{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}
         </td>
@@ -62,11 +55,15 @@ import "firebase/firestore";
 })
 export default class Inventory extends Vue {
   status = Status;
+
   db = firebase.firestore();
+
   selected = [];
+
   pagination = {
     rowsPerPage: -1
   };
+
   headers = [
     { text: "Class", value: "physical.class" },
     { text: "Date Added", value: "timing.dateAdded" },

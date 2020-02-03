@@ -10,12 +10,7 @@
     min-width="18rem"
   >
     <template v-slot:activator="{ on }">
-      <v-text-field
-        v-model="date"
-        :label="label"
-        readonly
-        v-on="on"
-      ></v-text-field>
+      <v-text-field v-model="date" :label="label" readonly v-on="on"></v-text-field>
     </template>
     <v-date-picker
       v-model="date"
@@ -41,6 +36,7 @@ export default class DatePickerMenu extends Vue {
   label!: string;
 
   dateMenu = false;
+
   date = "";
 }
 </script>

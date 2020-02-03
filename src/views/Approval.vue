@@ -6,8 +6,8 @@
       <v-flex lg8 md9 xs12>
         <approval-card
           v-for="request in pending"
-          :request="request"
           :key="request.id"
+          :request="request"
           @approve="pushPending($event, true)"
           @deny="pushPending($event, false)"
           @notes="updateNotes"
@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { FClass, Material, Status, Furniture } from "@/data/Furniture";
+import { Component } from "vue-property-decorator";
+import { Furniture } from "@/data/Furniture";
 import ApprovalCard from "@/components/ApprovalCard.vue";
 import ViewTitle from "@/components/ViewTitle.vue";
 import * as firebase from "firebase/app";
@@ -29,12 +29,14 @@ import "firebase/firestore";
 @Component({
   components: {
     ApprovalCard,
-    ViewTitle
-  }
+    ViewTitle,
+  },
 })
 export default class Approval extends Vue {
   show: boolean = false;
+
   pending: Furniture[] = [];
+
   db = firebase.firestore();
 
   /**
@@ -43,9 +45,9 @@ export default class Approval extends Vue {
    */
   getPending() {
     const pending = this.db.collection("pending");
-    pending.onSnapshot(snapshot => {
+    pending.onSnapshot((snapshot) => {
       this.pending = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         this.pending.push(doc.data() as Furniture);
       });
     });
@@ -71,10 +73,11 @@ export default class Approval extends Vue {
   pushPending(furn: Furniture, approve: boolean) {
     const col = approve ? "furniture" : "rejected";
     const collection = this.db.collection(col);
+    const push = furn;
 
-    if (approve) furn.timing.dateAdded = new Date();
+    if (approve) push.timing.dateAdded = new Date();
 
-    collection.doc(furn.id).set(furn);
+    collection.doc(push.id).set(push);
 
     this.db
       .collection("pending")

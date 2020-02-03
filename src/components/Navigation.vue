@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer
-      v-model="drawer"
-      :clipped="$vuetify.breakpoint.lgAndUp"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" fixed app>
       <v-list dense>
         <template v-for="item in items">
           <v-layout v-if="item.heading" :key="item.heading" row align-center>
@@ -30,11 +25,7 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-            <v-list-tile
-              v-for="(child, i) in item.children"
-              :key="i"
-              @click="goTo(child.route)"
-            >
+            <v-list-tile v-for="(child, i) in item.children" :key="i" @click="goTo(child.route)">
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
@@ -54,17 +45,9 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar
-      :clipped-left="$vuetify.breakpoint.lgAndUp"
-      color="blue darken-3"
-      dark
-      app
-      fixed
-    >
+    <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="blue darken-3" dark app fixed>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
-        <v-toolbar-side-icon
-          @click.stop="drawer = !drawer"
-        ></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <span class="hidden-sm-and-down">N2N Inventory</span>
       </v-toolbar-title>
       <!-- <v-text-field
@@ -74,7 +57,7 @@
         prepend-inner-icon="search"
         label="Search"
         class="hidden-sm-and-down"
-      ></v-text-field> -->
+      ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>notifications</v-icon>
@@ -83,19 +66,12 @@
         <template v-slot:activator="{ on }">
           <v-btn icon large v-on="on">
             <v-avatar size="32px" tile>
-              <img
-                src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                alt="Vuetify"
-              />
+              <img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify" />
             </v-avatar>
           </v-btn>
         </template>
         <v-list>
-          <v-list-tile
-            v-for="(item, i) in profileItems"
-            :key="i"
-            @click="item.action"
-          >
+          <v-list-tile v-for="(item, i) in profileItems" :key="i" @click="item.action">
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
             <v-list-tile-title>{{ item.text }}</v-list-tile-title>
           </v-list-tile>
@@ -114,10 +90,11 @@ import "firebase/auth";
 @Component
 export default class Navigation extends Vue {
   dialog = false;
+
   drawer = null;
-  profileItems = [
-    { icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() }
-  ];
+
+  profileItems = [{ icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() }];
+
   items = [
     { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
@@ -129,13 +106,14 @@ export default class Navigation extends Vue {
       model: false,
       children: [
         { icon: "check_circle", text: "Pending", route: "approval" },
-        { icon: "cancel", text: "Rejected", route: "rejected" }
-      ]
+        { icon: "cancel", text: "Rejected", route: "rejected" },
+      ],
     },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    { icon: "info", text: "About", route: "about" }
+    { icon: "info", text: "About", route: "about" },
   ];
+
   @Prop({ default: "" })
   source!: string;
 

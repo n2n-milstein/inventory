@@ -10,15 +10,13 @@
       </v-card-title>
 
       <v-card-text>
-        Please confirm that this is something you would like to do. If you don't
-        know what this is, please exit.
+        Please confirm that this is something you would like to do. If you don't know what this is,
+        please exit.
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="addTo(collection)"
-          >CONFIRM AND ADD</v-btn
-        >
+        <v-btn flat color="primary" @click="addTo(collection)">CONFIRM AND ADD</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -36,6 +34,7 @@ import { Approvals } from "@/data/Sample";
 @Component
 export default class AdminDialog extends Vue {
   dialog = false;
+
   sampleData: Furniture[] = Approvals;
 
   @Prop()
@@ -45,8 +44,8 @@ export default class AdminDialog extends Vue {
     this.dialog = false;
     console.log("writing to " + col);
     const collection = firebase.firestore().collection(col);
-    for (let data of this.sampleData) {
-      let dataRef = collection.doc();
+    for (const data of this.sampleData) {
+      const dataRef = collection.doc();
       data.id = dataRef.id;
       data.timing.dateAdded = new Date();
       dataRef.set(data);

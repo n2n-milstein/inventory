@@ -4,22 +4,12 @@
     <div v-else>
       <div>Select a size</div>
       <v-radio-group v-model="size" mandatory>
-        <v-radio
-          v-for="(size, i) in getSizes()"
-          :key="size"
-          :label="size"
-          :value="i + 1"
-        ></v-radio>
+        <v-radio v-for="(size, i) in getSizes()" :key="size" :label="size" :value="i + 1"></v-radio>
       </v-radio-group>
 
       <div>Select a material</div>
       <v-radio-group v-model="material" mandatory>
-        <v-radio
-          v-for="mat in materials"
-          :key="mat"
-          :label="mat"
-          :value="mat"
-        ></v-radio>
+        <v-radio v-for="mat in materials" :key="mat" :label="mat" :value="mat"></v-radio>
       </v-radio-group>
 
       <v-btn
@@ -37,12 +27,7 @@
       <div v-if="showAltMaterial">
         <div>Select another material</div>
         <v-radio-group v-model="altMaterial">
-          <v-radio
-            v-for="mat in materials"
-            :key="mat"
-            :label="mat"
-            :value="mat"
-          ></v-radio>
+          <v-radio v-for="mat in materials" :key="mat" :label="mat" :value="mat"></v-radio>
         </v-radio-group>
       </div>
 
@@ -71,15 +56,22 @@ export default class PhysicalAttr extends Vue {
   materials = Object.keys(Material);
 
   size = -1;
+
   material = "";
+
   showAltMaterial = false;
+
   altMaterial = "";
+
   hasFrame = false;
+
   hasBoxSpring = false;
+
   heavy = false;
 
   // These will be set programmatically based on user input
   set = false;
+
   numChairs = 0;
 
   getSizes() {

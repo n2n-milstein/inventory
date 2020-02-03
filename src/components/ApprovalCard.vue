@@ -22,9 +22,7 @@
       </v-flex>
       <v-flex xs12 class="text-xs-center mt-2">
         <v-btn block flat @click="show = !show">
-          <v-icon>{{
-            show ? "keyboard_arrow_up" : "keyboard_arrow_down"
-          }}</v-icon>
+          <v-icon>{{ show ? "keyboard_arrow_up" : "keyboard_arrow_down" }}</v-icon>
         </v-btn>
 
         <v-slide-y-transition>
@@ -105,7 +103,9 @@ export default class ApprovalCard extends Vue {
   isPending!: boolean;
 
   show = false;
+
   pros: string[] = [];
+
   cons: string[] = [];
 
   /**
@@ -114,7 +114,7 @@ export default class ApprovalCard extends Vue {
    * @returns a "prettier" representation of attribute `attr`
    */
   prettyAttr(attr: string) {
-    for (let key in AttributesDict) {
+    for (const key in AttributesDict) {
       if (key === attr) return AttributesDict[key].pretty;
     }
     return "Invalid attribute";
@@ -127,12 +127,12 @@ export default class ApprovalCard extends Vue {
    * @returns the rating of the furniture `furn`
    */
   getRating(furn: Furniture) {
-    const attributes = furn.attributes;
+    const { attributes } = furn;
     let rating = 0;
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
-        let value = attributes[attr];
+        const value = attributes[attr];
         if (value) rating += 1;
       }
     }
@@ -144,12 +144,12 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    */
   genPros(furn: Furniture) {
-    const attributes = furn.attributes;
-    let pros = [];
+    const { attributes } = furn;
+    const pros = [];
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
-        let value = attributes[attr];
+        const value = attributes[attr];
         // TODO: remove/clean as we no longer have attributes that are numbers
         if (typeof value === "number" && value < 3) pros.push(attr);
         else if (typeof value === "boolean" && value) pros.push(attr);
@@ -164,10 +164,10 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    */
   genCons(furn: Furniture) {
-    const attributes = furn.attributes;
-    let cons = [];
+    const { attributes } = furn;
+    const cons = [];
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (!this.pros.includes(attr)) cons.push(attr);
     }
 
