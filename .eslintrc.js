@@ -9,6 +9,15 @@ module.exports = {
     "prettier/prettier": "error",
     indent: "off",
     "@typescript-eslint/indent": ["error", 2],
+    "object-curly-newline": [
+      "error",
+      {
+        ObjectExpression: { multiline: true },
+        ObjectPattern: { multiline: true },
+        ImportDeclaration: "never",
+        ExportDeclaration: { multiline: true, minProperties: 3 },
+      },
+    ],
   },
   parser: "vue-eslint-parser",
   parserOptions: {
@@ -17,10 +26,10 @@ module.exports = {
   extends: [
     "plugin:vue/base",
     "plugin:vue/recommended",
-    "@vue/prettier",
+    "plugin:@typescript-eslint/recommended",
     "@vue/typescript",
     "@vue/airbnb",
-    "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/recommended",
+    "@vue/prettier",
   ],
+  plugins: ["eslint-plugin-prettier"],
 };
