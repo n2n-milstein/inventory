@@ -14,28 +14,38 @@
 
             <v-text-field
               v-model="donorName"
-              label="Donor Name"
               :rules="required"
+              label="Donor Name"
               required
             ></v-text-field>
 
             <v-text-field
               v-model="phone"
-              label="Phone Number"
               :rules="required"
+              label="Phone Number"
               required
             ></v-text-field>
 
-            <v-text-field v-model="email" label="Email" :rules="emailRules" required></v-text-field>
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="Email"
+              required
+            ></v-text-field>
 
             <v-text-field
               v-model="address"
-              label="Address"
               :rules="required"
+              label="Address"
               required
             ></v-text-field>
 
-            <v-text-field v-model="zone" label="Zone" :rules="required" required></v-text-field>
+            <v-text-field
+              v-model="zone"
+              :rules="required"
+              label="Zone"
+              required
+            ></v-text-field>
 
             <v-divider class="my-3" />
 
@@ -44,7 +54,7 @@
             <v-select
               v-model="fclass"
               :items="classOptions"
-              :rules="[v => !!v || 'Item is required']"
+              :rules="[(v) => !!v || 'Item is required']"
               label="Furniture Class"
               required
             ></v-select>
@@ -68,28 +78,34 @@
             <!-- Timing -->
             <h3>Timing</h3>
 
-            <date-picker-menu label="Date Offered" @date="dateOffered = $event"></date-picker-menu>
+            <date-picker-menu
+              @date="dateOffered = $event"
+              label="Date Offered"
+            />
 
-            <date-picker-menu label="Pickup By Date" @date="pickupBy = $event"></date-picker-menu>
+            <date-picker-menu
+              @date="pickupBy = $event"
+              label="Pickup By Date"
+            />
 
-            <v-checkbox v-model="urgent" label="Urgent?"></v-checkbox>
+            <v-checkbox v-model="urgent" label="Urgent?" />
 
             <conditional-date
+              @date="confirmedPickupDate = $event"
               question="Has the pickup date been confirmed?"
               label="Confirmed Pickup Date"
-              @date="confirmedPickupDate = $event"
             ></conditional-date>
 
             <conditional-date
+              @date="dateCollected = $event"
               question="Has the furniture been collected?"
               label="Date Collected"
-              @date="dateCollected = $event"
             ></conditional-date>
 
             <conditional-date
+              @date="dateDelivered = $event"
               question="Has the furniture been delivered?"
               label="Date Delivered"
-              @date="dateDelivered = $event"
             ></conditional-date>
 
             <v-divider class="my-3" />
@@ -102,11 +118,21 @@
             <v-divider class="my-3" />
 
             <h3>Comments</h3>
-            <v-textarea label="Comments" v-model="comments" auto-grow box></v-textarea>
+            <v-textarea
+              v-model="comments"
+              label="Comments"
+              auto-grow
+              box
+            ></v-textarea>
 
             <div v-if="isStaff">
               <h3>Staff Notes</h3>
-              <v-textarea label="Staff Notes" v-model="staffNotes" auto-grow box> </v-textarea>
+              <v-textarea
+                v-model="staffNotes"
+                label="Staff Notes"
+                auto-grow
+                box
+              ></v-textarea>
             </div>
           </v-form>
         </v-flex>
@@ -136,8 +162,8 @@ import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
     PhysicalAttr,
     ConditionalDate,
     DatePickerMenu,
-    AttributeQuestion
-  }
+    AttributeQuestion,
+  },
 })
 export default class EditCard extends Vue {
   @Prop({ default: true })
@@ -152,7 +178,7 @@ export default class EditCard extends Vue {
 
   emailRules = [
     (v: any) => !!v || "This is required",
-    (v: any) => /.+@.+/.test(v) || "E-mail must be valid"
+    (v: any) => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
   id = "";
@@ -233,6 +259,8 @@ export default class EditCard extends Vue {
         break;
       case "donateToFriend":
         this.donateToFriend = value;
+        break;
+      default:
         break;
     }
   }

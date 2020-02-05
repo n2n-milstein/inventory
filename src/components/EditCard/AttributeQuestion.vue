@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>{{ attrQuestion(attribute) }}</p>
-    <v-radio-group v-model="answer" row @change="$emit('answer', answer)">
+    <v-radio-group v-model="answer" @change="$emit('answer', answer)" row>
       <v-radio label="Yes" value="true"></v-radio>
       <v-radio label="No" value="false"></v-radio>
     </v-radio-group>

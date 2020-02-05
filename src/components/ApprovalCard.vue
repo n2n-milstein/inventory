@@ -21,8 +21,10 @@
         <p class="d-info">{{ request.donor.address }}</p>
       </v-flex>
       <v-flex xs12 class="text-xs-center mt-2">
-        <v-btn block flat @click="show = !show">
-          <v-icon>{{ show ? "keyboard_arrow_up" : "keyboard_arrow_down" }}</v-icon>
+        <v-btn @click="show = !show" block flat>
+          <v-icon>{{
+            show ? "keyboard_arrow_up" : "keyboard_arrow_down"
+          }}</v-icon>
         </v-btn>
 
         <v-slide-y-transition>
@@ -50,10 +52,10 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-img
-                      aspect-ratio="1"
-                      width="10rem"
                       :src="image.url"
                       v-on="on"
+                      aspect-ratio="1"
+                      width="10rem"
                       class="f-image"
                     ></v-img>
                   </template>
@@ -62,16 +64,14 @@
               </div>
             </v-layout>
             <h3 class="pt-4 pb-2">Donor Comments</h3>
-            <div class="f-comments py-2 px-3">
-              {{ request.comments }}
-            </div>
+            <div class="f-comments py-2 px-3">{{ request.comments }}</div>
             <h3 class="pt-4 pb-2">Staff Notes</h3>
             <v-textarea
+              :value="request.staffNotes"
+              @change="updateNotes"
               label="Staff Notes"
               auto-grow
               box
-              :value="request.staffNotes"
-              @change="updateNotes"
             ></v-textarea>
           </div>
         </v-slide-y-transition>
@@ -79,10 +79,10 @@
     </v-layout>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn v-if="isPending" flat color="red" @click="$emit('deny', request)">
-        Deny
-      </v-btn>
-      <v-btn flat color="green" @click="$emit('approve', request)">
+      <v-btn v-if="isPending" @click="$emit('deny', request)" flat color="red"
+        >Deny</v-btn
+      >
+      <v-btn @click="$emit('approve', request)" flat color="green">
         {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>
