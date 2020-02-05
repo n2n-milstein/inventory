@@ -25,9 +25,16 @@
     >
       <template v-slot:items="props">
         <td>
-          <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+          <v-checkbox
+            v-model="props.selected"
+            primary
+            hide-details
+          ></v-checkbox>
         </td>
-        <td>{{ props.item.physical.class }}{{ props.item.physical.set ? ", Set" : "" }}</td>
+        <td>
+          {{ props.item.physical.class
+          }}{{ props.item.physical.set ? ", Set" : "" }}
+        </td>
         <td>{{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}</td>
         <td>{{ props.item.donor.address }}</td>
         <td>{{ status[props.item.status] }}</td>
