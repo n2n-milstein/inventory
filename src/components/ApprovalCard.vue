@@ -21,7 +21,7 @@
         <p class="d-info">{{ request.donor.address }}</p>
       </v-flex>
       <v-flex xs12 class="text-xs-center mt-2">
-        <v-btn block flat @click="show = !show">
+        <v-btn @click="show = !show" block flat>
           <v-icon>{{
             show ? "keyboard_arrow_up" : "keyboard_arrow_down"
           }}</v-icon>
@@ -52,10 +52,10 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-img
-                      aspect-ratio="1"
-                      width="10rem"
                       :src="image.url"
                       v-on="on"
+                      aspect-ratio="1"
+                      width="10rem"
                       class="f-image"
                     ></v-img>
                   </template>
@@ -64,16 +64,14 @@
               </div>
             </v-layout>
             <h3 class="pt-4 pb-2">Donor Comments</h3>
-            <div class="f-comments py-2 px-3">
-              {{ request.comments }}
-            </div>
+            <div class="f-comments py-2 px-3">{{ request.comments }}</div>
             <h3 class="pt-4 pb-2">Staff Notes</h3>
             <v-textarea
+              :value="request.staffNotes"
+              @change="updateNotes"
               label="Staff Notes"
               auto-grow
               box
-              :value="request.staffNotes"
-              @change="updateNotes"
             ></v-textarea>
           </div>
         </v-slide-y-transition>
@@ -81,10 +79,10 @@
     </v-layout>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn v-if="isPending" flat color="red" @click="$emit('deny', request)">
-        Deny
-      </v-btn>
-      <v-btn flat color="green" @click="$emit('approve', request)">
+      <v-btn v-if="isPending" @click="$emit('deny', request)" flat color="red"
+        >Deny</v-btn
+      >
+      <v-btn @click="$emit('approve', request)" flat color="green">
         {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>
@@ -105,7 +103,9 @@ export default class ApprovalCard extends Vue {
   isPending!: boolean;
 
   show = false;
+
   pros: string[] = [];
+
   cons: string[] = [];
 
   /**
@@ -114,7 +114,7 @@ export default class ApprovalCard extends Vue {
    * @returns a "prettier" representation of attribute `attr`
    */
   prettyAttr(attr: string) {
-    for (let key in AttributesDict) {
+    for (const key in AttributesDict) {
       if (key === attr) return AttributesDict[key].pretty;
     }
     return "Invalid attribute";
@@ -127,12 +127,12 @@ export default class ApprovalCard extends Vue {
    * @returns the rating of the furniture `furn`
    */
   getRating(furn: Furniture) {
-    const attributes = furn.attributes;
+    const { attributes } = furn;
     let rating = 0;
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
-        let value = attributes[attr];
+        const value = attributes[attr];
         if (value) rating += 1;
       }
     }
@@ -144,12 +144,12 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    */
   genPros(furn: Furniture) {
-    const attributes = furn.attributes;
-    let pros = [];
+    const { attributes } = furn;
+    const pros = [];
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
-        let value = attributes[attr];
+        const value = attributes[attr];
         // TODO: remove/clean as we no longer have attributes that are numbers
         if (typeof value === "number" && value < 3) pros.push(attr);
         else if (typeof value === "boolean" && value) pros.push(attr);
@@ -164,10 +164,10 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    */
   genCons(furn: Furniture) {
-    const attributes = furn.attributes;
-    let cons = [];
+    const { attributes } = furn;
+    const cons = [];
 
-    for (let attr in attributes) {
+    for (const attr in attributes) {
       if (!this.pros.includes(attr)) cons.push(attr);
     }
 

@@ -1,22 +1,22 @@
 <template>
   <v-layout px-3 mb-3>
     <v-btn
-      color="primary"
-      round
       :disabled="selected"
       :icon="selected"
       :outline="selected"
       @click="$emit('add')"
+      color="primary"
+      round
     >
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
     </v-btn>
     <v-btn
       v-for="action in actions"
-      icon
       :disabled="!selected"
       :key="action.icon"
       @click="$emit(action.emit)"
+      icon
     >
       <v-icon>{{ action.icon }}</v-icon>
     </v-btn>
@@ -35,7 +35,7 @@ export default class InventoryActions extends Vue {
   actions = [
     { icon: "archive", emit: "archive" },
     { icon: "cloud_download", emit: "download" },
-    { icon: "playlist_add", emit: "list-add" }
+    { icon: "playlist_add", emit: "list-add" },
   ];
 }
 </script>

@@ -13,8 +13,8 @@
       <v-text-field
         v-model="date"
         :label="label"
-        readonly
         v-on="on"
+        readonly
       ></v-text-field>
     </template>
     <v-date-picker
@@ -26,8 +26,7 @@
           dateMenu = false;
         }
       "
-    >
-    </v-date-picker>
+    ></v-date-picker>
   </v-menu>
 </template>
 
@@ -41,6 +40,7 @@ export default class DatePickerMenu extends Vue {
   label!: string;
 
   dateMenu = false;
+
   date = "";
 }
 </script>

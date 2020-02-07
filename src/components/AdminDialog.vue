@@ -16,7 +16,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="addTo(collection)"
+        <v-btn @click="addTo(collection)" flat color="primary"
           >CONFIRM AND ADD</v-btn
         >
       </v-card-actions>
@@ -36,6 +36,7 @@ import { Approvals } from "@/data/Sample";
 @Component
 export default class AdminDialog extends Vue {
   dialog = false;
+
   sampleData: Furniture[] = Approvals;
 
   @Prop()
@@ -45,8 +46,8 @@ export default class AdminDialog extends Vue {
     this.dialog = false;
     console.log("writing to " + col);
     const collection = firebase.firestore().collection(col);
-    for (let data of this.sampleData) {
-      let dataRef = collection.doc();
+    for (const data of this.sampleData) {
+      const dataRef = collection.doc();
       data.id = dataRef.id;
       data.timing.dateAdded = new Date();
       dataRef.set(data);

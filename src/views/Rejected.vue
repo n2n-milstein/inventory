@@ -6,8 +6,8 @@
       <v-flex lg8 md9 xs12>
         <approval-card
           v-for="request in rejected"
-          :request="request"
           :key="request.id"
+          :request="request"
           :is-pending="false"
           @approve="pushPending"
         ></approval-card>
@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { FClass, Material, Status, Furniture } from "@/data/Furniture";
+import { Component } from "vue-property-decorator";
+import { Furniture } from "@/data/Furniture";
 import ApprovalCard from "@/components/ApprovalCard.vue";
 import ViewTitle from "@/components/ViewTitle.vue";
 import * as firebase from "firebase/app";
@@ -28,12 +28,14 @@ import "firebase/firestore";
 @Component({
   components: {
     ApprovalCard,
-    ViewTitle
-  }
+    ViewTitle,
+  },
 })
 export default class Approval extends Vue {
   show: boolean = false;
+
   rejected: Furniture[] = [];
+
   db = firebase.firestore();
 
   /**
@@ -42,9 +44,9 @@ export default class Approval extends Vue {
    */
   getRejected() {
     const rejected = this.db.collection("rejected");
-    rejected.onSnapshot(snapshot => {
+    rejected.onSnapshot((snapshot) => {
       this.rejected = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         this.rejected.push(doc.data() as Furniture);
       });
     });

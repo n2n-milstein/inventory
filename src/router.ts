@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "./views/Login.vue";
 import * as firebase from "firebase/app";
+import Login from "./views/Login.vue";
 import "firebase/auth";
 
 Vue.use(Router);
@@ -15,14 +15,14 @@ const router = new Router({
       name: "login",
       component: Login,
       beforeEnter(to, from, next) {
-        firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             next("/home");
           } else {
             next();
           }
         });
-      }
+      },
     },
     {
       path: "/home",
@@ -30,7 +30,7 @@ const router = new Router({
       component: () => import("./views/Home.vue"),
       redirect: { name: "hello" },
       beforeEnter(to, from, next) {
-        firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             next();
           } else {
@@ -43,7 +43,7 @@ const router = new Router({
         {
           path: "/inventory",
           name: "inventory",
-          component: () => import("./views/Inventory.vue")
+          component: () => import("./views/Inventory.vue"),
         },
         {
           path: "/about",
@@ -52,37 +52,37 @@ const router = new Router({
           // this generates a separate chunk (about.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () =>
-            import(/* webpackChunkName: "about" */ "./views/About.vue")
+            import(/* webpackChunkName: "about" */ "./views/About.vue"),
         },
         {
           path: "/approval",
           name: "approval",
-          component: () => import("./views/Approval.vue")
+          component: () => import("./views/Approval.vue"),
         },
         {
           path: "/hello",
           name: "hello",
-          component: () => import("./views/Hello.vue")
+          component: () => import("./views/Hello.vue"),
         },
         {
           path: "/rejected",
           name: "rejected",
-          component: () => import("./views/Rejected.vue")
+          component: () => import("./views/Rejected.vue"),
         },
         {
           path: "/feedback",
           name: "feedback",
-          component: () => import("./views/Feedback.vue")
+          component: () => import("./views/Feedback.vue"),
         },
         // TODO: delete this admin view when deploying
         {
           path: "/admin",
           name: "admin",
-          component: () => import("./views/Admin.vue")
-        }
-      ]
-    }
-  ]
+          component: () => import("./views/Admin.vue"),
+        },
+      ],
+    },
+  ],
 });
 
 export default router;

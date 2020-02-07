@@ -74,14 +74,14 @@
         prepend-inner-icon="search"
         label="Search"
         class="hidden-sm-and-down"
-      ></v-text-field> -->
+      ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn icon large v-on="on">
+          <v-btn v-on="on" icon large>
             <v-avatar size="32px" tile>
               <img
                 src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
@@ -114,10 +114,13 @@ import "firebase/auth";
 @Component
 export default class Navigation extends Vue {
   dialog = false;
+
   drawer = null;
+
   profileItems = [
-    { icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() }
+    { icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() },
   ];
+
   items = [
     { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
@@ -129,13 +132,14 @@ export default class Navigation extends Vue {
       model: false,
       children: [
         { icon: "check_circle", text: "Pending", route: "approval" },
-        { icon: "cancel", text: "Rejected", route: "rejected" }
-      ]
+        { icon: "cancel", text: "Rejected", route: "rejected" },
+      ],
     },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    { icon: "info", text: "About", route: "about" }
+    { icon: "info", text: "About", route: "about" },
   ];
+
   @Prop({ default: "" })
   source!: string;
 

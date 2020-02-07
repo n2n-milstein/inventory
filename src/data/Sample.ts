@@ -8,7 +8,7 @@ export const Approvals: Furniture[] = [
       phone: "(123) 124-2145",
       email: "js14@gmail.com",
       address: "124 Cornell St Ithaca, NY 14853",
-      zone: "Cornell"
+      zone: "Cornell",
     },
     physical: {
       class: FClass.Chair,
@@ -18,12 +18,12 @@ export const Approvals: Furniture[] = [
       hasFrame: false,
       hasBoxSpring: false,
       numChairs: 0,
-      heavy: false
+      heavy: false,
     },
     timing: {
       urgent: false,
       pickupBy: new Date(2019, 6, 21),
-      dateOffered: new Date(2019, 6, 1)
+      dateOffered: new Date(2019, 6, 1),
     },
     attributes: {
       partsIntact: true,
@@ -32,63 +32,63 @@ export const Approvals: Furniture[] = [
       petFree: false,
       bedbugFree: true,
       mildewFree: true,
-      donateToFriend: true
+      donateToFriend: true,
     },
     status: Status.OnTruck,
     images: [
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1"
+        caption: "test caption 1",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.1"
+        caption: "test caption 1.1",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.2"
+        caption: "test caption 1.2",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.3"
+        caption: "test caption 1.3",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.4"
+        caption: "test caption 1.4",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.5"
+        caption: "test caption 1.5",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.6"
+        caption: "test caption 1.6",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.7"
+        caption: "test caption 1.7",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.8"
+        caption: "test caption 1.8",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.9"
-      }
+        caption: "test caption 1.9",
+      },
     ],
     comments: "this is a comment that the donor has made",
-    staffNotes: ""
+    staffNotes: "",
   },
   {
     id: "",
@@ -97,7 +97,7 @@ export const Approvals: Furniture[] = [
       phone: "(123) 124-2145",
       email: "js14@gmail.com",
       address: "124 Cornell St Ithaca, NY 14853",
-      zone: "Fall Creek"
+      zone: "Fall Creek",
     },
     physical: {
       class: FClass.Chair,
@@ -107,12 +107,12 @@ export const Approvals: Furniture[] = [
       hasFrame: false,
       hasBoxSpring: false,
       numChairs: 0,
-      heavy: false
+      heavy: false,
     },
     timing: {
       urgent: false,
       pickupBy: new Date(2019, 6, 21),
-      dateOffered: new Date(2019, 6, 1)
+      dateOffered: new Date(2019, 6, 1),
     },
     attributes: {
       partsIntact: true,
@@ -121,54 +121,54 @@ export const Approvals: Furniture[] = [
       petFree: false,
       bedbugFree: true,
       mildewFree: true,
-      donateToFriend: true
+      donateToFriend: true,
     },
     status: Status.Donor,
     images: [
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1"
+        caption: "test caption 1",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.1"
+        caption: "test caption 1.1",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.2"
+        caption: "test caption 1.2",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.3"
+        caption: "test caption 1.3",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.4"
+        caption: "test caption 1.4",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.5"
+        caption: "test caption 1.5",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.6"
+        caption: "test caption 1.6",
       },
       {
         url:
           "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
-        caption: "test caption 1.7"
-      }
+        caption: "test caption 1.7",
+      },
     ],
     comments: "this is a comment that the donor has made",
-    staffNotes: ""
-  }
+    staffNotes: "",
+  },
 ];
 
 export const Inventory: Furniture[] = [];

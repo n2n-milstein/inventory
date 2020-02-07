@@ -4,7 +4,7 @@
       <v-flex text-xs-center text-md-left lg2 md3 xs12>
         <h2 class="head">Neighbor to Neighbor</h2>
         <p class="subhead">Inventory</p>
-        <v-btn color="white" @click="checkUser()">Sign in with Google</v-btn>
+        <v-btn @click="checkUser()" color="white">Sign in with Google</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -20,16 +20,16 @@ import "firebase/auth";
 export default class Login extends Vue {
   checkUser() {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$router.push({ name: "hello" });
       } else {
-        this.signIn();
+        Login.signIn();
       }
     });
   }
 
-  signIn() {
+  static signIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
     firebase
@@ -38,8 +38,8 @@ export default class Login extends Vue {
       .then(() => {
         console.log("redirecting...");
       })
-      .catch(error => {
-        console.log("error");
+      .catch((error) => {
+        console.log(error);
       });
   }
 }
