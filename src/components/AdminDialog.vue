@@ -5,9 +5,7 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline" primary-title
-        >Add Confirmation - {{ collection }}</v-card-title
-      >
+      <v-card-title class="headline" primary-title>Add Confirmation - {{ collection }}</v-card-title>
 
       <v-card-text>
         Please confirm that this is something you would like to do. If you don't
@@ -16,9 +14,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="addTo(collection)" flat color="primary"
-          >CONFIRM AND ADD</v-btn
-        >
+        <v-btn @click="addTo(collection)" flat color="primary">CONFIRM AND ADD</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -44,7 +40,6 @@ export default class AdminDialog extends Vue {
 
   addTo(col: string) {
     this.dialog = false;
-    // console.log("writing to " + col);
     const collection = firebase.firestore().collection(col);
     for (const data of this.sampleData) {
       const dataRef = collection.doc();

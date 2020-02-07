@@ -32,13 +32,11 @@ export default class Login extends Vue {
   static signIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
-    firebase.auth().getRedirectResult();
-    // .then(() => {
-    //   console.log("redirecting...");
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then()
+      .catch();
   }
 }
 </script>
