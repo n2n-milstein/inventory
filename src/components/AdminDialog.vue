@@ -14,7 +14,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="addTo(collection)" flat color="primary">CONFIRM AND ADD</v-btn>
+        <v-btn @click="addTo(collection)" flat color="primary"
+          >CONFIRM AND ADD</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
