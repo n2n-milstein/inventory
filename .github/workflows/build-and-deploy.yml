@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: PUBLIC_URL="/stage/${{ github.event.number }}" npm run build
+        run: PUBLIC_URL="/inventory/${{ github.event.number }}" npm run build
 
       - name: Upload assets
         uses: actions/upload-artifact@v1
@@ -52,5 +52,5 @@ jobs:
               issue_number: ${{ github.event.number }},
               owner: "n2n-milstein",
               repo: context.repo.repo,
-              body: "Deployed to https://n2n-milstein.github.io/stage/${{ github.event.number }}/index.html"
+              body: "Deployed to https://n2n-milstein.github.io/inventory/${{ github.event.number }}/index.html"
             })
