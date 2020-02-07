@@ -5,7 +5,5 @@ import colors from "vuetify/es5/util/colors";
 
 Vue.use(Vuetify, {
   iconfont: "md",
-  theme: {
-    primary: colors.blue
-  }
+  theme: { primary: colors.blue },
 });
