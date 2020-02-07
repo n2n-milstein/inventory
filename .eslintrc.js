@@ -2,7 +2,8 @@ module.exports = {
   root: true,
   env: { node: true },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    // TODO: eventually switch this to "error" for deployment
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "prettier/prettier": "error",
     indent: "off",

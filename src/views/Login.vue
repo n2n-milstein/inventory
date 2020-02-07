@@ -35,12 +35,8 @@ export default class Login extends Vue {
     firebase
       .auth()
       .getRedirectResult()
-      .then(() => {
-        console.log("redirecting...");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then()
+      .catch();
   }
 }
 </script>

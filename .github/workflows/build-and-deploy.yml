@@ -1,0 +1,56 @@
+name: Build and Deploy
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: PUBLIC_URL="/inventory/${{ github.event.number }}" npm run build
+
+      - name: Upload assets
+        uses: actions/upload-artifact@v1
+        with:
+          name: assets
+          path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Download assets
+        uses: actions/download-artifact@v1
+        with:
+          name: assets
+          path: ${{ github.event.number }}
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: "."
+          publish_branch: gh-pages
+          keep_files: true
+
+      - name: Comment
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.issues.createComment({
+              issue_number: ${{ github.event.number }},
+              owner: "n2n-milstein",
+              repo: context.repo.repo,
+              body: "Deployed to https://n2n-milstein.github.io/inventory/${{ github.event.number }}/"
+            })
