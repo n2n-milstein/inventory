@@ -5,9 +5,9 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline" primary-title>
-        Add Confirmation - {{ collection }}
-      </v-card-title>
+      <v-card-title class="headline" primary-title
+        >Add Confirmation - {{ collection }}</v-card-title
+      >
 
       <v-card-text>
         Please confirm that this is something you would like to do. If you don't
@@ -44,7 +44,7 @@ export default class AdminDialog extends Vue {
 
   addTo(col: string) {
     this.dialog = false;
-    console.log("writing to " + col);
+    // console.log("writing to " + col);
     const collection = firebase.firestore().collection(col);
     for (const data of this.sampleData) {
       const dataRef = collection.doc();
