@@ -10,13 +10,15 @@
       </v-card-title>
 
       <v-card-text>
-        Please confirm that this is something you would like to do. If you don't know what this is,
-        please exit.
+        Please confirm that this is something you would like to do. If you don't
+        know what this is, please exit.
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="addTo(collection)">CONFIRM AND ADD</v-btn>
+        <v-btn @click="addTo(collection)" flat color="primary"
+          >CONFIRM AND ADD</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
