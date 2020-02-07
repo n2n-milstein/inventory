@@ -62,9 +62,7 @@
       fixed
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
-        <v-toolbar-side-icon
-          @click.stop="drawer = !drawer"
-        ></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer" />
         <span class="hidden-sm-and-down">N2N Inventory</span>
       </v-toolbar-title>
       <!-- <v-text-field
@@ -152,7 +150,7 @@ export default class Navigation extends Vue {
       .auth()
       .signOut()
       .then(() => {
-        console.log("signed out");
+        // console.log("signed out");
         this.$router.push({ path: "/" });
       });
   }
