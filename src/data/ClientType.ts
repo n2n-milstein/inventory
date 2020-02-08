@@ -1,4 +1,4 @@
-export type Client = {
+export interface Client {
   phoneNumber: string;
   address: string;
   zone: string;
@@ -24,4 +24,4 @@ export type Client = {
     domesticViolence: boolean;
   };
   comments: string;
-};
+}

@@ -23,9 +23,7 @@ import Component from "vue-class-component";
 import AdminDialog from "@/components/AdminDialog.vue";
 import EditCard from "@/components/EditCard.vue";
 
-@Component({
-  components: { AdminDialog, EditCard }
-})
+@Component({ components: { AdminDialog, EditCard } })
 export default class Admin extends Vue {
   dialog = false;
 }

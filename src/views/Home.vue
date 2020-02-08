@@ -17,10 +17,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import Navigation from "@/components/Navigation.vue";
 
-@Component({
-  components: {
-    Navigation
-  }
-})
+@Component({ components: { Navigation } })
 export default class Home extends Vue {}
 </script>

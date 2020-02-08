@@ -23,13 +23,13 @@
       </v-radio-group>
 
       <v-btn
-        flat
-        color="primary"
         @click="
           {
             (showAltMaterial = !showAltMaterial), (altMaterial = '');
           }
         "
+        flat
+        color="primary"
       >
         {{ showAltMaterial ? "REMOVE" : "ADD" }} SECOND MATERIAL
       </v-btn>
@@ -71,15 +71,22 @@ export default class PhysicalAttr extends Vue {
   materials = Object.keys(Material);
 
   size = -1;
+
   material = "";
+
   showAltMaterial = false;
+
   altMaterial = "";
+
   hasFrame = false;
+
   hasBoxSpring = false;
+
   heavy = false;
 
   // These will be set programmatically based on user input
   set = false;
+
   numChairs = 0;
 
   getSizes() {

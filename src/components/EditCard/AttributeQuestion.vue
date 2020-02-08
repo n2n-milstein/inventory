@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>{{ attrQuestion(attribute) }}</p>
-    <v-radio-group row v-model="answer" @change="$emit('answer', answer)">
+    <v-radio-group v-model="answer" @change="$emit('answer', answer)" row>
       <v-radio label="Yes" value="true"></v-radio>
       <v-radio label="No" value="false"></v-radio>
     </v-radio-group>
@@ -17,6 +17,7 @@ import { AttributesDict } from "../../data/Furniture";
 export default class AttributeQuestion extends Vue {
   @Prop()
   attribute!: string;
+
   answer = false;
 
   /**
@@ -25,10 +26,12 @@ export default class AttributeQuestion extends Vue {
    * @returns the question associated with the attribute or
    * "Invalid attribute" if the attribute cannot be found in the dictionary
    */
-  attrQuestion(attr: string) {
-    for (let key in AttributesDict) {
+  static attrQuestion(attr: string) {
+    Object.keys(AttributesDict).map((key) => {
       if (key === attr) return AttributesDict[key].question;
-    }
+      return "Invalid attribute";
+    });
+
     return "Invalid attribute";
   }
 }

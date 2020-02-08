@@ -8,7 +8,7 @@ export enum FClass {
   Chair = "Chair",
   Couch = "Couch",
   Table = "Table",
-  Dresser = "Dresser"
+  Dresser = "Dresser",
 }
 
 /**
@@ -18,7 +18,7 @@ export enum Material {
   Wood = "Wood",
   Metal = "Metal",
   Glass = "Glass",
-  Plastic = "Plastic"
+  Plastic = "Plastic",
 }
 
 /**
@@ -29,25 +29,29 @@ export enum Status {
   OnTruck, // 1
   Shed,
   Delivered,
-  Unknown
+  Unknown,
 }
 
 /**
  * Information about the donor associated with a furniture item
  */
 class Donor {
-  name: string;
-  phone: string;
-  email: string;
-  address: string;
-  zone: string; // of Tompkins County
+  public name: string;
 
-  constructor(
+  public phone: string;
+
+  public email: string;
+
+  public address: string;
+
+  public zone: string; // of Tompkins County
+
+  public constructor(
     name: string,
     phone: string,
     email: string,
     address: string,
-    zone: string
+    zone: string,
   ) {
     this.name = name;
     this.phone = phone;
@@ -61,17 +65,26 @@ class Donor {
  * Physical attributes of a furniture item
  */
 class Physical {
-  class: FClass;
-  size: number; // 1-5 (small-big)
-  material: Material;
-  altMaterial?: Material;
-  set: boolean;
-  hasFrame: boolean;
-  hasBoxSpring: boolean;
-  numChairs: number;
-  heavy: boolean;
+  public class: FClass;
 
-  constructor(
+  public size: number;
+
+  // 1-5 (small-big)
+  public material: Material;
+
+  public altMaterial?: Material;
+
+  public set: boolean;
+
+  public hasFrame: boolean;
+
+  public hasBoxSpring: boolean;
+
+  public numChairs: number;
+
+  public heavy: boolean;
+
+  public constructor(
     size: number,
     fclass: FClass,
     material: Material,
@@ -80,7 +93,7 @@ class Physical {
     hasFrame: boolean,
     hasBoxSpring: boolean,
     numChairs: number,
-    altMaterial?: Material
+    altMaterial?: Material,
   ) {
     this.class = fclass;
     this.size = size;
@@ -104,45 +117,51 @@ export const Size = {
     "Desk chair",
     "Living room chair",
     "Recliner",
-    "Chair and a half (or larger)"
+    "Chair and a half (or larger)",
   ],
   Couch: [
     "Love seat",
     "Futon",
     "2 cushions",
     "3 cushions",
-    "4+ cushions (large couch set)"
+    "4+ cushions (large couch set)",
   ],
   Table: [
     "Small table (night stand, coffee table)",
     "1 person table (desk)",
     "2 person table",
     "3-4 person table",
-    "5+ person table"
+    "5+ person table",
   ],
-  Dresser: ["1 drawer", "2 drawers", "3 drawers", "4 drawers", "5+ drawers"]
+  Dresser: ["1 drawer", "2 drawers", "3 drawers", "4 drawers", "5+ drawers"],
 };
 
 /**
  * Dates and timing information associated with a furniture item
  */
 class Timing {
-  urgent: boolean;
-  pickupBy: Date;
-  dateOffered: Date;
-  confirmedPickupDate?: Date;
-  dateAdded?: Date;
-  dateCollected?: Date;
-  dateDelivered?: Date;
+  public urgent: boolean;
 
-  constructor(
+  public pickupBy: Date;
+
+  public dateOffered: Date;
+
+  public confirmedPickupDate?: Date;
+
+  public dateAdded?: Date;
+
+  public dateCollected?: Date;
+
+  public dateDelivered?: Date;
+
+  public constructor(
     urgent: boolean,
     pickupBy: Date,
     dateOffered: Date,
     confirmedPickupDate?: Date,
     dateAdded?: Date,
     dateCollected?: Date,
-    dateDelivered?: Date
+    dateDelivered?: Date,
   ) {
     this.urgent = urgent;
     this.pickupBy = pickupBy;
@@ -158,23 +177,30 @@ class Timing {
  * Attributes used to generate ratings for a furniture item
  */
 class Attributes {
-  [key: string]: any;
-  partsIntact: boolean;
-  finishIntact: boolean;
-  smokeFree: boolean;
-  petFree: boolean;
-  bedbugFree: boolean;
-  mildewFree: boolean;
-  donateToFriend: boolean;
+  [key: string]: boolean;
 
-  constructor(
+  public partsIntact: boolean;
+
+  public finishIntact: boolean;
+
+  public smokeFree: boolean;
+
+  public petFree: boolean;
+
+  public bedbugFree: boolean;
+
+  public mildewFree: boolean;
+
+  public donateToFriend: boolean;
+
+  public constructor(
     partsIntact: boolean,
     finishIntact: boolean,
     smokeFree: boolean,
     petFree: boolean,
     bedbugFree: boolean,
     mildewFree: boolean,
-    donateToFriend: boolean
+    donateToFriend: boolean,
   ) {
     this.partsIntact = partsIntact;
     this.finishIntact = finishIntact;
@@ -187,17 +213,14 @@ class Attributes {
 }
 
 /**
- * Dictionary type with string values
- */
-type Dict = { [key: string]: any };
-
-/**
  * Dictionary that maps attribute names to their "pretty" string representation
  */
-export const AttributesDict: Dict = {
+export const AttributesDict: {
+  [key: string]: { pretty: string; question: string };
+} = {
   partsIntact: {
     pretty: "Parts Intact",
-    question: "Are all the parts intact?"
+    question: "Are all the parts intact?",
   },
   finishIntact: { pretty: "Finish Intact", question: "Is the finish intact?" },
   smokeFree: { pretty: "Smoke Free", question: "Does anyone smoke at home?" },
@@ -206,18 +229,19 @@ export const AttributesDict: Dict = {
   mildewFree: { pretty: "Mildew Free", question: "Does it have mildew?" },
   donateToFriend: {
     pretty: "Donate to Friend",
-    question: "Would you donate this to a friend?"
-  }
+    question: "Would you donate this to a friend?",
+  },
 };
 
 /**
  * Images associated with a furniture item
  */
 class Image {
-  url: string;
-  caption?: string;
+  public url: string;
 
-  constructor(url: string, caption?: string) {
+  public caption?: string;
+
+  public constructor(url: string, caption?: string) {
     this.url = url;
     if (caption) this.caption = caption;
   }
@@ -227,19 +251,25 @@ class Image {
  * Represents a furniture donation record
  */
 export class Furniture {
-  id: string;
-  donor: Donor;
-  physical: Physical;
-  timing: Timing;
-  attributes: Attributes;
+  public id: string;
 
-  status: Status;
+  public donor: Donor;
 
-  images: Image[];
-  comments: string;
-  staffNotes: string;
+  public physical: Physical;
 
-  constructor(
+  public timing: Timing;
+
+  public attributes: Attributes;
+
+  public status: Status;
+
+  public images: Image[];
+
+  public comments: string;
+
+  public staffNotes: string;
+
+  public constructor(
     id: string,
     donor: Donor,
     physical: Physical,
@@ -248,7 +278,7 @@ export class Furniture {
     status: Status,
     images: Image[],
     comments: string,
-    staffNotes: string
+    staffNotes: string,
   ) {
     this.id = id;
     this.donor = donor;
