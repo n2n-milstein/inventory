@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div v-if="!fclass">Select a furniture class</div>
+    <div v-if="!fclass">
+      Select a furniture class
+    </div>
     <div v-else>
       <div>Select a size</div>
       <v-radio-group v-model="size" mandatory>
@@ -9,7 +11,7 @@
           :key="size"
           :label="size"
           :value="i + 1"
-        ></v-radio>
+        />
       </v-radio-group>
 
       <div>Select a material</div>
@@ -19,17 +21,17 @@
           :key="mat"
           :label="mat"
           :value="mat"
-        ></v-radio>
+        />
       </v-radio-group>
 
       <v-btn
+        flat
+        color="primary"
         @click="
           {
             (showAltMaterial = !showAltMaterial), (altMaterial = '');
           }
         "
-        flat
-        color="primary"
       >
         {{ showAltMaterial ? "REMOVE" : "ADD" }} SECOND MATERIAL
       </v-btn>
@@ -42,18 +44,18 @@
             :key="mat"
             :label="mat"
             :value="mat"
-          ></v-radio>
+          />
         </v-radio-group>
       </div>
 
       <div v-if="fclass === 'Bed'">
         <div>Bed Features</div>
-        <v-checkbox v-model="hasFrame" label="Has bed frame?"></v-checkbox>
-        <v-checkbox v-model="hasBoxSpring" label="Has box spring?"></v-checkbox>
+        <v-checkbox v-model="hasFrame" label="Has bed frame?" />
+        <v-checkbox v-model="hasBoxSpring" label="Has box spring?" />
       </div>
 
       <div>Other physical attributes</div>
-      <v-checkbox v-model="heavy" label="Heavy furniture"></v-checkbox>
+      <v-checkbox v-model="heavy" label="Heavy furniture" />
     </div>
   </div>
 </template>
@@ -61,7 +63,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { FClass, Size, Material } from "@/data/Furniture";
+import { Size } from "@/data/Furniture";
+import { FClass, Material } from "@/data/furniture/Physical";
 
 @Component
 export default class PhysicalAttr extends Vue {

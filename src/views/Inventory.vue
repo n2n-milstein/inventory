@@ -10,7 +10,7 @@
           label="Search inventory"
           single-line
           hide-details
-        ></v-text-field>
+        />
       </v-flex>
     </v-layout>
     <inventory-actions :selected="selected.length > 0" />
@@ -25,11 +25,7 @@
     >
       <template v-slot:items="props">
         <td>
-          <v-checkbox
-            v-model="props.selected"
-            primary
-            hide-details
-          ></v-checkbox>
+          <v-checkbox v-model="props.selected" primary hide-details />
         </td>
         <td>
           {{ props.item.physical.class

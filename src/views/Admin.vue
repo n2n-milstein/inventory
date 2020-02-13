@@ -1,18 +1,20 @@
 <template>
   <v-layout wrap>
-    <admin-dialog collection="furniture"></admin-dialog>
-    <admin-dialog collection="rejected"></admin-dialog>
-    <admin-dialog collection="pending"></admin-dialog>
+    <admin-dialog collection="furniture" />
+    <admin-dialog collection="rejected" />
+    <admin-dialog collection="pending" />
 
     <v-dialog v-model="dialog" width="750">
       <template v-slot:activator="{ on: edit }">
-        <v-btn v-on="{ ...edit }">Show Edit Dialog</v-btn>
+        <v-btn v-on="{ ...edit }">
+          Show Edit Dialog
+        </v-btn>
       </template>
-      <edit-card></edit-card>
+      <edit-card />
     </v-dialog>
 
     <v-flex xs12>
-      <edit-card></edit-card>
+      <edit-card />
     </v-flex>
   </v-layout>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on">Add to Firestore - {{ collection }}</v-btn>
+      <v-btn v-on="on"> Add to Firestore - {{ collection }} </v-btn>
     </template>
 
     <v-card>
@@ -16,7 +16,7 @@
 
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="addTo(collection)" flat color="primary">
+        <v-btn flat color="primary" @click="addTo(collection)">
           CONFIRM AND ADD
         </v-btn>
       </v-card-actions>
@@ -45,12 +45,13 @@ export default class AdminDialog extends Vue {
   addTo(col: string) {
     this.dialog = false;
     const collection = firebase.firestore().collection(col);
-    for (const data of this.sampleData) {
+    this.sampleData.forEach((data) => {
+      const update = data;
       const dataRef = collection.doc();
-      data.id = dataRef.id;
-      data.timing.dateAdded = new Date();
+      update.id = dataRef.id;
+      update.timing.dateAdded = new Date();
       dataRef.set(data);
-    }
+    });
   }
 }
 </script>

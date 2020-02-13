@@ -10,7 +10,9 @@
         <template v-for="item in items">
           <v-layout v-if="item.heading" :key="item.heading" row align-center>
             <v-flex xs6>
-              <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
             </v-flex>
             <v-flex xs6 class="text-xs-center">
               <a href="#!" class="body-2 black--text">EDIT</a>
@@ -73,13 +75,13 @@
         label="Search"
         class="hidden-sm-and-down"
       ></v-text-field>-->
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" icon large>
+          <v-btn icon large v-on="on">
             <v-avatar size="32px" tile>
               <img
                 src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
@@ -94,7 +96,9 @@
             :key="i"
             @click="item.action"
           >
-            <v-icon class="mr-2">{{ item.icon }}</v-icon>
+            <v-icon class="mr-2">
+              {{ item.icon }}
+            </v-icon>
             <v-list-tile-title>{{ item.text }}</v-list-tile-title>
           </v-list-tile>
         </v-list>

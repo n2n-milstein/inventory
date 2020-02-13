@@ -2,9 +2,15 @@
   <v-container fluid>
     <v-layout justify-center align-center fill-height>
       <v-flex text-xs-center text-md-left lg2 md3 xs12>
-        <h2 class="head">Neighbor to Neighbor</h2>
-        <p class="subhead">Inventory</p>
-        <v-btn @click="checkUser()" color="white">Sign in with Google</v-btn>
+        <h2 class="head">
+          Neighbor to Neighbor
+        </h2>
+        <p class="subhead">
+          Inventory
+        </p>
+        <v-btn color="white" @click="checkUser()">
+          Sign in with Google
+        </v-btn>
       </v-flex>
     </v-layout>
   </v-container>

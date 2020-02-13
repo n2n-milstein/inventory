@@ -8,7 +8,7 @@
           if (!selected) $emit('date', '');
         }
       "
-    ></v-checkbox>
+    />
     <div v-if="selected">
       <date-picker-menu :label="label" @date="$emit('date', $event)" />
     </div>

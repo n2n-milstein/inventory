@@ -1,8 +1,12 @@
 <template>
   <v-container fluid>
     <v-layout row wrap justify-start align-start>
-      <v-flex pb-3 xs12><view-title title="Pending Approvals"/></v-flex>
-      <p v-if="pending.length === 0">No pending approvals.</p>
+      <v-flex pb-3 xs12>
+        <view-title title="Pending Approvals" />
+      </v-flex>
+      <p v-if="pending.length === 0">
+        No pending approvals.
+      </p>
       <v-flex lg8 md9 xs12>
         <approval-card
           v-for="request in pending"
@@ -11,7 +15,7 @@
           @approve="pushPending($event, true)"
           @deny="pushPending($event, false)"
           @notes="updateNotes"
-        ></approval-card>
+        />
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,7 +37,7 @@ import "firebase/firestore";
   },
 })
 export default class Approval extends Vue {
-  show: boolean = false;
+  show = false;
 
   pending: Furniture[] = [];
 

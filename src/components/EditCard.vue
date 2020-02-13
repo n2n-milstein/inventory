@@ -17,35 +17,35 @@
               :rules="required"
               label="Donor Name"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
               v-model="phone"
               :rules="required"
               label="Phone Number"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
               v-model="email"
               :rules="emailRules"
               label="Email"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
               v-model="address"
               :rules="required"
               label="Address"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
               v-model="zone"
               :rules="required"
               label="Zone"
               required
-            ></v-text-field>
+            />
 
             <v-divider class="my-3" />
 
@@ -57,9 +57,9 @@
               :rules="[(v) => !!v || 'Item is required']"
               label="Furniture Class"
               required
-            ></v-select>
+            />
 
-            <physical-attr :fclass="fclass"></physical-attr>
+            <physical-attr :fclass="fclass" />
 
             <v-divider class="my-3" />
 
@@ -71,7 +71,7 @@
               :key="attr"
               :attribute="attr"
               @answer="updateAttr(attr, $event)"
-            ></attribute-question>
+            />
 
             <v-divider class="my-3" />
 
@@ -79,34 +79,34 @@
             <h3>Timing</h3>
 
             <date-picker-menu
-              @date="dateOffered = $event"
               label="Date Offered"
+              @date="dateOffered = $event"
             />
 
             <date-picker-menu
-              @date="pickupBy = $event"
               label="Pickup By Date"
+              @date="pickupBy = $event"
             />
 
             <v-checkbox v-model="urgent" label="Urgent?" />
 
             <conditional-date
-              @date="confirmedPickupDate = $event"
               question="Has the pickup date been confirmed?"
               label="Confirmed Pickup Date"
-            ></conditional-date>
+              @date="confirmedPickupDate = $event"
+            />
 
             <conditional-date
-              @date="dateCollected = $event"
               question="Has the furniture been collected?"
               label="Date Collected"
-            ></conditional-date>
+              @date="dateCollected = $event"
+            />
 
             <conditional-date
-              @date="dateDelivered = $event"
               question="Has the furniture been delivered?"
               label="Date Delivered"
-            ></conditional-date>
+              @date="dateDelivered = $event"
+            />
 
             <v-divider class="my-3" />
 
@@ -118,12 +118,7 @@
             <v-divider class="my-3" />
 
             <h3>Comments</h3>
-            <v-textarea
-              v-model="comments"
-              label="Comments"
-              auto-grow
-              box
-            ></v-textarea>
+            <v-textarea v-model="comments" label="Comments" auto-grow box />
 
             <div v-if="isStaff">
               <h3>Staff Notes</h3>
@@ -132,7 +127,7 @@
                 label="Staff Notes"
                 auto-grow
                 box
-              ></v-textarea>
+              />
             </div>
           </v-form>
         </v-flex>
@@ -141,9 +136,13 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn flat color="primary">CANCEL</v-btn>
-      <v-btn flat color="primary">SAVE</v-btn>
+      <v-spacer />
+      <v-btn flat color="primary">
+        CANCEL
+      </v-btn>
+      <v-btn flat color="primary">
+        SAVE
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -151,7 +150,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { FClass, AttributesDict } from "@/data/Furniture";
+import { AttributesDict } from "@/data/Furniture";
+import { FClass } from "@/data/furniture/Physical";
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
