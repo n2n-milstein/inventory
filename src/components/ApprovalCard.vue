@@ -7,7 +7,9 @@
         </h4>
       </v-flex>
       <v-flex xs6>
-        <h2 class="f-class">{{ request.physical.class }}</h2>
+        <h2 class="f-class">
+          {{ request.physical.class }}
+        </h2>
         <h3 class="f-desc">
           {{ request.physical.material.toLowerCase() }}
           {{ request.physical.class.toLowerCase() }}
@@ -15,74 +17,96 @@
         </h3>
       </v-flex>
       <v-flex xs6>
-        <p class="d-info">{{ request.donor.name }}</p>
-        <p class="d-info">{{ request.donor.phone }}</p>
-        <p class="d-info">{{ request.donor.email }}</p>
-        <p class="d-info">{{ request.donor.address }}</p>
+        <p class="d-info">
+          {{ request.donor.name }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.phone }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.email }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.address }}
+        </p>
       </v-flex>
       <v-flex xs12 class="text-xs-center mt-2">
-        <v-btn @click="show = !show" block flat>
-          <v-icon>{{
-            show ? "keyboard_arrow_up" : "keyboard_arrow_down"
-          }}</v-icon>
+        <v-btn block flat @click="show = !show">
+          <v-icon>
+            {{ show ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+          </v-icon>
         </v-btn>
 
         <v-slide-y-transition>
           <div v-show="show" class="text-xs-left">
             <v-divider class="py-2" />
-            <h3 class="pb-2">Attributes</h3>
+            <h3 class="pb-2">
+              Attributes
+            </h3>
             <v-layout row>
               <v-flex xs4 class="f-pros">
-                <div v-for="attr in pros" :key="attr">
-                  <v-icon class="f-attr-icon">check</v-icon>
-                  {{ prettyAttr(attr) }}
+                <div v-for="attr in pros" :key="attr.key">
+                  <v-icon class="f-attr-icon">
+                    check
+                  </v-icon>
+                  {{ attr.pretty }}
                 </div>
               </v-flex>
               <v-flex xs4 class="f-cons">
-                <div v-for="attr in cons" :key="attr">
-                  <v-icon class="f-attr-icon">clear</v-icon>
-                  {{ prettyAttr(attr) }}
+                <div v-for="attr in cons" :key="attr.key">
+                  <v-icon class="f-attr-icon">
+                    clear
+                  </v-icon>
+                  {{ attr.pretty }}
                 </div>
               </v-flex>
             </v-layout>
 
-            <h3 class="pt-4 pb-2">Images</h3>
+            <h3 class="pt-4 pb-2">
+              Images
+            </h3>
             <v-layout row style="overflow-x: scroll">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-img
                       :src="image.url"
-                      v-on="on"
                       aspect-ratio="1"
                       width="10rem"
                       class="f-image"
-                    ></v-img>
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ image.caption ? image.caption : "image" }}</span>
                 </v-tooltip>
               </div>
             </v-layout>
-            <h3 class="pt-4 pb-2">Donor Comments</h3>
-            <div class="f-comments py-2 px-3">{{ request.comments }}</div>
-            <h3 class="pt-4 pb-2">Staff Notes</h3>
+            <h3 class="pt-4 pb-2">
+              Donor Comments
+            </h3>
+            <div class="f-comments py-2 px-3">
+              {{ request.comments }}
+            </div>
+            <h3 class="pt-4 pb-2">
+              Staff Notes
+            </h3>
             <v-textarea
               :value="request.staffNotes"
-              @change="updateNotes"
               label="Staff Notes"
               auto-grow
               box
-            ></v-textarea>
+              @change="updateNotes"
+            />
           </div>
         </v-slide-y-transition>
       </v-flex>
     </v-layout>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn v-if="isPending" @click="$emit('deny', request)" flat color="red"
-        >Deny</v-btn
-      >
-      <v-btn @click="$emit('approve', request)" flat color="green">
+      <v-spacer />
+      <v-btn v-if="isPending" flat color="red" @click="$emit('deny', request)">
+        Deny
+      </v-btn>
+      <v-btn flat color="green" @click="$emit('approve', request)">
         {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>
@@ -104,20 +128,21 @@ export default class ApprovalCard extends Vue {
 
   show = false;
 
-  pros: string[] = [];
+  pros: { key: string; pretty: string }[] = [];
 
-  cons: string[] = [];
+  cons: { key: string; pretty: string }[] = [];
 
   /**
    * Returns the "prettier" version of an attribute.
    * @param attr - a Furniture Attribute name (probably in camelCase)
    * @returns a "prettier" representation of attribute `attr`
    */
-  prettyAttr(attr: string) {
-    for (const key in AttributesDict) {
-      if (key === attr) return AttributesDict[key].pretty;
-    }
-    return "Invalid attribute";
+  static prettyAttr(attr: string) {
+    let pretty = "";
+    Object.keys(AttributesDict).forEach((key) => {
+      if (key === attr) pretty = AttributesDict[key].pretty;
+    });
+    return pretty !== "" ? pretty : "Invalid attribute";
   }
 
   /**
@@ -126,16 +151,18 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    * @returns the rating of the furniture `furn`
    */
-  getRating(furn: Furniture) {
+  static getRating(furn: Furniture) {
     const { attributes } = furn;
+    const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
     let rating = 0;
 
-    for (const attr in attributes) {
-      if (attributes.hasOwnProperty(attr)) {
-        const value = attributes[attr];
+    Object.keys(attributes).forEach((key) => {
+      if (has.call(attributes, key)) {
+        const value = attributes[key];
         if (value) rating += 1;
       }
-    }
+    });
+
     return rating;
   }
 
@@ -143,34 +170,21 @@ export default class ApprovalCard extends Vue {
    * Gets the pros of the given furniture and sets it to the local variable.
    * @param furn - a given Furniture object
    */
-  genPros(furn: Furniture) {
+  genProsCons(furn: Furniture) {
     const { attributes } = furn;
-    const pros = [];
+    const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
+    const pros: { key: string; pretty: string }[] = [];
+    const cons: { key: string; pretty: string }[] = [];
 
-    for (const attr in attributes) {
-      if (attributes.hasOwnProperty(attr)) {
-        const value = attributes[attr];
-        // TODO: remove/clean as we no longer have attributes that are numbers
-        if (typeof value === "number" && value < 3) pros.push(attr);
-        else if (typeof value === "boolean" && value) pros.push(attr);
+    Object.keys(attributes).forEach((key) => {
+      if (has.call(attributes, key)) {
+        const value = attributes[key];
+        if (value) pros.push({ key, pretty: ApprovalCard.prettyAttr(key) });
+        else cons.push({ key, pretty: ApprovalCard.prettyAttr(key) });
       }
-    }
+    });
 
     this.pros = pros;
-  }
-
-  /**
-   * Gets the cons of the given furniture and sets it to the local variable.
-   * @param furn - a given Furniture object
-   */
-  genCons(furn: Furniture) {
-    const { attributes } = furn;
-    const cons = [];
-
-    for (const attr in attributes) {
-      if (!this.pros.includes(attr)) cons.push(attr);
-    }
-
     this.cons = cons;
   }
 
@@ -184,8 +198,7 @@ export default class ApprovalCard extends Vue {
   }
 
   mounted() {
-    this.genPros(this.request);
-    this.genCons(this.request);
+    this.genProsCons(this.request);
   }
 }
 </script>

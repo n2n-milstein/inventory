@@ -1,9 +1,9 @@
 <template>
   <div>
-    <p>{{ attrQuestion(attribute) }}</p>
-    <v-radio-group v-model="answer" @change="$emit('answer', answer)" row>
-      <v-radio label="Yes" value="true"></v-radio>
-      <v-radio label="No" value="false"></v-radio>
+    <p>{{ question }}</p>
+    <v-radio-group v-model="answer" row @change="$emit('answer', answer)">
+      <v-radio label="Yes" value="true" />
+      <v-radio label="No" value="false" />
     </v-radio-group>
   </div>
 </template>
@@ -11,28 +11,31 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { AttributesDict } from "../../data/Furniture";
+import { AttributesDict } from "@/data/Furniture";
 
 @Component
 export default class AttributeQuestion extends Vue {
   @Prop()
   attribute!: string;
 
+  question = "";
+
   answer = false;
 
   /**
-   * Returns the question associated with the given attribute `attr`
-   * @param attr - a Furniture Attribute name
-   * @returns the question associated with the attribute or
-   * "Invalid attribute" if the attribute cannot be found in the dictionary
+   * Sets the question associated with the given prop `attribute`
    */
-  static attrQuestion(attr: string) {
-    Object.keys(AttributesDict).map((key) => {
-      if (key === attr) return AttributesDict[key].question;
-      return "Invalid attribute";
+  getQuestion() {
+    let question = "";
+    Object.keys(AttributesDict).forEach((key) => {
+      if (key === this.attribute) question = AttributesDict[key].question;
     });
 
-    return "Invalid attribute";
+    this.question = question !== "" ? question : "Invalid attribute";
+  }
+
+  mounted() {
+    this.getQuestion();
   }
 }
 </script>

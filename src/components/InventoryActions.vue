@@ -4,19 +4,19 @@
       :disabled="selected"
       :icon="selected"
       :outline="selected"
-      @click="$emit('add')"
       color="primary"
       round
+      @click="$emit('add')"
     >
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
     </v-btn>
     <v-btn
       v-for="action in actions"
-      :disabled="!selected"
       :key="action.icon"
-      @click="$emit(action.emit)"
+      :disabled="!selected"
       icon
+      @click="$emit(action.emit)"
     >
       <v-icon>{{ action.icon }}</v-icon>
     </v-btn>

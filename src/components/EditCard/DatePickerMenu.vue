@@ -10,12 +10,7 @@
     min-width="18rem"
   >
     <template v-slot:activator="{ on }">
-      <v-text-field
-        v-model="date"
-        :label="label"
-        v-on="on"
-        readonly
-      ></v-text-field>
+      <v-text-field v-model="date" :label="label" readonly v-on="on" />
     </template>
     <v-date-picker
       v-model="date"
@@ -26,7 +21,7 @@
           dateMenu = false;
         }
       "
-    ></v-date-picker>
+    />
   </v-menu>
 </template>
 
