@@ -1,5 +1,5 @@
 <template>
-  <v-row class="px-3 mb-3">
+  <v-row>
     <v-btn
       :disabled="selected"
       :icon="selected"
@@ -13,6 +13,7 @@
     </v-btn>
     <v-btn
       v-for="action in actions"
+      class="ml-3"
       :key="action.icon"
       :disabled="!selected"
       icon

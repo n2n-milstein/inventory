@@ -13,7 +13,7 @@
         />
       </v-col>
     </v-row>
-    <inventory-actions :selected="selected.length > 0" />
+    <inventory-actions class="px-4 mb-4" :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       :search="search"
