@@ -23,17 +23,14 @@
       show-select
       item-key="id"
     >
-      <template v-slot:items="props">
-        <td>
-          <v-checkbox v-model="props.selected" primary hide-details />
-        </td>
-        <td>
-          {{ props.item.physical.class
-          }}{{ props.item.physical.set ? ", Set" : "" }}
-        </td>
-        <td>{{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}</td>
-        <td>{{ props.item.donor.address }}</td>
-        <td>{{ status[props.item.status] }}</td>
+      <template v-slot:item.timing.dateAdded="{ item }">
+        {{ item.timing.dateAdded.toDate().toLocaleDateString() }}
+      </template>
+      <template v-slot:item.physical.class="{ item }">
+        {{ item.physical.class }}{{ item.physical.set ? ", Set" : "" }}
+      </template>
+      <template v-slot:item.status="{ item }">
+        {{ status[item.status] }}
       </template>
     </v-data-table>
   </v-col>
