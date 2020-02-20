@@ -65,8 +65,8 @@
             <h3 class="pt-4 pb-2">
               Images
             </h3>
-            <!-- TODO: replace with v-slide-group -->
-            <v-row style="overflow-x: scroll">
+
+            <v-row class="flex-nowrap" style="overflow-x: scroll">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -138,7 +138,7 @@ export default class ApprovalCard extends Vue {
    * @param attr - a Furniture Attribute name (probably in camelCase)
    * @returns a "prettier" representation of attribute `attr`
    */
-  static prettyAttr(attr: string) {
+  static prettyAttr(attr: string): string {
     let pretty = "";
     Object.keys(AttributesDict).forEach((key) => {
       if (key === attr) pretty = AttributesDict[key].pretty;
@@ -152,7 +152,7 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    * @returns the rating of the furniture `furn`
    */
-  static getRating(furn: Furniture) {
+  static getRating(furn: Furniture): number {
     const { attributes } = furn;
     const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
     let rating = 0;
@@ -171,7 +171,7 @@ export default class ApprovalCard extends Vue {
    * Gets the pros of the given furniture and sets it to the local variable.
    * @param furn - a given Furniture object
    */
-  genProsCons(furn: Furniture) {
+  genProsCons(furn: Furniture): void {
     const { attributes } = furn;
     const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
     const pros: { key: string; pretty: string }[] = [];
@@ -193,12 +193,12 @@ export default class ApprovalCard extends Vue {
    * Updates the furniture's `Staff Notes` field and emits `notes`.
    * @param notes - the notes that have been written
    */
-  updateNotes(notes: string) {
+  updateNotes(notes: string): void {
     this.request.staffNotes = notes;
     this.$emit("notes", this.request);
   }
 
-  mounted() {
+  mounted(): void {
     this.genProsCons(this.request);
   }
 }

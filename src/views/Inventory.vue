@@ -74,7 +74,7 @@ export default class Inventory extends Vue {
 
   inventory: Furniture[] = [];
 
-  getInventory() {
+  getInventory(): void {
     const furniture = this.db.collection("furniture");
     furniture.onSnapshot((snapshot) => {
       snapshot.forEach((doc) => {
@@ -83,7 +83,7 @@ export default class Inventory extends Vue {
     });
   }
 
-  mounted() {
+  mounted(): void {
     this.getInventory();
   }
 }
