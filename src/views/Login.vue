@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <v-layout justify-center align-center fill-height>
-      <v-flex text-xs-center text-md-left lg2 md3 xs12>
+    <v-row class="fill-height" justify="center" align="center">
+      <v-col class="text-center text-md-left" lg="2" md="3" cols="12">
         <h2 class="head">
           Neighbor to Neighbor
         </h2>
@@ -11,8 +11,8 @@
         <v-btn color="white" @click="checkUser()">
           Sign in with Google
         </v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

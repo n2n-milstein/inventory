@@ -1,5 +1,5 @@
 <template>
-  <v-layout wrap>
+  <v-row>
     <admin-dialog collection="furniture" />
     <admin-dialog collection="rejected" />
     <admin-dialog collection="pending" />
@@ -13,10 +13,10 @@
       <edit-card />
     </v-dialog>
 
-    <v-flex xs12>
+    <v-col cols="12">
       <edit-card />
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

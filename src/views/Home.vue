@@ -3,13 +3,10 @@
     <navigation />
 
     <v-content>
-      <v-container class="pa-0" fluid fill-height>
-        <v-layout justify-center align-center>
-          <router-view />
-        </v-layout>
+      <v-container class="pa-0 fill-height" fluid>
+        <router-view />
       </v-container>
     </v-content>
-    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
   </div>
 </template>
 

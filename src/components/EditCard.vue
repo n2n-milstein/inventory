@@ -6,8 +6,8 @@
 
     <v-card-text>
       <!-- <v-container> -->
-      <v-layout wrap>
-        <v-flex xs12>
+      <v-row>
+        <v-col cols="12">
           <v-form ref="edit-form" v-model="valid" lazy-validation>
             <!-- Donor Info -->
             <h3>Donor Info</h3>
@@ -130,8 +130,8 @@
               />
             </div>
           </v-form>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
       <!-- </v-container> -->
     </v-card-text>
 

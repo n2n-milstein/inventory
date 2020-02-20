@@ -1,9 +1,9 @@
 <template>
-  <v-flex xs12 class="inventory">
-    <v-layout row mb-3 px-4 align-baseline>
+  <v-col cols="12" class="inventory">
+    <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
       <v-spacer />
-      <v-flex xs6>
+      <v-col cols="6">
         <v-text-field
           v-model="search"
           append-icon="search"
@@ -11,16 +11,16 @@
           single-line
           hide-details
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <inventory-actions :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       :search="search"
       :headers="headers"
       :items="inventory"
-      :pagination.sync="pagination"
-      select-all
+      :options.sync="pagination"
+      show-select
       item-key="id"
     >
       <template v-slot:items="props">
@@ -36,7 +36,7 @@
         <td>{{ status[props.item.status] }}</td>
       </template>
     </v-data-table>
-  </v-flex>
+  </v-col>
 </template>
 
 <script lang="ts">

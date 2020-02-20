@@ -1,12 +1,12 @@
 <template>
   <v-card light color="white" class="mb-4">
-    <v-layout wrap class="pt-3 px-3">
-      <v-flex xs12 class="mb-1">
+    <v-row class="pt-3 px-3">
+      <v-col cols="12" class="mb-1">
         <h4 class="date">
           {{ request.timing.dateOffered.toDate().toLocaleDateString() }}
         </h4>
-      </v-flex>
-      <v-flex xs6>
+      </v-col>
+      <v-col cols="6">
         <h2 class="f-class">
           {{ request.physical.class }}
         </h2>
@@ -15,8 +15,8 @@
           {{ request.physical.class.toLowerCase() }}
           {{ request.physical.set ? ", set" : "" }}
         </h3>
-      </v-flex>
-      <v-flex xs6>
+      </v-col>
+      <v-col cols="6">
         <p class="d-info">
           {{ request.donor.name }}
         </p>
@@ -29,43 +29,44 @@
         <p class="d-info">
           {{ request.donor.address }}
         </p>
-      </v-flex>
-      <v-flex xs12 class="text-xs-center mt-2">
-        <v-btn block flat @click="show = !show">
+      </v-col>
+      <v-col cols="12" class="text-center mt-2">
+        <v-btn block text @click="show = !show">
           <v-icon>
             {{ show ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
           </v-icon>
         </v-btn>
 
         <v-slide-y-transition>
-          <div v-show="show" class="text-xs-left">
+          <div v-show="show" class="text-left">
             <v-divider class="py-2" />
             <h3 class="pb-2">
               Attributes
             </h3>
-            <v-layout row>
-              <v-flex xs4 class="f-pros">
+            <v-row>
+              <v-col cols="4" class="f-pros">
                 <div v-for="attr in pros" :key="attr.key">
                   <v-icon class="f-attr-icon">
                     check
                   </v-icon>
                   {{ attr.pretty }}
                 </div>
-              </v-flex>
-              <v-flex xs4 class="f-cons">
+              </v-col>
+              <v-col cols="4" class="f-cons">
                 <div v-for="attr in cons" :key="attr.key">
                   <v-icon class="f-attr-icon">
                     clear
                   </v-icon>
                   {{ attr.pretty }}
                 </div>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <h3 class="pt-4 pb-2">
               Images
             </h3>
-            <v-layout row style="overflow-x: scroll">
+            <!-- TODO: replace with v-slide-group -->
+            <v-row style="overflow-x: scroll">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -80,7 +81,7 @@
                   <span>{{ image.caption ? image.caption : "image" }}</span>
                 </v-tooltip>
               </div>
-            </v-layout>
+            </v-row>
             <h3 class="pt-4 pb-2">
               Donor Comments
             </h3>
@@ -94,19 +95,19 @@
               :value="request.staffNotes"
               label="Staff Notes"
               auto-grow
-              box
+              filled
               @change="updateNotes"
             />
           </div>
         </v-slide-y-transition>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <v-card-actions>
       <v-spacer />
-      <v-btn v-if="isPending" flat color="red" @click="$emit('deny', request)">
+      <v-btn v-if="isPending" text color="red" @click="$emit('deny', request)">
         Deny
       </v-btn>
-      <v-btn flat color="green" @click="$emit('approve', request)">
+      <v-btn text color="green" @click="$emit('approve', request)">
         {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>

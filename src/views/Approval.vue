@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap justify-start align-start>
-      <v-flex pb-3 xs12>
+    <v-row justify="start" align="start">
+      <v-col class="pb-3" cols="12">
         <view-title title="Pending Approvals" />
-      </v-flex>
+      </v-col>
       <p v-if="pending.length === 0">
         No pending approvals.
       </p>
-      <v-flex lg8 md9 xs12>
+      <v-col lg="8" md="9" cols="12">
         <approval-card
           v-for="request in pending"
           :key="request.id"
@@ -16,8 +16,8 @@
           @deny="pushPending($event, false)"
           @notes="updateNotes"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
