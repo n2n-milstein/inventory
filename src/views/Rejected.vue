@@ -4,9 +4,11 @@
       <v-col class="pb-3" cols="12">
         <view-title title="Rejections" />
       </v-col>
-      <p v-if="rejected.length === 0">
-        No rejections.
-      </p>
+      <v-col cols="12" v-if="rejected.length === 0">
+        <p>
+          No rejections.
+        </p>
+      </v-col>
       <v-col lg="8" md="9" cols="12">
         <approval-card
           v-for="request in rejected"

@@ -1,7 +1,7 @@
 <template>
   <v-card light color="white" class="mb-4">
     <v-row class="pt-3 px-3">
-      <v-col cols="12" class="mb-1">
+      <v-col cols="12" class="pb-0">
         <h4 class="date">
           {{ request.timing.dateOffered.toDate().toLocaleDateString() }}
         </h4>

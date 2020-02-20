@@ -4,9 +4,11 @@
       <v-col class="pb-3" cols="12">
         <view-title title="Pending Approvals" />
       </v-col>
-      <p v-if="pending.length === 0">
-        No pending approvals.
-      </p>
+      <v-col cols="12" v-if="pending.length === 0">
+        <p>
+          No pending approvals.
+        </p>
+      </v-col>
       <v-col lg="8" md="9" cols="12">
         <approval-card
           v-for="request in pending"
