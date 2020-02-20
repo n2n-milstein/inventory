@@ -26,13 +26,11 @@
             append-icon
           >
             <template v-slot:activator>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ item.text }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.text }}
+                </v-list-item-title>
+              </v-list-item-content>
             </template>
             <v-list-item
               v-for="(child, i) in item.children"
@@ -49,6 +47,7 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
+
           <v-list-item v-else :key="item.text" @click="goTo(item.route)">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
