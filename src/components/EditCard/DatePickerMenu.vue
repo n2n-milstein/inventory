@@ -4,9 +4,7 @@
     v-model="dateMenu"
     :close-on-content-click="false"
     :return-value.sync="date"
-    lazy
     transition="scale-transition"
-    full-width
     min-width="18rem"
   >
     <template v-slot:activator="{ on }">
