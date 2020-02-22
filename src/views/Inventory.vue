@@ -58,7 +58,7 @@ export default class Inventory extends Vue {
 
   selected = [];
 
-  pagination = { rowsPerPage: -1 };
+  pagination = { itemsPerPage: -1 };
 
   headers = [
     { text: "Class", value: "physical.class" },
