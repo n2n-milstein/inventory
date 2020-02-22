@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <v-row class="fill-height" justify="center" align="center">
+  <v-container class="fill-height no-overflow pt-0" fluid>
+    <v-row justify="center" align="center">
       <v-col class="text-center text-md-left" lg="2" md="3" cols="12">
         <h2 class="head">
           Neighbor to Neighbor
@@ -24,7 +24,7 @@ import "firebase/auth";
 
 @Component({})
 export default class Login extends Vue {
-  checkUser() {
+  checkUser(): void {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -35,7 +35,7 @@ export default class Login extends Vue {
     });
   }
 
-  static signIn() {
+  static signIn(): void {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
     firebase
@@ -47,4 +47,8 @@ export default class Login extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.no-overflow {
+  overflow: hidden;
+}
+</style>
