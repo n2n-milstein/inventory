@@ -34,14 +34,18 @@
             <v-layout row>
               <v-flex xs4 class="f-pros">
                 <div v-for="attr in pros" :key="attr">
-                  <v-icon class="f-attr-icon">check</v-icon>
-                  {{ prettyAttr(attr) }}
+                  <v-icon class="f-attr-icon">
+                    thumbs_up
+                  </v-icon>
+                  {{ prettyAttr(attr, true) }}
                 </div>
               </v-flex>
               <v-flex xs4 class="f-cons">
                 <div v-for="attr in cons" :key="attr">
-                  <v-icon class="f-attr-icon">clear</v-icon>
-                  {{ prettyAttr(attr) }}
+                  <v-icon class="f-attr-icon">
+                    thumbs_down
+                  </v-icon>
+                  {{ prettyAttr(attr, false) }}
                 </div>
               </v-flex>
             </v-layout>
@@ -111,11 +115,18 @@ export default class ApprovalCard extends Vue {
   /**
    * Returns the "prettier" version of an attribute.
    * @param attr - a Furniture Attribute name (probably in camelCase)
+   * @param status: whether you want the "positive" or "negative" version of the text
    * @returns a "prettier" representation of attribute `attr`
    */
-  prettyAttr(attr: string) {
+  prettyAttr(attr: string, status: boolean) {
     for (const key in AttributesDict) {
-      if (key === attr) return AttributesDict[key].pretty;
+      if (key === attr) {
+        if (status) {
+          return AttributesDict[key].prettyPos;
+        } else {
+          return AttributesDict[key].prettyNeg;
+        }
+      }
     }
     return "Invalid attribute";
   }

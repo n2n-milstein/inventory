@@ -5,7 +5,9 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline" primary-title>Add Confirmation - {{ collection }}</v-card-title>
+      <v-card-title class="headline" primary-title
+        >Add Confirmation - {{ collection }}</v-card-title
+      >
 
       <v-card-text>
         Please confirm that this is something you would like to do. If you don't

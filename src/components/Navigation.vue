@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" fixed app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      fixed
+      app
+    >
       <v-list dense>
         <template v-for="item in items">
           <v-layout v-if="item.heading" :key="item.heading" row align-center>
@@ -25,7 +30,11 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-            <v-list-tile v-for="(child, i) in item.children" :key="i" @click="goTo(child.route)">
+            <v-list-tile
+              v-for="(child, i) in item.children"
+              :key="i"
+              @click="goTo(child.route)"
+            >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
@@ -45,7 +54,13 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="blue darken-3" dark app fixed>
+    <v-toolbar
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      color="blue darken-3"
+      dark
+      app
+      fixed
+    >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" />
         <span class="hidden-sm-and-down">N2N Inventory</span>
@@ -66,12 +81,19 @@
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon large>
             <v-avatar size="32px" tile>
-              <img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify" />
+              <img
+                src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
+                alt="Vuetify"
+              />
             </v-avatar>
           </v-btn>
         </template>
         <v-list>
-          <v-list-tile v-for="(item, i) in profileItems" :key="i" @click="item.action">
+          <v-list-tile
+            v-for="(item, i) in profileItems"
+            :key="i"
+            @click="item.action"
+          >
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
             <v-list-tile-title>{{ item.text }}</v-list-tile-title>
           </v-list-tile>
