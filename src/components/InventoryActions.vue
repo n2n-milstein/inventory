@@ -1,11 +1,11 @@
 <template>
-  <v-layout px-3 mb-3>
+  <v-row>
     <v-btn
       :disabled="selected"
       :icon="selected"
-      :outline="selected"
+      :outlined="selected"
       color="primary"
-      round
+      rounded
       @click="$emit('add')"
     >
       <v-icon>add</v-icon>
@@ -13,6 +13,7 @@
     </v-btn>
     <v-btn
       v-for="action in actions"
+      class="ml-3"
       :key="action.icon"
       :disabled="!selected"
       icon
@@ -20,7 +21,7 @@
     >
       <v-icon>{{ action.icon }}</v-icon>
     </v-btn>
-  </v-layout>
+  </v-row>
 </template>
 
 <script lang="ts">

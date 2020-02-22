@@ -2,22 +2,22 @@
   <div>
     <v-navigation-drawer
       v-model="drawer"
-      :clipped="$vuetify.breakpoint.lgAndUp"
-      fixed
       app
+      :clipped="$vuetify.breakpoint.lgAndUp"
     >
       <v-list dense>
         <template v-for="item in items">
-          <v-layout v-if="item.heading" :key="item.heading" row align-center>
-            <v-flex xs6>
+          <v-row v-if="item.heading" :key="item.heading" align="center">
+            <v-col cols="6">
               <v-subheader v-if="item.heading">
                 {{ item.heading }}
               </v-subheader>
-            </v-flex>
-            <v-flex xs6 class="text-xs-center">
+            </v-col>
+            <v-col cols="6" class="text-center">
               <a href="#!" class="body-2 black--text">EDIT</a>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
+
           <v-list-group
             v-else-if="item.children"
             :key="item.text"
@@ -26,55 +26,51 @@
             append-icon
           >
             <template v-slot:activator>
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.text }}
+                </v-list-item-title>
+              </v-list-item-content>
             </template>
-            <v-list-tile
+            <v-list-item
               v-for="(child, i) in item.children"
               :key="i"
               @click="goTo(child.route)"
             >
-              <v-list-tile-action v-if="child.icon">
+              <v-list-item-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ child.text }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ child.text }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list-group>
-          <v-list-tile v-else :key="item.text" @click="goTo(item.route)">
-            <v-list-tile-action>
+
+          <v-list-item v-else :key="item.text" @click="goTo(item.route)">
+            <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ item.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar
-      :clipped-left="$vuetify.breakpoint.lgAndUp"
-      color="blue darken-3"
-      dark
+
+    <v-app-bar
+      color="blue"
       app
+      dark
       fixed
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
     >
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
-        <v-toolbar-side-icon @click.stop="drawer = !drawer" />
-        <span class="hidden-sm-and-down">N2N Inventory</span>
-      </v-toolbar-title>
-      <!-- <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="search"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>-->
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>Inventory</v-toolbar-title>
       <v-spacer />
       <v-btn icon>
         <v-icon>notifications</v-icon>
@@ -91,7 +87,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-for="(item, i) in profileItems"
             :key="i"
             @click="item.action"
@@ -99,11 +95,11 @@
             <v-icon class="mr-2">
               {{ item.icon }}
             </v-icon>
-            <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </v-app-bar>
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
-  <v-flex xs12 class="inventory">
-    <v-layout row mb-3 px-4 align-baseline>
+  <v-col cols="12" class="inventory">
+    <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
       <v-spacer />
-      <v-flex xs6>
+      <v-col cols="6">
         <v-text-field
           v-model="search"
           append-icon="search"
@@ -11,32 +11,29 @@
           single-line
           hide-details
         />
-      </v-flex>
-    </v-layout>
-    <inventory-actions :selected="selected.length > 0" />
+      </v-col>
+    </v-row>
+    <inventory-actions class="px-4 mb-4" :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       :search="search"
       :headers="headers"
       :items="inventory"
-      :pagination.sync="pagination"
-      select-all
+      :options.sync="pagination"
+      show-select
       item-key="id"
     >
-      <template v-slot:items="props">
-        <td>
-          <v-checkbox v-model="props.selected" primary hide-details />
-        </td>
-        <td>
-          {{ props.item.physical.class
-          }}{{ props.item.physical.set ? ", Set" : "" }}
-        </td>
-        <td>{{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}</td>
-        <td>{{ props.item.donor.address }}</td>
-        <td>{{ status[props.item.status] }}</td>
+      <template v-slot:item.timing.dateAdded="{ item }">
+        {{ item.timing.dateAdded.toDate().toLocaleDateString() }}
+      </template>
+      <template v-slot:item.physical.class="{ item }">
+        {{ item.physical.class }}{{ item.physical.set ? ", Set" : "" }}
+      </template>
+      <template v-slot:item.status="{ item }">
+        {{ status[item.status] }}
       </template>
     </v-data-table>
-  </v-flex>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -74,7 +71,7 @@ export default class Inventory extends Vue {
 
   inventory: Furniture[] = [];
 
-  getInventory() {
+  getInventory(): void {
     const furniture = this.db.collection("furniture");
     furniture.onSnapshot((snapshot) => {
       snapshot.forEach((doc) => {
@@ -83,7 +80,7 @@ export default class Inventory extends Vue {
     });
   }
 
-  mounted() {
+  mounted(): void {
     this.getInventory();
   }
 }
