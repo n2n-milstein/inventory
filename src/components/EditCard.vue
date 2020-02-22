@@ -10,7 +10,7 @@
         <v-col cols="12">
           <v-form ref="edit-form" v-model="valid" lazy-validation>
             <!-- Donor Info -->
-            <h3>Donor Info</h3>
+            <h2>Donor Info</h2>
 
             <v-text-field
               v-model="donorName"
@@ -50,7 +50,7 @@
             <v-divider class="my-3" />
 
             <!-- Physical Attributes -->
-            <h3>Physical Attributes</h3>
+            <h2>Physical Attributes</h2>
             <v-select
               v-model="fclass"
               :items="classOptions"
@@ -64,7 +64,7 @@
             <v-divider class="my-3" />
 
             <!-- Attributes -->
-            <h3>Attributes</h3>
+            <h2>Attributes</h2>
 
             <attribute-question
               v-for="attr in attributes"
@@ -76,7 +76,7 @@
             <v-divider class="my-3" />
 
             <!-- Timing -->
-            <h3>Timing</h3>
+            <h2>Timing</h2>
 
             <date-picker-menu
               label="Date Offered"
@@ -88,7 +88,7 @@
               @date="pickupBy = $event"
             />
 
-            <v-checkbox v-model="urgent" label="Urgent?" />
+            <v-checkbox v-model="urgent" label="Urgent?" hide-details />
 
             <conditional-date
               question="Has the pickup date been confirmed?"
@@ -110,23 +110,23 @@
 
             <v-divider class="my-3" />
 
-            <h3>Images</h3>
+            <h2>Images</h2>
 
             <!-- TODO: think of some way to host images -->
             <p>Feature in development...</p>
 
             <v-divider class="my-3" />
 
-            <h3>Comments</h3>
-            <v-textarea v-model="comments" label="Comments" auto-grow box />
+            <h2>Comments</h2>
+            <v-textarea v-model="comments" label="Comments" auto-grow filled />
 
             <div v-if="isStaff">
-              <h3>Staff Notes</h3>
+              <h2>Staff Notes</h2>
               <v-textarea
                 v-model="staffNotes"
                 label="Staff Notes"
                 auto-grow
-                box
+                filled
               />
             </div>
           </v-form>
@@ -137,10 +137,10 @@
 
     <v-card-actions>
       <v-spacer />
-      <v-btn flat color="primary">
+      <v-btn text color="primary">
         CANCEL
       </v-btn>
-      <v-btn flat color="primary">
+      <v-btn text color="primary">
         SAVE
       </v-btn>
     </v-card-actions>
@@ -174,11 +174,11 @@ export default class EditCard extends Vue {
 
   valid = true;
 
-  required = [(v: any) => !!v || "This is required"];
+  required = [(v: any): boolean | string => !!v || "This is required"];
 
   emailRules = [
-    (v: any) => !!v || "This is required",
-    (v: any) => /.+@.+/.test(v) || "E-mail must be valid",
+    (v: any): boolean | string => !!v || "This is required",
+    (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
   id = "";

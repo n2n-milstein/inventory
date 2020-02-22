@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="!fclass">
+    <h3 v-if="!fclass">
       Select a furniture class
-    </div>
+    </h3>
     <div v-else>
-      <div>Select a size</div>
+      <h3>Select a size</h3>
       <v-radio-group v-model="size" mandatory>
         <v-radio
           v-for="(size, i) in getSizes()"
@@ -14,7 +14,7 @@
         />
       </v-radio-group>
 
-      <div>Select a material</div>
+      <h3>Select a material</h3>
       <v-radio-group v-model="material" mandatory>
         <v-radio
           v-for="mat in materials"
@@ -25,7 +25,7 @@
       </v-radio-group>
 
       <v-btn
-        flat
+        text
         color="primary"
         @click="
           {
@@ -37,7 +37,7 @@
       </v-btn>
 
       <div v-if="showAltMaterial">
-        <div>Select another material</div>
+        <h3>Select another material</h3>
         <v-radio-group v-model="altMaterial">
           <v-radio
             v-for="mat in materials"
@@ -49,13 +49,17 @@
       </div>
 
       <div v-if="fclass === 'Bed'">
-        <div>Bed Features</div>
-        <v-checkbox v-model="hasFrame" label="Has bed frame?" />
-        <v-checkbox v-model="hasBoxSpring" label="Has box spring?" />
+        <h3>Bed Features</h3>
+        <v-checkbox v-model="hasFrame" label="Has bed frame?" hide-details />
+        <v-checkbox
+          v-model="hasBoxSpring"
+          label="Has box spring?"
+          hide-details
+        />
       </div>
 
-      <div>Other physical attributes</div>
-      <v-checkbox v-model="heavy" label="Heavy furniture" />
+      <h3>Other physical attributes</h3>
+      <v-checkbox v-model="heavy" label="Heavy furniture" hide-details />
     </div>
   </div>
 </template>
