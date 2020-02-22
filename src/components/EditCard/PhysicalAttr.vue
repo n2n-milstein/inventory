@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h3 v-if="!fclass">
-      Select a furniture class
-    </h3>
-    <div v-else>
+    <div v-if="fclass">
       <h3>Select a size</h3>
       <v-radio-group v-model="size" mandatory>
         <v-radio
@@ -32,6 +29,7 @@
             (showAltMaterial = !showAltMaterial), (altMaterial = '');
           }
         "
+        class="mb-3"
       >
         {{ showAltMaterial ? "REMOVE" : "ADD" }} SECOND MATERIAL
       </v-btn>

@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="headline" primary-title>
-      {{ isEdit ? "Edit" : "Add" }} Furniture {{ isEdit ? " - " + id : "" }}
+      {{ isEdit ? "Edit" : "Add" }} Furniture
     </v-card-title>
 
     <v-card-text>
@@ -17,6 +17,7 @@
               :rules="required"
               label="Donor Name"
               required
+              prepend-icon="person"
             />
 
             <v-text-field
@@ -24,6 +25,7 @@
               :rules="required"
               label="Phone Number"
               required
+              prepend-icon="phone"
             />
 
             <v-text-field
@@ -31,6 +33,7 @@
               :rules="emailRules"
               label="Email"
               required
+              prepend-icon="email"
             />
 
             <v-text-field
@@ -38,6 +41,7 @@
               :rules="required"
               label="Address"
               required
+              prepend-icon="location_on"
             />
 
             <v-text-field
@@ -51,12 +55,18 @@
 
             <!-- Physical Attributes -->
             <h2>Physical Attributes</h2>
+
+            <h3 v-if="!fclass">
+              Select a furniture class
+            </h3>
+
             <v-select
               v-model="fclass"
               :items="classOptions"
               :rules="[(v) => !!v || 'Item is required']"
               label="Furniture Class"
               required
+              prepend-icon="category"
             />
 
             <physical-attr :fclass="fclass" />
@@ -267,4 +277,9 @@ export default class EditCard extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+h2 {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+</style>
