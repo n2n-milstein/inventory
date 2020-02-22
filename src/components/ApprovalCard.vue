@@ -35,7 +35,7 @@
               <v-flex xs4 class="f-pros">
                 <div v-for="attr in pros" :key="attr">
                   <v-icon class="f-attr-icon">
-                    thumbs_up
+                    thumb_up
                   </v-icon>
                   {{ prettyAttr(attr, true) }}
                 </div>
@@ -43,7 +43,7 @@
               <v-flex xs4 class="f-cons">
                 <div v-for="attr in cons" :key="attr">
                   <v-icon class="f-attr-icon">
-                    thumbs_down
+                    thumb_down
                   </v-icon>
                   {{ prettyAttr(attr, false) }}
                 </div>
