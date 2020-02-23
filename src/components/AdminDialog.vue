@@ -16,7 +16,7 @@
 
       <v-card-actions>
         <v-spacer />
-        <v-btn flat color="primary" @click="addTo(collection)">
+        <v-btn text color="primary" @click="addTo(collection)">
           CONFIRM AND ADD
         </v-btn>
       </v-card-actions>
@@ -42,7 +42,7 @@ export default class AdminDialog extends Vue {
   @Prop()
   collection!: string;
 
-  addTo(col: string) {
+  addTo(col: string): void {
     this.dialog = false;
     const collection = firebase.firestore().collection(col);
     this.sampleData.forEach((data) => {
