@@ -4,7 +4,7 @@
     <admin-dialog collection="rejected" />
     <admin-dialog collection="pending" />
 
-    <v-dialog v-model="dialog" width="750">
+    <v-dialog v-model="dialog" width="750" scrollable>
       <template v-slot:activator="{ on: edit }">
         <v-btn v-on="{ ...edit }">
           Show Edit Dialog
