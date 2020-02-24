@@ -10,7 +10,7 @@
       "
       hide-details
     />
-    <div v-if="selected">
+    <div v-if="selected" class="pt-1">
       <date-picker-menu :label="label" @date="$emit('date', $event)" />
     </div>
   </div>

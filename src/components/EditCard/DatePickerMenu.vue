@@ -8,7 +8,14 @@
     min-width="18rem"
   >
     <template v-slot:activator="{ on }">
-      <v-text-field v-model="date" :label="label" readonly v-on="on" />
+      <v-text-field
+        v-model="date"
+        :label="label"
+        :class="spacing"
+        readonly
+        hide-details
+        v-on="on"
+      />
     </template>
     <v-date-picker
       v-model="date"
@@ -31,6 +38,9 @@ import { Prop, Component } from "vue-property-decorator";
 export default class DatePickerMenu extends Vue {
   @Prop({ default: "Default label" })
   label!: string;
+
+  @Prop({ default: "" })
+  spacing!: string;
 
   dateMenu = false;
 
