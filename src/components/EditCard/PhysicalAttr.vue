@@ -23,7 +23,7 @@
 
       <v-btn
         outlined
-        color="primary"
+        :color="showAltMaterial ? 'red' : 'primary'"
         @click="
           {
             (showAltMaterial = !showAltMaterial), (altMaterial = '');
