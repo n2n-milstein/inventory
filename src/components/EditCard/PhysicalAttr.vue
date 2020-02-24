@@ -22,7 +22,7 @@
       </v-radio-group>
 
       <v-btn
-        text
+        outlined
         color="primary"
         @click="
           {
@@ -56,8 +56,13 @@
         />
       </div>
 
-      <h3>Other physical attributes</h3>
-      <v-checkbox v-model="heavy" label="Heavy furniture" hide-details />
+      <h3 class="pt-4">Other physical attributes</h3>
+      <v-checkbox
+        class="pb-3"
+        v-model="heavy"
+        label="Heavy furniture"
+        hide-details
+      />
     </div>
   </div>
 </template>
@@ -94,7 +99,7 @@ export default class PhysicalAttr extends Vue {
 
   numChairs = 0;
 
-  getSizes() {
+  getSizes(): string[] {
     return Size[this.fclass];
   }
 }
