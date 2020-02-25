@@ -1,5 +1,8 @@
 <template>
   <v-col cols="12" class="inventory">
+    <v-dialog v-model="dialog" width="750" scrollable>
+      <edit-card />
+    </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
       <v-spacer />
@@ -22,6 +25,7 @@
       :options.sync="pagination"
       show-select
       item-key="id"
+      @click:row="onItemClick"
     >
       <template v-slot:item.timing.dateAdded="{ item }">
         {{ item.timing.dateAdded.toDate().toLocaleDateString() }}
@@ -41,6 +45,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
+import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
@@ -49,6 +54,7 @@ import "firebase/firestore";
   components: {
     ViewTitle,
     InventoryActions,
+    EditCard,
   },
 })
 export default class Inventory extends Vue {
@@ -57,6 +63,8 @@ export default class Inventory extends Vue {
   db = firebase.firestore();
 
   selected = [];
+
+  dialog = false;
 
   pagination = { itemsPerPage: -1 };
 
@@ -82,6 +90,11 @@ export default class Inventory extends Vue {
 
   mounted(): void {
     this.getInventory();
+  }
+
+  onItemClick(item: Furniture): void {
+    console.log(item);
+    this.dialog = true;
   }
 }
 </script>
