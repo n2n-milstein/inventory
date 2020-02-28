@@ -6,6 +6,7 @@
     :return-value.sync="date"
     transition="scale-transition"
     min-width="18rem"
+    :disabled="readonly"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
@@ -26,6 +27,7 @@
           dateMenu = false;
         }
       "
+      :readonly="readonly"
     />
   </v-menu>
 </template>
@@ -37,10 +39,13 @@ import { Prop, Component } from "vue-property-decorator";
 @Component
 export default class DatePickerMenu extends Vue {
   @Prop({ default: "Default label" })
-  label!: string;
+  readonly label!: string;
 
   @Prop({ default: "" })
-  spacing!: string;
+  readonly spacing!: string;
+
+  @Prop({ default: false })
+  readonly readonly!: boolean;
 
   dateMenu = false;
 

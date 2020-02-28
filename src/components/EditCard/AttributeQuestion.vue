@@ -1,7 +1,13 @@
 <template>
   <div>
     <p>{{ question }}</p>
-    <v-radio-group v-model="answer" row @change="$emit('answer', answer)">
+    <v-radio-group
+      v-model="answer"
+      mandatory
+      row
+      @change="$emit('answer', answer)"
+      :readonly="readonly"
+    >
       <v-radio label="Yes" value="true" />
       <v-radio label="No" value="false" />
     </v-radio-group>
@@ -16,7 +22,10 @@ import { AttributesDict } from "@/data/Furniture";
 @Component
 export default class AttributeQuestion extends Vue {
   @Prop()
-  attribute!: string;
+  readonly attribute!: string;
+
+  @Prop({ default: false })
+  readonly readonly!: boolean;
 
   question = "";
 
@@ -25,7 +34,7 @@ export default class AttributeQuestion extends Vue {
   /**
    * Sets the question associated with the given prop `attribute`
    */
-  getQuestion() {
+  getQuestion(): void {
     let question = "";
     Object.keys(AttributesDict).forEach((key) => {
       if (key === this.attribute) question = AttributesDict[key].question;
@@ -34,7 +43,7 @@ export default class AttributeQuestion extends Vue {
     this.question = question !== "" ? question : "Invalid attribute";
   }
 
-  mounted() {
+  mounted(): void {
     this.getQuestion();
   }
 }

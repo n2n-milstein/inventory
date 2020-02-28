@@ -2,7 +2,7 @@
   <div>
     <div v-if="fclass">
       <h3>Select a size</h3>
-      <v-radio-group v-model="size" mandatory>
+      <v-radio-group v-model="size" mandatory :readonly="readonly">
         <v-radio
           v-for="(size, i) in getSizes()"
           :key="size"
@@ -12,7 +12,7 @@
       </v-radio-group>
 
       <h3>Select a material</h3>
-      <v-radio-group v-model="material" mandatory>
+      <v-radio-group v-model="material" mandatory :readonly="readonly">
         <v-radio
           v-for="mat in materials"
           :key="mat"
@@ -30,13 +30,14 @@
           }
         "
         class="mb-3"
+        :disabled="readonly"
       >
         {{ showAltMaterial ? "REMOVE" : "ADD" }} SECOND MATERIAL
       </v-btn>
 
       <div v-if="showAltMaterial">
         <h3>Select another material</h3>
-        <v-radio-group v-model="altMaterial">
+        <v-radio-group v-model="altMaterial" :readonly="readonly">
           <v-radio
             v-for="mat in materials"
             :key="mat"
@@ -48,11 +49,17 @@
 
       <div v-if="fclass === 'Bed'">
         <h3>Bed Features</h3>
-        <v-checkbox v-model="hasFrame" label="Has bed frame?" hide-details />
+        <v-checkbox
+          v-model="hasFrame"
+          label="Has bed frame?"
+          hide-details
+          :readonly="readonly"
+        />
         <v-checkbox
           v-model="hasBoxSpring"
           label="Has box spring?"
           hide-details
+          :readonly="readonly"
         />
       </div>
 
@@ -62,6 +69,7 @@
         v-model="heavy"
         label="Heavy furniture"
         hide-details
+        :readonly="readonly"
       />
     </div>
   </div>
@@ -70,13 +78,19 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { Size } from "@/data/Furniture";
+import { Size, Furniture } from "@/data/Furniture";
 import { FClass, Material } from "@/data/furniture/Physical";
 
 @Component
 export default class PhysicalAttr extends Vue {
   @Prop()
-  fclass!: FClass;
+  readonly furniture!: Furniture;
+
+  @Prop({ default: false })
+  readonly readonly!: boolean;
+
+  @Prop()
+  readonly fclass!: FClass;
 
   materials = Object.keys(Material);
 
@@ -84,7 +98,7 @@ export default class PhysicalAttr extends Vue {
 
   material = "";
 
-  showAltMaterial = false;
+  showAltMaterial = !!this.readonly;
 
   altMaterial = "";
 
