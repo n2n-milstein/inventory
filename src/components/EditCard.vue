@@ -21,12 +21,14 @@
               <!-- Donor Info -->
               <h2>Donor Info</h2>
 
+              <!-- TODO: make these just normal text when in readonly -->
               <v-text-field
                 v-model="donorName"
                 :rules="required"
                 label="Donor Name"
                 required
                 prepend-icon="person"
+                :readonly="!isEdit"
               />
 
               <v-text-field
@@ -35,6 +37,7 @@
                 label="Phone Number"
                 required
                 prepend-icon="phone"
+                :readonly="!isEdit"
               />
 
               <v-text-field
@@ -43,6 +46,7 @@
                 label="Email"
                 required
                 prepend-icon="email"
+                :readonly="!isEdit"
               />
 
               <v-text-field
@@ -51,6 +55,7 @@
                 label="Address"
                 required
                 prepend-icon="location_on"
+                :readonly="!isEdit"
               />
 
               <v-text-field
@@ -58,6 +63,7 @@
                 :rules="required"
                 label="Zone"
                 required
+                :readonly="!isEdit"
               />
 
               <v-divider class="my-3" />
@@ -76,9 +82,10 @@
                 label="Furniture Class"
                 required
                 prepend-icon="category"
+                :readonly="!isEdit"
               />
 
-              <physical-attr :fclass="fclass" />
+              <physical-attr :fclass="fclass" :readonly="!isEdit" />
 
               <v-divider class="my-3" />
 
@@ -90,6 +97,7 @@
                 :key="attr"
                 :attribute="attr"
                 @answer="updateAttr(attr, $event)"
+                :readonly="!isEdit"
               />
 
               <v-divider class="my-3" />
@@ -101,26 +109,35 @@
                 label="Date Offered"
                 @date="dateOffered = $event"
                 spacing="pb-3"
+                :readonly="!isEdit"
               />
 
               <date-picker-menu
                 label="Pickup By Date"
                 @date="pickupBy = $event"
                 spacing="pb-3"
+                :readonly="!isEdit"
               />
 
-              <v-checkbox v-model="urgent" label="Urgent?" hide-details />
+              <v-checkbox
+                v-model="urgent"
+                label="Urgent?"
+                hide-details
+                :readonly="!isEdit"
+              />
 
               <conditional-date
                 question="Has the pickup date been confirmed?"
                 label="Confirmed Pickup Date"
                 @date="confirmedPickupDate = $event"
+                :readonly="!isEdit"
               />
 
               <conditional-date
                 question="Has the furniture been collected?"
                 label="Date Collected"
                 @date="dateCollected = $event"
+                :readonly="!isEdit"
               />
 
               <conditional-date
@@ -128,12 +145,12 @@
                 label="Date Delivered"
                 @date="dateDelivered = $event"
                 class="pb-3"
+                :readonly="!isEdit"
               />
 
               <v-divider class="my-3" />
 
               <h2>Images</h2>
-
               <!-- TODO: think of some way to host images -->
               <p>Feature in development...</p>
 
@@ -145,6 +162,7 @@
                 label="Comments"
                 auto-grow
                 filled
+                readonly
               />
 
               <div v-if="isStaff">
@@ -154,6 +172,7 @@
                   label="Staff Notes"
                   auto-grow
                   filled
+                  :readonly="!isEdit"
                 />
               </div>
             </v-form>
@@ -165,7 +184,7 @@
 
     <v-card-actions>
       <v-spacer />
-      <v-btn text color="primary">
+      <v-btn text color="primary" @click="$emit('cancel')">
         CANCEL
       </v-btn>
       <v-btn text color="primary">
@@ -178,7 +197,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { AttributesDict } from "@/data/Furniture";
+import { AttributesDict, Furniture } from "@/data/Furniture";
 import { FClass } from "@/data/furniture/Physical";
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
@@ -194,11 +213,14 @@ import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
   },
 })
 export default class EditCard extends Vue {
-  @Prop({ default: true })
-  isEdit!: boolean;
+  @Prop()
+  readonly furniture!: Furniture;
 
   @Prop({ default: false })
-  isStaff!: boolean;
+  readonly isEdit!: boolean;
+
+  @Prop({ default: true })
+  readonly isStaff!: boolean;
 
   offsetTop = 0;
 

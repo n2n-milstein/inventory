@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" class="inventory">
     <v-dialog v-model="dialog" width="750" scrollable>
-      <edit-card />
+      <edit-card @cancel="dialog = false" />
     </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
