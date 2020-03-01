@@ -37,6 +37,6 @@ export default class ConditionalDate extends Vue {
   @Prop({ default: false })
   readonly readonly!: boolean;
 
-  selected = !!this.readonly;
+  selected = this.readonly;
 }
 </script>

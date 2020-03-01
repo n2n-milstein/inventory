@@ -98,7 +98,7 @@ export default class PhysicalAttr extends Vue {
 
   material = "";
 
-  showAltMaterial = !!this.readonly;
+  showAltMaterial = this.readonly;
 
   altMaterial = "";
 
