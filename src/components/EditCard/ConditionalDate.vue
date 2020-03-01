@@ -8,9 +8,15 @@
           if (!selected) $emit('date', '');
         }
       "
+      hide-details
+      :readonly="readonly"
     />
-    <div v-if="selected">
-      <date-picker-menu :label="label" @date="$emit('date', $event)" />
+    <div v-if="selected" class="pt-1">
+      <date-picker-menu
+        :label="label"
+        @date="$emit('date', $event)"
+        :readonly="readonly"
+      />
     </div>
   </div>
 </template>
@@ -23,11 +29,14 @@ import DatePickerMenu from "./DatePickerMenu.vue";
 @Component({ components: { DatePickerMenu } })
 export default class ConditionalDate extends Vue {
   @Prop({ default: "Default?" })
-  question!: string;
+  readonly question!: string;
 
   @Prop({ default: "Default label" })
-  label!: string;
+  readonly label!: string;
 
-  selected = false;
+  @Prop({ default: false })
+  readonly readonly!: boolean;
+
+  selected = this.readonly;
 }
 </script>

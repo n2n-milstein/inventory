@@ -1,11 +1,8 @@
 <template>
   <div>
-    <div v-if="!fclass">
-      Select a furniture class
-    </div>
-    <div v-else>
-      <div>Select a size</div>
-      <v-radio-group v-model="size" mandatory>
+    <div v-if="fclass">
+      <h3>Select a size</h3>
+      <v-radio-group v-model="size" mandatory :readonly="readonly">
         <v-radio
           v-for="(size, i) in getSizes()"
           :key="size"
@@ -14,8 +11,8 @@
         />
       </v-radio-group>
 
-      <div>Select a material</div>
-      <v-radio-group v-model="material" mandatory>
+      <h3>Select a material</h3>
+      <v-radio-group v-model="material" mandatory :readonly="readonly">
         <v-radio
           v-for="mat in materials"
           :key="mat"
@@ -25,20 +22,22 @@
       </v-radio-group>
 
       <v-btn
-        flat
-        color="primary"
+        outlined
+        :color="showAltMaterial ? 'red' : 'primary'"
         @click="
           {
             (showAltMaterial = !showAltMaterial), (altMaterial = '');
           }
         "
+        class="mb-3"
+        :disabled="readonly"
       >
         {{ showAltMaterial ? "REMOVE" : "ADD" }} SECOND MATERIAL
       </v-btn>
 
       <div v-if="showAltMaterial">
-        <div>Select another material</div>
-        <v-radio-group v-model="altMaterial">
+        <h3>Select another material</h3>
+        <v-radio-group v-model="altMaterial" :readonly="readonly">
           <v-radio
             v-for="mat in materials"
             :key="mat"
@@ -49,13 +48,29 @@
       </div>
 
       <div v-if="fclass === 'Bed'">
-        <div>Bed Features</div>
-        <v-checkbox v-model="hasFrame" label="Has bed frame?" />
-        <v-checkbox v-model="hasBoxSpring" label="Has box spring?" />
+        <h3>Bed Features</h3>
+        <v-checkbox
+          v-model="hasFrame"
+          label="Has bed frame?"
+          hide-details
+          :readonly="readonly"
+        />
+        <v-checkbox
+          v-model="hasBoxSpring"
+          label="Has box spring?"
+          hide-details
+          :readonly="readonly"
+        />
       </div>
 
-      <div>Other physical attributes</div>
-      <v-checkbox v-model="heavy" label="Heavy furniture" />
+      <h3 class="pt-4">Other physical attributes</h3>
+      <v-checkbox
+        class="pb-3"
+        v-model="heavy"
+        label="Heavy furniture"
+        hide-details
+        :readonly="readonly"
+      />
     </div>
   </div>
 </template>
@@ -63,13 +78,19 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { Size } from "@/data/Furniture";
+import { Size, Furniture } from "@/data/Furniture";
 import { FClass, Material } from "@/data/furniture/Physical";
 
 @Component
 export default class PhysicalAttr extends Vue {
   @Prop()
-  fclass!: FClass;
+  readonly furniture!: Furniture;
+
+  @Prop({ default: false })
+  readonly readonly!: boolean;
+
+  @Prop()
+  readonly fclass!: FClass;
 
   materials = Object.keys(Material);
 
@@ -77,7 +98,7 @@ export default class PhysicalAttr extends Vue {
 
   material = "";
 
-  showAltMaterial = false;
+  showAltMaterial = this.readonly;
 
   altMaterial = "";
 
@@ -92,7 +113,7 @@ export default class PhysicalAttr extends Vue {
 
   numChairs = 0;
 
-  getSizes() {
+  getSizes(): string[] {
     return Size[this.fclass];
   }
 }
