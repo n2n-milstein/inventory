@@ -70,7 +70,9 @@
       :clipped-left="$vuetify.breakpoint.lgAndUp"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Inventory</v-toolbar-title>
+      <v-toolbar-title>
+        {{ $route.name.toUpperCase()[0] + $route.name.slice(1) }}
+      </v-toolbar-title>
       <v-spacer />
       <v-btn icon>
         <v-icon>notifications</v-icon>
@@ -116,7 +118,11 @@ export default class Navigation extends Vue {
   drawer = null;
 
   profileItems = [
-    { icon: "exit_to_app", text: "Sign Out", action: () => this.signOut() },
+    {
+      icon: "exit_to_app",
+      text: "Sign Out",
+      action: (): void => this.signOut(),
+    },
   ];
 
   items = [
@@ -141,11 +147,11 @@ export default class Navigation extends Vue {
   @Prop({ default: "" })
   source!: string;
 
-  goTo(route: string) {
+  goTo(route: string): void {
     this.$router.push({ name: route });
   }
 
-  signOut() {
+  signOut(): void {
     firebase
       .auth()
       .signOut()
