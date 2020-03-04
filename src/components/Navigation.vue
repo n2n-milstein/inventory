@@ -135,7 +135,7 @@ export default class Navigation extends Vue {
       text: "Approvals",
       model: false,
       children: [
-        { icon: "check_circle", text: "Pending", route: "approval" },
+        { icon: "check_circle", text: "Pending", route: "pending" },
         { icon: "cancel", text: "Rejected", route: "rejected" },
       ],
     },

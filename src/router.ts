@@ -14,7 +14,7 @@ const router = new Router({
       path: "/",
       name: "login",
       component: Login,
-      beforeEnter(to, from, next) {
+      beforeEnter(to, from, next): void {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             next("/home");
@@ -29,7 +29,7 @@ const router = new Router({
       name: "home",
       component: () => import("./views/Home.vue"),
       redirect: { name: "hello" },
-      beforeEnter(to, from, next) {
+      beforeEnter(to, from, next): void {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             next();
@@ -55,9 +55,9 @@ const router = new Router({
             import(/* webpackChunkName: "about" */ "./views/About.vue"),
         },
         {
-          path: "/approval",
-          name: "approval",
-          component: () => import("./views/Approval.vue"),
+          path: "/pending",
+          name: "pending",
+          component: () => import("./views/Pending.vue"),
         },
         {
           path: "/hello",
