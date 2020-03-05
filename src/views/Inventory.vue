@@ -1,46 +1,43 @@
 <template>
-  <v-flex xs12 class="inventory">
-    <v-layout row mb-3 px-4 align-baseline>
+  <v-col cols="12" class="inventory">
+    <v-dialog v-model="dialog" width="750" scrollable>
+      <edit-card @cancel="dialog = false" />
+    </v-dialog>
+    <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
       <v-spacer />
-      <v-flex xs6>
+      <v-col cols="6">
         <v-text-field
           v-model="search"
           append-icon="search"
           label="Search inventory"
           single-line
           hide-details
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
-    <inventory-actions :selected="selected.length > 0" />
+        />
+      </v-col>
+    </v-row>
+    <inventory-actions class="px-4 mb-4" :selected="selected.length > 0" />
     <v-data-table
       v-model="selected"
       :search="search"
       :headers="headers"
       :items="inventory"
-      :pagination.sync="pagination"
-      select-all
+      :options.sync="pagination"
+      show-select
       item-key="id"
+      @click:row="onItemClick"
     >
-      <template v-slot:items="props">
-        <td>
-          <v-checkbox
-            v-model="props.selected"
-            primary
-            hide-details
-          ></v-checkbox>
-        </td>
-        <td>
-          {{ props.item.physical.class
-          }}{{ props.item.physical.set ? ", Set" : "" }}
-        </td>
-        <td>{{ props.item.timing.dateAdded.toDate().toLocaleDateString() }}</td>
-        <td>{{ props.item.donor.address }}</td>
-        <td>{{ status[props.item.status] }}</td>
+      <template v-slot:item.timing.dateAdded="{ item }">
+        {{ item.timing.dateAdded.toDate().toLocaleDateString() }}
+      </template>
+      <template v-slot:item.physical.class="{ item }">
+        {{ item.physical.class }}{{ item.physical.set ? ", Set" : "" }}
+      </template>
+      <template v-slot:item.status="{ item }">
+        {{ status[item.status] }}
       </template>
     </v-data-table>
-  </v-flex>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -48,6 +45,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
+import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
@@ -56,6 +54,7 @@ import "firebase/firestore";
   components: {
     ViewTitle,
     InventoryActions,
+    EditCard,
   },
 })
 export default class Inventory extends Vue {
@@ -65,7 +64,9 @@ export default class Inventory extends Vue {
 
   selected = [];
 
-  pagination = { rowsPerPage: -1 };
+  dialog = false;
+
+  pagination = { itemsPerPage: -1 };
 
   headers = [
     { text: "Class", value: "physical.class" },
@@ -78,7 +79,7 @@ export default class Inventory extends Vue {
 
   inventory: Furniture[] = [];
 
-  getInventory() {
+  getInventory(): void {
     const furniture = this.db.collection("furniture");
     furniture.onSnapshot((snapshot) => {
       snapshot.forEach((doc) => {
@@ -87,8 +88,13 @@ export default class Inventory extends Vue {
     });
   }
 
-  mounted() {
+  mounted(): void {
     this.getInventory();
+  }
+
+  onItemClick(item: Furniture): void {
+    console.log(item);
+    this.dialog = true;
   }
 }
 </script>

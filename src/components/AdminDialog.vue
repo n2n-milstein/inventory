@@ -1,13 +1,13 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on">Add to Firestore - {{ collection }}</v-btn>
+      <v-btn v-on="on"> Add to Firestore - {{ collection }} </v-btn>
     </template>
 
     <v-card>
-      <v-card-title class="headline" primary-title
-        >Add Confirmation - {{ collection }}</v-card-title
-      >
+      <v-card-title class="headline" primary-title>
+        Add Confirmation - {{ collection }}
+      </v-card-title>
 
       <v-card-text>
         Please confirm that this is something you would like to do. If you don't
@@ -15,10 +15,10 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="addTo(collection)" flat color="primary"
-          >CONFIRM AND ADD</v-btn
-        >
+        <v-spacer />
+        <v-btn text color="primary" @click="addTo(collection)">
+          CONFIRM AND ADD
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -42,15 +42,16 @@ export default class AdminDialog extends Vue {
   @Prop()
   collection!: string;
 
-  addTo(col: string) {
+  addTo(col: string): void {
     this.dialog = false;
     const collection = firebase.firestore().collection(col);
-    for (const data of this.sampleData) {
+    this.sampleData.forEach((data) => {
+      const update = data;
       const dataRef = collection.doc();
-      data.id = dataRef.id;
-      data.timing.dateAdded = new Date();
+      update.id = dataRef.id;
+      update.timing.dateAdded = new Date();
       dataRef.set(data);
-    }
+    });
   }
 }
 </script>

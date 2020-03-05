@@ -1,92 +1,113 @@
 <template>
   <v-card light color="white" class="mb-4">
-    <v-layout wrap class="pt-3 px-3">
-      <v-flex xs12 class="mb-1">
+    <v-row class="pt-3 px-3">
+      <v-col cols="12" class="pb-0">
         <h4 class="date">
           {{ request.timing.dateOffered.toDate().toLocaleDateString() }}
         </h4>
-      </v-flex>
-      <v-flex xs6>
-        <h2 class="f-class">{{ request.physical.class }}</h2>
+      </v-col>
+      <v-col cols="6">
+        <h2 class="f-class">
+          {{ request.physical.class }}
+        </h2>
         <h3 class="f-desc">
           {{ request.physical.material.toLowerCase() }}
           {{ request.physical.class.toLowerCase() }}
           {{ request.physical.set ? ", set" : "" }}
         </h3>
-      </v-flex>
-      <v-flex xs6>
-        <p class="d-info">{{ request.donor.name }}</p>
-        <p class="d-info">{{ request.donor.phone }}</p>
-        <p class="d-info">{{ request.donor.email }}</p>
-        <p class="d-info">{{ request.donor.address }}</p>
-      </v-flex>
-      <v-flex xs12 class="text-xs-center mt-2">
-        <v-btn @click="show = !show" block flat>
-          <v-icon>{{
-            show ? "keyboard_arrow_up" : "keyboard_arrow_down"
-          }}</v-icon>
+      </v-col>
+      <v-col cols="6">
+        <p class="d-info">
+          {{ request.donor.name }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.phone }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.email }}
+        </p>
+        <p class="d-info">
+          {{ request.donor.address }}
+        </p>
+      </v-col>
+      <v-col cols="12" class="text-center mt-2">
+        <v-btn block text @click="show = !show">
+          <v-icon>
+            {{ show ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+          </v-icon>
         </v-btn>
 
         <v-slide-y-transition>
-          <div v-show="show" class="text-xs-left">
+          <div v-show="show" class="text-left">
             <v-divider class="py-2" />
-            <h3 class="pb-2">Attributes</h3>
-            <v-layout row>
-              <v-flex xs4 class="f-pros">
-                <div v-for="attr in pros" :key="attr">
+            <h3 class="pb-2">
+              Attributes
+            </h3>
+            <v-row>
+              <v-col cols="4" class="f-pros">
+                <div v-for="attr in pros" :key="attr.key">
                   <v-icon class="f-attr-icon">
                     thumb_up
                   </v-icon>
-                  {{ prettyAttr(attr, true) }}
+                  {{ attr.pretty }}
                 </div>
-              </v-flex>
-              <v-flex xs4 class="f-cons">
-                <div v-for="attr in cons" :key="attr">
+              </v-col>
+              <v-col cols="4" class="f-cons">
+                <div v-for="attr in cons" :key="attr.key">
                   <v-icon class="f-attr-icon">
                     thumb_down
                   </v-icon>
-                  {{ prettyAttr(attr, false) }}
+                  {{ attr.pretty }}
                 </div>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <h3 class="pt-4 pb-2">Images</h3>
-            <v-layout row style="overflow-x: scroll">
+            <h3 class="pt-4 pb-2">
+              Images
+            </h3>
+
+            <v-row class="flex-nowrap" style="overflow-x: scroll">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-img
                       :src="image.url"
-                      v-on="on"
                       aspect-ratio="1"
                       width="10rem"
                       class="f-image"
-                    ></v-img>
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ image.caption ? image.caption : "image" }}</span>
                 </v-tooltip>
               </div>
-            </v-layout>
-            <h3 class="pt-4 pb-2">Donor Comments</h3>
-            <div class="f-comments py-2 px-3">{{ request.comments }}</div>
-            <h3 class="pt-4 pb-2">Staff Notes</h3>
+            </v-row>
+            <h3 class="pt-4 pb-2">
+              Donor Comments
+            </h3>
+            <div class="f-comments py-2 px-3">
+              {{ request.comments }}
+            </div>
+            <h3 class="pt-4 pb-2">
+              Staff Notes
+            </h3>
             <v-textarea
               :value="request.staffNotes"
-              @change="updateNotes"
               label="Staff Notes"
               auto-grow
-              box
-            ></v-textarea>
+              filled
+              @change="updateNotes"
+            />
           </div>
         </v-slide-y-transition>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn v-if="isPending" @click="$emit('deny', request)" flat color="red"
-        >Deny</v-btn
-      >
-      <v-btn @click="$emit('approve', request)" flat color="green">
+      <v-spacer />
+      <v-btn v-if="isPending" text color="red" @click="$emit('deny', request)">
+        Deny
+      </v-btn>
+      <v-btn text color="green" @click="$emit('approve', request)">
         {{ isPending ? "Approve" : "Move to Pending" }}
       </v-btn>
     </v-card-actions>
@@ -108,9 +129,9 @@ export default class ApprovalCard extends Vue {
 
   show = false;
 
-  pros: string[] = [];
+  pros: { key: string; pretty: string }[] = [];
 
-  cons: string[] = [];
+  cons: { key: string; pretty: string }[] = [];
 
   /**
    * Returns the "prettier" version of an attribute.
@@ -118,17 +139,16 @@ export default class ApprovalCard extends Vue {
    * @param status: whether you want the "positive" or "negative" version of the text
    * @returns a "prettier" representation of attribute `attr`
    */
-  prettyAttr(attr: string, status: boolean) {
-    for (const key in AttributesDict) {
+  static prettyAttr(attr: string, status: boolean): string {
+    let pretty = "";
+    Object.keys(AttributesDict).forEach((key) => {
       if (key === attr) {
-        if (status) {
-          return AttributesDict[key].prettyPos;
-        } else {
-          return AttributesDict[key].prettyNeg;
-        }
+        pretty = status
+          ? AttributesDict[key].prettyPos
+          : AttributesDict[key].prettyNeg;
       }
-    }
-    return "Invalid attribute";
+    });
+    return pretty !== "" ? pretty : "Invalid attribute";
   }
 
   /**
@@ -137,16 +157,18 @@ export default class ApprovalCard extends Vue {
    * @param furn - a given Furniture object
    * @returns the rating of the furniture `furn`
    */
-  getRating(furn: Furniture) {
+  static getRating(furn: Furniture): number {
     const { attributes } = furn;
+    const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
     let rating = 0;
 
-    for (const attr in attributes) {
-      if (attributes.hasOwnProperty(attr)) {
-        const value = attributes[attr];
+    Object.keys(attributes).forEach((key) => {
+      if (has.call(attributes, key)) {
+        const value = attributes[key];
         if (value) rating += 1;
       }
-    }
+    });
+
     return rating;
   }
 
@@ -154,34 +176,22 @@ export default class ApprovalCard extends Vue {
    * Gets the pros of the given furniture and sets it to the local variable.
    * @param furn - a given Furniture object
    */
-  genPros(furn: Furniture) {
+  genProsCons(furn: Furniture): void {
     const { attributes } = furn;
-    const pros = [];
+    const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
+    const pros: { key: string; pretty: string }[] = [];
+    const cons: { key: string; pretty: string }[] = [];
 
-    for (const attr in attributes) {
-      if (attributes.hasOwnProperty(attr)) {
-        const value = attributes[attr];
-        // TODO: remove/clean as we no longer have attributes that are numbers
-        if (typeof value === "number" && value < 3) pros.push(attr);
-        else if (typeof value === "boolean" && value) pros.push(attr);
+    Object.keys(attributes).forEach((key) => {
+      if (has.call(attributes, key)) {
+        const value = attributes[key];
+        if (value)
+          pros.push({ key, pretty: ApprovalCard.prettyAttr(key, true) });
+        else cons.push({ key, pretty: ApprovalCard.prettyAttr(key, false) });
       }
-    }
+    });
 
     this.pros = pros;
-  }
-
-  /**
-   * Gets the cons of the given furniture and sets it to the local variable.
-   * @param furn - a given Furniture object
-   */
-  genCons(furn: Furniture) {
-    const { attributes } = furn;
-    const cons = [];
-
-    for (const attr in attributes) {
-      if (!this.pros.includes(attr)) cons.push(attr);
-    }
-
     this.cons = cons;
   }
 
@@ -189,14 +199,13 @@ export default class ApprovalCard extends Vue {
    * Updates the furniture's `Staff Notes` field and emits `notes`.
    * @param notes - the notes that have been written
    */
-  updateNotes(notes: string) {
+  updateNotes(notes: string): void {
     this.request.staffNotes = notes;
     this.$emit("notes", this.request);
   }
 
-  mounted() {
-    this.genPros(this.request);
-    this.genCons(this.request);
+  mounted(): void {
+    this.genProsCons(this.request);
   }
 }
 </script>

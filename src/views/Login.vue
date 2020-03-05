@@ -1,12 +1,18 @@
 <template>
-  <v-container fluid>
-    <v-layout justify-center align-center fill-height>
-      <v-flex text-xs-center text-md-left lg2 md3 xs12>
-        <h2 class="head">Neighbor to Neighbor</h2>
-        <p class="subhead">Inventory</p>
-        <v-btn @click="checkUser()" color="white">Sign in with Google</v-btn>
-      </v-flex>
-    </v-layout>
+  <v-container class="fill-height no-overflow pt-0" fluid>
+    <v-row justify="center" align="center">
+      <v-col class="text-center text-md-left" lg="2" md="3" cols="12">
+        <h2 class="head">
+          Neighbor to Neighbor
+        </h2>
+        <p class="subhead">
+          Inventory
+        </p>
+        <v-btn color="white" @click="checkUser()">
+          Sign in with Google
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -18,7 +24,7 @@ import "firebase/auth";
 
 @Component({})
 export default class Login extends Vue {
-  checkUser() {
+  checkUser(): void {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -29,7 +35,7 @@ export default class Login extends Vue {
     });
   }
 
-  static signIn() {
+  static signIn(): void {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
     firebase
@@ -41,4 +47,8 @@ export default class Login extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.no-overflow {
+  overflow: hidden;
+}
+</style>

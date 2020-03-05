@@ -1,26 +1,27 @@
 <template>
-  <v-layout px-3 mb-3>
+  <v-row>
     <v-btn
       :disabled="selected"
       :icon="selected"
-      :outline="selected"
-      @click="$emit('add')"
+      :outlined="selected"
       color="primary"
-      round
+      rounded
+      @click="$emit('add')"
     >
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
     </v-btn>
     <v-btn
       v-for="action in actions"
-      :disabled="!selected"
+      class="ml-3"
       :key="action.icon"
-      @click="$emit(action.emit)"
+      :disabled="!selected"
       icon
+      @click="$emit(action.emit)"
     >
       <v-icon>{{ action.icon }}</v-icon>
     </v-btn>
-  </v-layout>
+  </v-row>
 </template>
 
 <script lang="ts">

@@ -1,25 +1,8 @@
-// for future reference: https://www.typescriptlang.org/docs/handbook/enums.html
-
-/**
- * Represents the class of a furniture item
- */
-export enum FClass {
-  Bed = "Bed",
-  Chair = "Chair",
-  Couch = "Couch",
-  Table = "Table",
-  Dresser = "Dresser",
-}
-
-/**
- * Represents the material of a furniture item
- */
-export enum Material {
-  Wood = "Wood",
-  Metal = "Metal",
-  Glass = "Glass",
-  Plastic = "Plastic",
-}
+import Attributes from "./furniture/Attributes";
+import DonorInfo from "./furniture/Donor";
+import Image from "./furniture/Image";
+import Physical from "./furniture/Physical";
+import Timing from "./furniture/Timing";
 
 /**
  * Represents the status/location of a furniture item
@@ -30,81 +13,6 @@ export enum Status {
   Shed,
   Delivered,
   Unknown,
-}
-
-/**
- * Information about the donor associated with a furniture item
- */
-class Donor {
-  public name: string;
-
-  public phone: string;
-
-  public email: string;
-
-  public address: string;
-
-  public zone: string; // of Tompkins County
-
-  public constructor(
-    name: string,
-    phone: string,
-    email: string,
-    address: string,
-    zone: string,
-  ) {
-    this.name = name;
-    this.phone = phone;
-    this.email = email;
-    this.address = address;
-    this.zone = zone;
-  }
-}
-
-/**
- * Physical attributes of a furniture item
- */
-class Physical {
-  public class: FClass;
-
-  public size: number;
-
-  // 1-5 (small-big)
-  public material: Material;
-
-  public altMaterial?: Material;
-
-  public set: boolean;
-
-  public hasFrame: boolean;
-
-  public hasBoxSpring: boolean;
-
-  public numChairs: number;
-
-  public heavy: boolean;
-
-  public constructor(
-    size: number,
-    fclass: FClass,
-    material: Material,
-    set: boolean,
-    heavy: boolean,
-    hasFrame: boolean,
-    hasBoxSpring: boolean,
-    numChairs: number,
-    altMaterial?: Material,
-  ) {
-    this.class = fclass;
-    this.size = size;
-    this.material = material;
-    this.set = set;
-    this.heavy = heavy;
-    this.hasFrame = hasFrame;
-    this.hasBoxSpring = hasBoxSpring;
-    this.numChairs = numChairs;
-    if (altMaterial) this.altMaterial = altMaterial;
-  }
 }
 
 /**
@@ -135,82 +43,6 @@ export const Size = {
   ],
   Dresser: ["1 drawer", "2 drawers", "3 drawers", "4 drawers", "5+ drawers"],
 };
-
-/**
- * Dates and timing information associated with a furniture item
- */
-class Timing {
-  public urgent: boolean;
-
-  public pickupBy: Date;
-
-  public dateOffered: Date;
-
-  public confirmedPickupDate?: Date;
-
-  public dateAdded?: Date;
-
-  public dateCollected?: Date;
-
-  public dateDelivered?: Date;
-
-  public constructor(
-    urgent: boolean,
-    pickupBy: Date,
-    dateOffered: Date,
-    confirmedPickupDate?: Date,
-    dateAdded?: Date,
-    dateCollected?: Date,
-    dateDelivered?: Date,
-  ) {
-    this.urgent = urgent;
-    this.pickupBy = pickupBy;
-    this.dateOffered = dateOffered;
-    if (confirmedPickupDate) this.confirmedPickupDate = confirmedPickupDate;
-    if (dateAdded) this.dateAdded = dateAdded;
-    if (dateCollected) this.dateCollected = dateCollected;
-    if (dateDelivered) this.dateDelivered = dateDelivered;
-  }
-}
-
-/**
- * Attributes used to generate ratings for a furniture item
- */
-class Attributes {
-  [key: string]: boolean;
-
-  public partsIntact: boolean;
-
-  public finishIntact: boolean;
-
-  public smokeFree: boolean;
-
-  public petFree: boolean;
-
-  public bedbugFree: boolean;
-
-  public mildewFree: boolean;
-
-  public donateToFriend: boolean;
-
-  public constructor(
-    partsIntact: boolean,
-    finishIntact: boolean,
-    smokeFree: boolean,
-    petFree: boolean,
-    bedbugFree: boolean,
-    mildewFree: boolean,
-    donateToFriend: boolean,
-  ) {
-    this.partsIntact = partsIntact;
-    this.finishIntact = finishIntact;
-    this.smokeFree = smokeFree;
-    this.petFree = petFree;
-    this.bedbugFree = bedbugFree;
-    this.mildewFree = mildewFree;
-    this.donateToFriend = donateToFriend;
-  }
-}
 
 /**
  * Dictionary that maps attribute names to their "pretty" string representation
@@ -256,26 +88,12 @@ export const AttributesDict: {
 };
 
 /**
- * Images associated with a furniture item
- */
-class Image {
-  public url: string;
-
-  public caption?: string;
-
-  public constructor(url: string, caption?: string) {
-    this.url = url;
-    if (caption) this.caption = caption;
-  }
-}
-
-/**
  * Represents a furniture donation record
  */
 export class Furniture {
   public id: string;
 
-  public donor: Donor;
+  public donor: DonorInfo;
 
   public physical: Physical;
 
@@ -293,7 +111,7 @@ export class Furniture {
 
   public constructor(
     id: string,
-    donor: Donor,
+    donor: DonorInfo,
     physical: Physical,
     timing: Timing,
     attributes: Attributes,

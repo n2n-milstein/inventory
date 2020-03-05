@@ -1,4 +1,5 @@
-import { Furniture, FClass, Material, Status } from "./Furniture";
+import { Furniture, Status } from "./Furniture";
+import { FClass, Material } from "./furniture/Physical";
 
 export const Approvals: Furniture[] = [
   {

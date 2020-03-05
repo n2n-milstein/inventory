@@ -1,18 +1,24 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap justify-start align-start>
-      <v-flex pb-3 xs12><view-title title="Rejections"/></v-flex>
-      <p v-if="rejected.length === 0">No rejections.</p>
-      <v-flex lg8 md9 xs12>
+    <v-row justify="start" align="start">
+      <v-col class="pb-3" cols="12">
+        <view-title title="Rejections" />
+      </v-col>
+      <v-col cols="12" v-if="rejected.length === 0">
+        <p>
+          No rejections.
+        </p>
+      </v-col>
+      <v-col lg="8" md="9" cols="12">
         <approval-card
           v-for="request in rejected"
           :key="request.id"
           :request="request"
           :is-pending="false"
           @approve="pushPending"
-        ></approval-card>
-      </v-flex>
-    </v-layout>
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -32,7 +38,7 @@ import "firebase/firestore";
   },
 })
 export default class Approval extends Vue {
-  show: boolean = false;
+  show = false;
 
   rejected: Furniture[] = [];
 

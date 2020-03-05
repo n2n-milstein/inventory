@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   env: { node: true },
+  plugins: ["prettier", "vuetify"],
   rules: {
     // TODO: eventually switch this to "error" for deployment
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
@@ -17,16 +18,19 @@ module.exports = {
         ExportDeclaration: { multiline: true, minProperties: 3 },
       },
     ],
+    "vue/attributes-order": "off",
+    "vuetify/no-deprecated-classes": "error",
+    "vuetify/grid-unknown-attributes": "error",
+    "vuetify/no-legacy-grid": "error",
   },
   parser: "vue-eslint-parser",
   parserOptions: { parser: "@typescript-eslint/parser" },
   extends: [
-    "plugin:vue/base",
-    "plugin:vue/recommended",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
     "@vue/typescript",
     "@vue/airbnb",
+    "plugin:vue/recommended",
     "@vue/prettier",
   ],
-  plugins: ["eslint-plugin-prettier"],
 };

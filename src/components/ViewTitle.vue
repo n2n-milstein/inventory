@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="title">{{ title }}</h2>
+    <h2 class="title">
+      {{ title }}
+    </h2>
   </div>
 </template>
 
