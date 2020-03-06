@@ -44,17 +44,25 @@
               Attributes
             </h3>
             <v-row>
-              <v-col cols="4" class="f-pros">
-                <div v-for="attr in pros" :key="attr.key">
-                  <v-icon class="f-attr-icon">
+              <v-col cols="4">
+                <div
+                  class="f-attr f-pro d-flex"
+                  v-for="attr in pros"
+                  :key="attr.key"
+                >
+                  <v-icon class="f-attr-icon" left>
                     thumb_up
                   </v-icon>
                   {{ attr.pretty }}
                 </div>
               </v-col>
-              <v-col cols="4" class="f-cons">
-                <div v-for="attr in cons" :key="attr.key">
-                  <v-icon class="f-attr-icon">
+              <v-col cols="4">
+                <div
+                  class="f-attr f-con d-flex"
+                  v-for="attr in cons"
+                  :key="attr.key"
+                >
+                  <v-icon class="f-attr-icon" left>
                     thumb_down
                   </v-icon>
                   {{ attr.pretty }}
@@ -234,12 +242,24 @@ export default class ApprovalCard extends Vue {
   color: inherit;
 }
 
-.f-pros {
-  color: green;
-}
+.f-attr {
+  padding: 0.3rem 0.5rem;
 
-.f-cons {
-  color: red;
+  &.f-pro {
+    color: green;
+  }
+
+  &.f-con {
+    color: red;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
 }
 
 .f-image {
