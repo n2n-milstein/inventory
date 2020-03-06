@@ -44,18 +44,26 @@
               Attributes
             </h3>
             <v-row>
-              <v-col cols="4" class="f-pros">
-                <div v-for="attr in pros" :key="attr.key">
-                  <v-icon class="f-attr-icon">
-                    check
+              <v-col cols="4">
+                <div
+                  class="f-attr f-pro d-flex"
+                  v-for="attr in pros"
+                  :key="attr.key"
+                >
+                  <v-icon class="f-attr-icon" left>
+                    thumb_up
                   </v-icon>
                   {{ attr.pretty }}
                 </div>
               </v-col>
-              <v-col cols="4" class="f-cons">
-                <div v-for="attr in cons" :key="attr.key">
-                  <v-icon class="f-attr-icon">
-                    clear
+              <v-col cols="4">
+                <div
+                  class="f-attr f-con d-flex"
+                  v-for="attr in cons"
+                  :key="attr.key"
+                >
+                  <v-icon class="f-attr-icon" left>
+                    thumb_down
                   </v-icon>
                   {{ attr.pretty }}
                 </div>
@@ -136,12 +144,17 @@ export default class ApprovalCard extends Vue {
   /**
    * Returns the "prettier" version of an attribute.
    * @param attr - a Furniture Attribute name (probably in camelCase)
+   * @param status: whether you want the "positive" or "negative" version of the text
    * @returns a "prettier" representation of attribute `attr`
    */
-  static prettyAttr(attr: string): string {
+  static prettyAttr(attr: string, status: boolean): string {
     let pretty = "";
     Object.keys(AttributesDict).forEach((key) => {
-      if (key === attr) pretty = AttributesDict[key].pretty;
+      if (key === attr) {
+        pretty = status
+          ? AttributesDict[key].prettyPos
+          : AttributesDict[key].prettyNeg;
+      }
     });
     return pretty !== "" ? pretty : "Invalid attribute";
   }
@@ -180,8 +193,9 @@ export default class ApprovalCard extends Vue {
     Object.keys(attributes).forEach((key) => {
       if (has.call(attributes, key)) {
         const value = attributes[key];
-        if (value) pros.push({ key, pretty: ApprovalCard.prettyAttr(key) });
-        else cons.push({ key, pretty: ApprovalCard.prettyAttr(key) });
+        if (value)
+          pros.push({ key, pretty: ApprovalCard.prettyAttr(key, true) });
+        else cons.push({ key, pretty: ApprovalCard.prettyAttr(key, false) });
       }
     });
 
@@ -228,12 +242,24 @@ export default class ApprovalCard extends Vue {
   color: inherit;
 }
 
-.f-pros {
-  color: green;
-}
+.f-attr {
+  padding: 0.3rem 0.5rem;
 
-.f-cons {
-  color: red;
+  &.f-pro {
+    color: green;
+  }
+
+  &.f-con {
+    color: red;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
 }
 
 .f-image {

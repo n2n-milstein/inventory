@@ -48,19 +48,41 @@ export const Size = {
  * Dictionary that maps attribute names to their "pretty" string representation
  */
 export const AttributesDict: {
-  [key: string]: { pretty: string; question: string };
+  [key: string]: { prettyPos: string; prettyNeg: string; question: string };
 } = {
   partsIntact: {
-    pretty: "Parts Intact",
+    prettyPos: "Parts Intact",
+    prettyNeg: "Not All Parts Intact",
     question: "Are all the parts intact?",
   },
-  finishIntact: { pretty: "Finish Intact", question: "Is the finish intact?" },
-  smokeFree: { pretty: "Smoke Free", question: "Does anyone smoke at home?" },
-  petFree: { pretty: "Pet Free", question: "Are there pets in the house?" },
-  bedbugFree: { pretty: "Bedbug Free", question: "Does it have bedbugs?" },
-  mildewFree: { pretty: "Mildew Free", question: "Does it have mildew?" },
+  finishIntact: {
+    prettyPos: "Finish Intact",
+    prettyNeg: "Finish Not Intact",
+    question: "Is the finish intact?",
+  },
+  smokeFree: {
+    prettyPos: "Smoke Free",
+    prettyNeg: "Not Smoke Free",
+    question: "Does anyone smoke at home?",
+  },
+  petFree: {
+    prettyPos: "Pet Free",
+    prettyNeg: "Not Pet Free",
+    question: "Are there pets in the house?",
+  },
+  bedbugFree: {
+    prettyPos: "Bedbug Free",
+    prettyNeg: "Not Bedbug Free",
+    question: "Does it have bedbugs?",
+  },
+  mildewFree: {
+    prettyPos: "Mildew Free",
+    prettyNeg: "Not Mildew Free",
+    question: "Does it have mildew?",
+  },
   donateToFriend: {
-    pretty: "Donate to Friend",
+    prettyPos: "Would Donate to a Friend",
+    prettyNeg: "Would Not Donate to a Friend",
     question: "Would you donate this to a friend?",
   },
 };
