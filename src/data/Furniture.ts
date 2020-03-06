@@ -81,8 +81,8 @@ export const AttributesDict: {
     question: "Does it have mildew?",
   },
   donateToFriend: {
-    prettyPos: "Donate to Friend",
-    prettyNeg: "Donate to Anyone",
+    prettyPos: "Would Donate to a Friend",
+    prettyNeg: "Would Not Donate to a Friend",
     question: "Would you donate this to a friend?",
   },
 };
