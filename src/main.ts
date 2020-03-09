@@ -1,13 +1,19 @@
 import Vue from "vue";
+import Vuex from "vuex";
+// firebase
 import * as firebase from "firebase/app";
-import vuetify from "./plugins/vuetify";
-import App from "./App.vue";
-import router from "./router";
-import "vuetify/dist/vuetify.min.css";
 import "firebase/auth";
 import "firebase/firestore";
+// router
+import router from "./router";
+// vuetify
+import vuetify from "./plugins/vuetify";
+import "vuetify/dist/vuetify.min.css";
+import App from "./App.vue";
 
 Vue.config.productionTip = false;
+
+Vue.use(Vuex);
 
 const firebaseConfig = {
   apiKey: "AIzaSyAG4FPlVFT20lLKjErXY2LH0AICB070gsI",
