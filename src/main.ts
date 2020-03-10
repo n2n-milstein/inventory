@@ -1,5 +1,4 @@
 import Vue from "vue";
-import Vuex from "vuex";
 // firebase
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -10,10 +9,10 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import "vuetify/dist/vuetify.min.css";
 import App from "./App.vue";
+// vuex
+import store from "./store";
 
 Vue.config.productionTip = false;
-
-Vue.use(Vuex);
 
 const firebaseConfig = {
   apiKey: "AIzaSyAG4FPlVFT20lLKjErXY2LH0AICB070gsI",
@@ -29,6 +28,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 new Vue({
+  store,
   router,
   vuetify,
   render: (h) => h(App),
