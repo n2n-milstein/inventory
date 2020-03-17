@@ -1,20 +1,31 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { Furniture } from "@/data/Furniture";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  state: { count: 0 },
-  getters: { getCount: (state) => state.count },
+  state: { inventory: [] as Furniture[] },
+  getters: { getInventory: (state): Furniture[] => state.inventory },
   mutations: {
-    increment(state) {
-      state.count += 1;
+    clearInventory(state): void {
+      state.inventory = [];
     },
-    setCount(state, n) {
-      state.count = n;
+    setInventory(state, payload): void {
+      state.inventory = payload.list as Furniture[];
+    },
+    pushInventory(state, payload): void {
+      state.inventory.push(payload.item as Furniture);
     },
   },
-  actions: {},
+  actions: {
+    setInventory({ commit }, payload): void {
+      commit("setInventory", payload);
+    },
+    pushInventory({ commit }, payload): void {
+      commit("pushInventory", payload);
+    },
+  },
 });
 
 export default store;
