@@ -1,4 +1,5 @@
 {
+  "eslint.enable": true,
   "vetur.validation.template": false,
   "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "editor.codeActionsOnSave": {
