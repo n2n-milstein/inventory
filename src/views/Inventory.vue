@@ -16,7 +16,11 @@
         />
       </v-col>
     </v-row>
-    <inventory-actions class="px-4 mb-4" :selected="selected.length > 0" />
+    <inventory-actions
+      class="px-4 mb-4"
+      :selected="selected.length > 0"
+      @download="getSpreadsheet"
+    />
     <v-data-table
       v-model="selected"
       :search="search"
@@ -86,6 +90,23 @@ export default class Inventory extends Vue {
         this.inventory.push(doc.data() as Furniture);
       });
     });
+  }
+
+  getSpreadsheet(): void {
+    const getInventoryXLSX = firebase
+      .functions()
+      .httpsCallable("getInventoryXLSX");
+    getInventoryXLSX(this.selected)
+      .then((res) => {
+        const storage = firebase.storage();
+        const gsref = storage.refFromURL(`gs:/${res.data}`);
+        gsref.getDownloadURL().then((url) => {
+          window.open(url);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   mounted(): void {
