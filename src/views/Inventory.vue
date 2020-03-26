@@ -53,6 +53,8 @@ import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/functions";
+// import cors = require('cors')({ origin: true });
 
 @Component({
   components: {
@@ -96,7 +98,7 @@ export default class Inventory extends Vue {
     const getInventoryXLSX = firebase
       .functions()
       .httpsCallable("getInventoryXLSX");
-    getInventoryXLSX(this.selected)
+    getInventoryXLSX({ id: [] })
       .then((res) => {
         const storage = firebase.storage();
         const gsref = storage.refFromURL(`gs:/${res.data}`);
@@ -106,6 +108,7 @@ export default class Inventory extends Vue {
       })
       .catch((err) => {
         console.log(err);
+        console.log(this.selected.length); // workaround not using this
       });
   }
 
