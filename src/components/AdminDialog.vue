@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on"> Add to Firestore - {{ collection }} </v-btn>
+      <v-btn class="my-1 mr-3" v-on="on">
+        Add to Firestore - {{ collection }}
+      </v-btn>
     </template>
 
     <v-card>
