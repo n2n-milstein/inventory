@@ -1,6 +1,8 @@
 import Vue from "vue";
+import { vuexfireMutations, firestoreAction } from "vuexfire";
 import Vuex from "vuex";
 import { Furniture } from "@/data/Furniture";
+import db from "@/network";
 
 Vue.use(Vuex);
 
@@ -28,6 +30,7 @@ const store = new Vuex.Store({
     updateItem(state, { index, newItem }): void {
       state.inventory[index] = newItem;
     },
+    ...vuexfireMutations,
   },
   actions: {
     setInventory({ commit }, { list }): void {
@@ -40,6 +43,12 @@ const store = new Vuex.Store({
       const index = getters.getItemIndex(newItem.id);
       commit("updateItem", { index, newItem });
     },
+    bindInventory: firestoreAction(({ bindFirestoreRef }) => {
+      return bindFirestoreRef("inventory", db.collection("furniture"));
+    }),
+    unbindInventory: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef("inventory");
+    }),
   },
 });
 
