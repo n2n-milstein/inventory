@@ -9,6 +9,7 @@ module.exports = {
     "prettier/prettier": "error",
     indent: "off",
     "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-unused-vars": "error",
     "object-curly-newline": [
       "error",
       {
