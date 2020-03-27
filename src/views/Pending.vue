@@ -85,10 +85,7 @@ export default class Approval extends Vue {
 
     collection.doc(push.id).set(push);
 
-    this.db
-      .collection("pending")
-      .doc(furn.id)
-      .delete();
+    this.db.collection("pending").doc(furn.id).delete();
   }
 
   /**

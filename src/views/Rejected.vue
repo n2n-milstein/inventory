@@ -65,10 +65,7 @@ export default class Approval extends Vue {
     const collection = this.db.collection("pending");
     collection.doc(furn.id).set(furn);
 
-    this.db
-      .collection("rejected")
-      .doc(furn.id)
-      .delete();
+    this.db.collection("rejected").doc(furn.id).delete();
   }
 
   /**
