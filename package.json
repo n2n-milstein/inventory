@@ -18,7 +18,8 @@
     "vue-property-decorator": "^8.4.0",
     "vue-router": "^3.1.5",
     "vuetify": "^2.2.14",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.2",
+    "vuexfire": "^3.2.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.20.0",
