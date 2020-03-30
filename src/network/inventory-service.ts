@@ -1,6 +1,6 @@
 import { Furniture } from "@/data/Furniture";
 import db from "./db";
-import Collections from "./collections";
+import collections from "./collections";
 
 /**
  * Adds an item to Firestore, setting its `id` and `dateAdded`.
@@ -8,7 +8,7 @@ import Collections from "./collections";
  */
 export function addItem(item: Furniture): Promise<void> {
   const data = { ...item };
-  const ref = db.collection(Collections.INVENTORY).doc();
+  const ref = db.collection(collections.INVENTORY).doc();
   data.id = ref.id;
   data.timing.dateAdded = new Date();
   return ref.set(data);
@@ -24,7 +24,7 @@ export function updateItem(
   id: string,
   updates: Partial<Furniture>,
 ): Promise<void> {
-  return db.collection(Collections.INVENTORY).doc(id).update(updates);
+  return db.collection(collections.INVENTORY).doc(id).update(updates);
 }
 
 /**
@@ -32,5 +32,5 @@ export function updateItem(
  * @param id - id of the item to delete
  */
 export function deleteItem(id: string): Promise<void> {
-  return db.collection(Collections.INVENTORY).doc(id).delete();
+  return db.collection(collections.INVENTORY).doc(id).delete();
 }
