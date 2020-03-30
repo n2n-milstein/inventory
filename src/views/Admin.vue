@@ -47,11 +47,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
 import AdminDialog from "@/components/AdminDialog.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Furniture } from "@/data/Furniture";
+import { updateItem } from "@/network/inventoryService";
 
 @Component({ components: { AdminDialog, EditCard } })
 export default class Admin extends Vue {
@@ -61,39 +60,47 @@ export default class Admin extends Vue {
 
   showStoreCmp = true;
 
+  /**
+   * Computed property for getting inventory from store.
+   */
   get inventory(): Furniture[] {
     return this.$store.getters.getInventory;
   }
 
+  /**
+   * Computed property for an item in the inventory.
+   */
   get sample(): Furniture {
     return this.inventory[2];
   }
 
+  /**
+   * Computed property that gets the same item as `sample` but using a Vuex
+   * store getter.
+   */
   get compare(): Furniture {
     return this.$store.getters.getItem(this.sample.id);
   }
 
+  /**
+   * Called when component is mounted (lifecycle hook); binds inventory to
+   * Firestore.
+   */
   mounted(): void {
-    this.fetchInventory();
+    this.$store.dispatch({ type: "bindInventory" });
   }
 
+  /**
+   * Updates sample using the inventory service.
+   */
   updateSample(): void {
-    const modify: Furniture = { ...this.sample };
-    modify.attributes.bedbugFree = !modify.attributes.bedbugFree;
-    console.log("dispatching");
-    this.$store.dispatch({ type: "updateItem", newItem: modify });
-  }
-
-  fetchInventory(): void {
-    const furniture = firebase.firestore().collection("furniture");
-    furniture.onSnapshot((snapshot) => {
-      this.$store.commit("clearInventory");
-      snapshot.forEach((doc) => {
-        this.$store.dispatch({
-          type: "pushInventory",
-          item: doc.data() as Furniture,
-        });
-      });
+    updateItem(this.sample.id, {
+      attributes: {
+        ...this.sample.attributes,
+        bedbugFree: !this.sample.attributes.bedbugFree,
+      },
+    }).then(() => {
+      console.log(`Successfully updated ${this.sample.id}`);
     });
   }
 }
