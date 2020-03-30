@@ -42,13 +42,12 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
 import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
 
 @Component({
   components: {
@@ -56,11 +55,13 @@ import "firebase/firestore";
     InventoryActions,
     EditCard,
   },
+  computed: mapGetters({ inventory: "getInventory" }),
+  methods: mapActions(["bindInventory"]),
 })
 export default class Inventory extends Vue {
-  status = Status;
+  bindInventory!: () => Promise<void>;
 
-  db = firebase.firestore();
+  status = Status;
 
   selected = [];
 
@@ -78,18 +79,11 @@ export default class Inventory extends Vue {
   search = "";
 
   /**
-   * Computed property getter that returns the inventory in store.
-   */
-  get inventory(): Furniture[] {
-    return this.$store.getters.getInventory;
-  }
-
-  /**
    * Called when component is mounted (lifecycle hook); binds inventory in
    * store to Firebase.
    */
   mounted(): void {
-    this.$store.dispatch({ type: "bindInventory" });
+    this.bindInventory();
   }
 
   /**

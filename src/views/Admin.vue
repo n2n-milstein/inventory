@@ -46,26 +46,30 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
 import Component from "vue-class-component";
 import AdminDialog from "@/components/AdminDialog.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Furniture } from "@/data/Furniture";
-import { updateItem } from "@/network/inventoryService";
+import { updateItem } from "@/network/inventory-service";
 
-@Component({ components: { AdminDialog, EditCard } })
+@Component({
+  components: { AdminDialog, EditCard },
+  computed: mapGetters({ inventory: "getInventory", getItem: "getItem" }),
+  methods: mapActions(["bindInventory"]),
+})
 export default class Admin extends Vue {
+  inventory!: Furniture[];
+
+  getItem!: (id: string) => Furniture;
+
+  bindInventory!: () => Promise<void>;
+
   dialog = false;
 
   showEditCard = false;
 
   showStoreCmp = true;
-
-  /**
-   * Computed property for getting inventory from store.
-   */
-  get inventory(): Furniture[] {
-    return this.$store.getters.getInventory;
-  }
 
   /**
    * Computed property for an item in the inventory.
@@ -79,7 +83,7 @@ export default class Admin extends Vue {
    * store getter.
    */
   get compare(): Furniture {
-    return this.$store.getters.getItem(this.sample.id);
+    return this.getItem(this.sample.id);
   }
 
   /**
@@ -87,7 +91,7 @@ export default class Admin extends Vue {
    * Firestore.
    */
   mounted(): void {
-    this.$store.dispatch({ type: "bindInventory" });
+    this.bindInventory();
   }
 
   /**
