@@ -30,14 +30,14 @@ async function getData(id: string[]): Promise<string> {
 
   const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
   const storage = admin.storage();
-  const bucket = storage.bucket("inventory");
+  const bucket = storage.bucket("n2n-inventory");
   const today = new Date();
   const date = `${today.getFullYear()}-${today.getMonth() +
     1}-${today.getDate()}`;
   const fileName = `${date}.xlsx`;
   const file = bucket.file(fileName);
   await file.save(buffer);
-  return `/inventory/${fileName}`;
+  return `/n2n-inventory/${fileName}`;
 }
 
 exports.getInventoryXLSX = functions.https.onCall((data: { id: string[] }) => {
