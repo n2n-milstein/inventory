@@ -77,31 +77,25 @@ export default class Inventory extends Vue {
 
   search = "";
 
+  /**
+   * Computed property getter that returns the inventory in store.
+   */
   get inventory(): Furniture[] {
     return this.$store.getters.getInventory;
   }
 
-  set inventory(value: Furniture[]) {
-    this.$store.dispatch({ type: "setInventory", list: value });
-  }
-
-  fetchInventory(): void {
-    const furniture = this.db.collection("furniture");
-    furniture.onSnapshot((snapshot) => {
-      this.$store.commit("clearInventory");
-      snapshot.forEach((doc) => {
-        this.$store.dispatch({
-          type: "pushInventory",
-          item: doc.data() as Furniture,
-        });
-      });
-    });
-  }
-
+  /**
+   * Called when component is mounted (lifecycle hook); binds inventory in
+   * store to Firebase.
+   */
   mounted(): void {
-    this.fetchInventory();
+    this.$store.dispatch({ type: "bindInventory" });
   }
 
+  /**
+   * TODO: pass in the item
+   * Activates dialog that displays the item information
+   */
   onItemClick(item: Furniture): void {
     console.log(item);
     this.dialog = true;
