@@ -5,27 +5,38 @@ import functions = require("firebase-functions");
 
 admin.initializeApp();
 
+function flattenObject(ob: any, prefix: any) {
+  const toReturn: { [key: string]: any[] } = {};
+  const newPrefix = prefix ? `${prefix}.` : "";
+
+  Object.keys(ob).forEach(function(i) {
+    if (Object.prototype.hasOwnProperty.call(ob, i) === true) {
+      if (typeof ob[i] === "object" && ob[i] !== null) {
+        // Recursion on deeper objects
+        Object.assign(toReturn, flattenObject(ob[i], newPrefix + i));
+      } else {
+        toReturn[prefix + i] = ob[i];
+      }
+    }
+  });
+  return toReturn;
+}
+
 async function getData(id: string[]): Promise<string> {
-  // const fs = require("fs");
   const inventory: any = [];
   const furniture = admin.firestore().collection("furniture");
   const wb = XLSX.utils.book_new();
 
-  furniture
-    .get()
-    .then((snapshot) => {
-      snapshot.forEach((doc) => {
-        const item = doc.data();
-        // const itemInfo = [];
-        inventory.push(item);
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log(id.length);
-    });
+  const furnitureData = await furniture.get();
+  furnitureData.forEach((doc) => {
+    const item = doc.data();
+    const newJSON = flattenObject(item, "");
+    inventory.push(newJSON);
+  });
+  console.log(id.length);
   wb.SheetNames.push("Inventory");
-  const inventoryWS = XLSX.utils.aoa_to_sheet(inventory);
+  console.log(inventory);
+  const inventoryWS = XLSX.utils.json_to_sheet(inventory);
   wb.Sheets.Inventory = inventoryWS;
 
   const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
