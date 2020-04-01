@@ -81,22 +81,23 @@ export default class Inventory extends Vue {
 
   clearCurrent!: () => void;
 
-  status = Status;
-
+  // TODO: replace with store
   selected = [];
 
   dialog = false;
 
-  pagination = { itemsPerPage: -1 };
+  search = "";
 
-  headers = [
+  readonly status = Status;
+
+  readonly pagination = { itemsPerPage: -1 };
+
+  readonly headers = [
     { text: "Class", value: "physical.class" },
     { text: "Date Added", value: "timing.dateAdded" },
     { text: "Address", value: "donor.address" },
     { text: "Status", value: "status" },
   ];
-
-  search = "";
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
@@ -106,10 +107,12 @@ export default class Inventory extends Vue {
     this.bindInventory();
   }
 
+  /**
+   * Exits dialog and clears the current item
+   */
   exitDialog(): void {
     this.dialog = false;
     this.clearCurrent();
-    console.log(this.current);
   }
 
   /**
