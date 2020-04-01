@@ -1,7 +1,12 @@
 <template>
   <v-col cols="12" class="inventory">
-    <v-dialog v-model="dialog" width="750" scrollable>
-      <edit-card @cancel="dialog = false" />
+    <v-dialog
+      v-model="dialog"
+      width="750"
+      @click:outside="exitDialog()"
+      scrollable
+    >
+      <edit-card @cancel="exitDialog()" />
     </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
@@ -57,11 +62,24 @@ const namespace = "inventory";
     InventoryActions,
     EditCard,
   },
-  computed: mapGetters(namespace, { inventory: "getInventory" }),
-  methods: mapActions(namespace, ["bindInventory"]),
+  computed: mapGetters(namespace, {
+    inventory: "getInventory",
+    current: "getCurrent",
+  }),
+  methods: mapActions(namespace, [
+    "bindInventory",
+    "setCurrent",
+    "clearCurrent",
+  ]),
 })
 export default class Inventory extends Vue {
+  current!: Furniture;
+
   bindInventory!: () => Promise<void>;
+
+  setCurrent!: ({ item }: { item: Furniture }) => void;
+
+  clearCurrent!: () => void;
 
   status = Status;
 
@@ -88,12 +106,18 @@ export default class Inventory extends Vue {
     this.bindInventory();
   }
 
+  exitDialog(): void {
+    this.dialog = false;
+    this.clearCurrent();
+    console.log(this.current);
+  }
+
   /**
-   * TODO: pass in the item
    * Activates dialog that displays the item information
    */
   onItemClick(item: Furniture): void {
-    console.log(item);
+    this.setCurrent({ item });
+    console.log("current: ", this.current);
     this.dialog = true;
   }
 }
