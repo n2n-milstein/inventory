@@ -55,8 +55,11 @@ import { updateItem } from "@/network/inventory-service";
 
 @Component({
   components: { AdminDialog, EditCard },
-  computed: mapGetters({ inventory: "getInventory", getItem: "getItem" }),
-  methods: mapActions(["bindInventory"]),
+  computed: mapGetters("inventory", {
+    inventory: "getInventory",
+    getItem: "getItem",
+  }),
+  methods: mapActions("inventory", ["bindInventory"]),
 })
 export default class Admin extends Vue {
   inventory!: Furniture[];

@@ -49,14 +49,16 @@ import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
 
+const namespace = "inventory";
+
 @Component({
   components: {
     ViewTitle,
     InventoryActions,
     EditCard,
   },
-  computed: mapGetters({ inventory: "getInventory" }),
-  methods: mapActions(["bindInventory"]),
+  computed: mapGetters(namespace, { inventory: "getInventory" }),
+  methods: mapActions(namespace, ["bindInventory"]),
 })
 export default class Inventory extends Vue {
   bindInventory!: () => Promise<void>;
