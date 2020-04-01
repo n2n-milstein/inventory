@@ -7,7 +7,11 @@ import mutations from "./mutations";
 import { InventoryState } from "./types";
 import { RootState } from "../types";
 
-export const state: InventoryState = { inventory: [] as Furniture[] };
+export const state: InventoryState = {
+  inventory: [] as Furniture[],
+  selected: [] as Furniture[],
+  current: undefined,
+};
 
 const inventory: Module<InventoryState, RootState> = {
   namespaced: true,
