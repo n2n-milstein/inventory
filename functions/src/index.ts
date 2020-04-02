@@ -30,12 +30,12 @@ async function getData(id: string[]): Promise<string> {
   const furnitureData = await furniture.get();
   furnitureData.forEach((doc) => {
     const item = doc.data();
-    const newJSON = flattenObject(item, "");
-    inventory.push(newJSON);
+    if (id.includes(item.id)) {
+      const newJSON = flattenObject(item, "");
+      inventory.push(newJSON);
+    }
   });
-  console.log(id.length);
   wb.SheetNames.push("Inventory");
-  console.log(inventory);
   const inventoryWS = XLSX.utils.json_to_sheet(inventory);
   wb.Sheets.Inventory = inventoryWS;
 
