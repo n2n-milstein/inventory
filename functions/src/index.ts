@@ -10,7 +10,7 @@ function flattenObject(ob: any, prefix: any) {
   const newPrefix = prefix ? `${prefix}.` : "";
 
   Object.keys(ob).forEach(function(i) {
-    if (Object.prototype.hasOwnProperty.call(ob, i) === true) {
+    if (Object.prototype.hasOwnProperty.call(ob, i)) {
       if (typeof ob[i] === "object" && ob[i] !== null) {
         // Recursion on deeper objects
         Object.assign(toReturn, flattenObject(ob[i], newPrefix + i));

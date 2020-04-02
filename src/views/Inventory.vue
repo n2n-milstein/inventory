@@ -54,6 +54,7 @@ import { Status, Furniture } from "@/data/Furniture";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
+import "firebase/storage";
 // import cors = require('cors')({ origin: true });
 
 @Component({
@@ -98,6 +99,8 @@ export default class Inventory extends Vue {
     const getInventoryXLSX = firebase
       .functions()
       .httpsCallable("getInventoryXLSX");
+    // Uncomment if running `npm run shell` for backend functions:
+    // firebase.functions().useFunctionsEmulator("http://localhost:5000");
     getInventoryXLSX({ id: [] })
       .then((res) => {
         const storage = firebase.storage();
