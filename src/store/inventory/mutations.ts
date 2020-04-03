@@ -13,7 +13,22 @@ const mutations: MutationTree<InventoryState> = {
     state.current = item;
   },
   [types.CLEAR_CURRENT](state: InventoryState): void {
-    state.current = undefined;
+    state.current = null;
+  },
+  [types.UPDATE_CURRENT](
+    state: InventoryState,
+    { updates }: { updates: Partial<Furniture> },
+  ): void {
+    state.current = state.current ? { ...state.current, ...updates } : null;
+  },
+  [types.ADD_UPDATES](
+    state: InventoryState,
+    { updates }: { updates: Partial<Furniture> },
+  ): void {
+    state.currentUpdates = { ...state.currentUpdates, ...updates };
+  },
+  [types.CLEAR_UPDATES](state: InventoryState): void {
+    state.currentUpdates = {};
   },
   [types.SET_SELECTED](
     state: InventoryState,
