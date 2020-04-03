@@ -38,11 +38,7 @@ export default class Login extends Vue {
   static signIn(): void {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
-    firebase
-      .auth()
-      .getRedirectResult()
-      .then()
-      .catch();
+    firebase.auth().getRedirectResult().then().catch();
   }
 }
 </script>

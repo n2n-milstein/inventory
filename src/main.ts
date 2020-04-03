@@ -1,29 +1,18 @@
-import Vue from "vue";
-import * as firebase from "firebase/app";
-import vuetify from "./plugins/vuetify";
-import App from "./App.vue";
+import Vue, { VNode } from "vue";
+// router
 import router from "./router";
+// vuetify
+import vuetify from "./plugins/vuetify";
 import "vuetify/dist/vuetify.min.css";
-import "firebase/auth";
-import "firebase/firestore";
+import App from "./App.vue";
+// vuex
+import store from "./store";
 
 Vue.config.productionTip = false;
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAG4FPlVFT20lLKjErXY2LH0AICB070gsI",
-  authDomain: "neighbor-to-neighbor-da5ce.firebaseapp.com",
-  databaseURL: "https://neighbor-to-neighbor-da5ce.firebaseio.com",
-  projectId: "neighbor-to-neighbor-da5ce",
-  storageBucket: "neighbor-to-neighbor-da5ce.appspot.com",
-  messagingSenderId: "682085165",
-  appId: "1:682085165:web:8168de7754befe55",
-};
-// for reference: https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public#37484053
-
-firebase.initializeApp(firebaseConfig);
-
 new Vue({
+  store,
   router,
   vuetify,
-  render: (h) => h(App),
+  render: (h): VNode => h(App),
 }).$mount("#app");

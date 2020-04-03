@@ -9,6 +9,7 @@ module.exports = {
     "prettier/prettier": "error",
     indent: "off",
     "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-unused-vars": "error",
     "object-curly-newline": [
       "error",
       {
@@ -22,15 +23,17 @@ module.exports = {
     "vuetify/no-deprecated-classes": "error",
     "vuetify/grid-unknown-attributes": "error",
     "vuetify/no-legacy-grid": "error",
+    "quotes": ["error", "double"]
   },
   parser: "vue-eslint-parser",
   parserOptions: { parser: "@typescript-eslint/parser" },
   extends: [
-    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
-    "@vue/typescript",
-    "@vue/airbnb",
     "plugin:vue/recommended",
-    "@vue/prettier",
+    "@vue/airbnb",
+    "@vue/typescript",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+    "prettier/vue",
   ],
 };

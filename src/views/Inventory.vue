@@ -1,7 +1,12 @@
 <template>
   <v-col cols="12" class="inventory">
-    <v-dialog v-model="dialog" width="750" scrollable>
-      <edit-card @cancel="dialog = false" />
+    <v-dialog
+      v-model="dialog"
+      width="750"
+      @click:outside="exitDialog()"
+      scrollable
+    >
+      <edit-card @cancel="exitDialog()" />
     </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
@@ -42,13 +47,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
 import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
+
+const namespace = "inventory";
 
 @Component({
   components: {
@@ -56,44 +62,65 @@ import "firebase/firestore";
     InventoryActions,
     EditCard,
   },
+  computed: mapGetters(namespace, {
+    inventory: "getInventory",
+    current: "getCurrent",
+  }),
+  methods: mapActions(namespace, [
+    "bindInventory",
+    "setCurrent",
+    "clearCurrent",
+  ]),
 })
 export default class Inventory extends Vue {
-  status = Status;
+  current!: Furniture;
 
-  db = firebase.firestore();
+  bindInventory!: () => Promise<void>;
 
+  setCurrent!: ({ item }: { item: Furniture }) => void;
+
+  clearCurrent!: () => void;
+
+  // TODO: replace with store
   selected = [];
 
   dialog = false;
 
-  pagination = { itemsPerPage: -1 };
+  search = "";
 
-  headers = [
+  readonly status = Status;
+
+  readonly pagination = { itemsPerPage: -1 };
+
+  readonly headers = [
     { text: "Class", value: "physical.class" },
     { text: "Date Added", value: "timing.dateAdded" },
     { text: "Address", value: "donor.address" },
     { text: "Status", value: "status" },
   ];
 
-  search = "";
-
-  inventory: Furniture[] = [];
-
-  getInventory(): void {
-    const furniture = this.db.collection("furniture");
-    furniture.onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        this.inventory.push(doc.data() as Furniture);
-      });
-    });
-  }
-
+  /**
+   * Called when component is mounted (lifecycle hook); binds inventory in
+   * store to Firebase.
+   */
   mounted(): void {
-    this.getInventory();
+    this.bindInventory();
   }
 
+  /**
+   * Exits dialog and clears the current item
+   */
+  exitDialog(): void {
+    this.dialog = false;
+    this.clearCurrent();
+  }
+
+  /**
+   * Activates dialog that displays the item information
+   */
   onItemClick(item: Furniture): void {
-    console.log(item);
+    this.setCurrent({ item });
+    console.log("current: ", this.current);
     this.dialog = true;
   }
 }
