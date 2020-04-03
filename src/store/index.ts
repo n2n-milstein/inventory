@@ -10,6 +10,7 @@ const store: StoreOptions<RootState> = {
   state: { version: "0.1.1" },
   mutations: { ...vuexfireMutations },
   modules: { inventory },
+  strict: process.env.NODE_ENV !== "production",
 };
 
 export default new Vuex.Store<RootState>(store);
