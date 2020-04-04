@@ -11,7 +11,12 @@ const actions: ActionTree<InventoryState, RootState> = {
     commit(types.SET_CURRENT, { item });
   },
   clearCurrent({ commit }) {
+    commit(types.CLEAR_UPDATES);
     commit(types.CLEAR_CURRENT);
+  },
+  updateCurrent({ commit }, { updates }: { updates: Partial<Furniture> }) {
+    commit(types.ADD_UPDATES, { updates });
+    commit(types.UPDATE_CURRENT, { updates });
   },
   setSelected({ commit }, { list }: { list: Furniture[] }) {
     commit(types.SET_SELECTED, { list });
