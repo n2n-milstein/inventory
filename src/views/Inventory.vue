@@ -112,7 +112,7 @@ export default class Inventory extends Vue {
    */
   exitDialog(): void {
     this.dialog = false;
-    this.clearCurrent();
+    // this.clearCurrent();
   }
 
   /**
