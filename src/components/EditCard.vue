@@ -10,7 +10,7 @@
       }"
       primary-title
     >
-      {{ isEdit ? "Edit" : "Add" }} Furniture
+      {{ isEdit ? "Edit" : "View" }} Furniture
     </v-card-title>
 
     <v-card-text id="scroll-target" class="pa-0">
@@ -197,12 +197,17 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
+import { mapGetters, mapActions } from "vuex";
+// data
 import { AttributesDict, Furniture } from "@/data/Furniture";
 import { FClass } from "@/data/furniture/Physical";
+// components
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
+
+const namespace = "inventory";
 
 @Component({
   components: {
@@ -211,10 +216,13 @@ import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
     DatePickerMenu,
     AttributeQuestion,
   },
+  computed: mapGetters(namespace, { current: "getCurrent" }),
+  methods: mapActions(namespace, ["updateCurrent"]),
 })
 export default class EditCard extends Vue {
-  @Prop()
-  readonly furniture!: Furniture;
+  current!: Furniture;
+
+  updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
   @Prop({ default: false })
   readonly isEdit!: boolean;
@@ -230,16 +238,19 @@ export default class EditCard extends Vue {
 
   valid = true;
 
-  required = [(v: any): boolean | string => !!v || "This is required"];
+  // TODO: consider factoring out validation rules that are reused across the application
+  readonly required = [(v: any): boolean | string => !!v || "This is required"];
 
-  emailRules = [
+  readonly emailRules = [
     (v: any): boolean | string => !!v || "This is required",
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
   id = "";
 
-  donorName = "";
+  get donorName(): string {
+    return this.current.donor.name;
+  }
 
   phone = "";
 
@@ -251,7 +262,7 @@ export default class EditCard extends Vue {
 
   fclass = "";
 
-  classOptions = Object.keys(FClass);
+  readonly classOptions = Object.values(FClass);
   // size = -1;
   // material = "";
   // materialAlt = "";
@@ -273,7 +284,7 @@ export default class EditCard extends Vue {
 
   dateDelivered = "";
 
-  attributes = Object.keys(AttributesDict);
+  readonly attributes = Object.keys(AttributesDict);
 
   partsIntact = false;
 
