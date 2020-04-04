@@ -78,13 +78,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { Size, Furniture } from "@/data/Furniture";
-import { FClass, Material } from "@/data/furniture/Physical";
+import { Size } from "@/data/Furniture";
+import Physical, { FClass, Material } from "@/data/furniture/Physical";
 
 @Component
 export default class PhysicalAttr extends Vue {
   @Prop()
-  readonly furniture!: Furniture;
+  readonly value!: Physical;
 
   @Prop({ default: false })
   readonly readonly!: boolean;
@@ -92,27 +92,88 @@ export default class PhysicalAttr extends Vue {
   @Prop()
   readonly fclass!: FClass;
 
-  materials = Object.keys(Material);
+  readonly materials = Object.keys(Material);
 
-  size = -1;
+  /**
+   * Emits changes to the physical attributes.
+   * Establishes two-way binding by emitting "input".
+   */
+  updatePhysical(updates: Partial<Physical>): void {
+    console.log("updates: ", updates);
+    this.$emit("input", { ...this.value, ...updates });
+  }
 
-  material = "";
+  get size(): number {
+    return this.value.size;
+  }
+
+  set size(value: number) {
+    this.updatePhysical({ size: value });
+  }
+
+  get material(): string {
+    return this.value.material;
+  }
+
+  set material(value: string) {
+    this.updatePhysical({ material: value as Material });
+  }
 
   showAltMaterial = this.readonly;
 
-  altMaterial = "";
+  get altMaterial(): string {
+    return this.value.altMaterial || "";
+  }
 
-  hasFrame = false;
+  set altMaterial(value: string) {
+    this.updatePhysical({ altMaterial: value as Material });
+  }
 
-  hasBoxSpring = false;
+  get hasFrame(): boolean {
+    return this.value.hasFrame;
+  }
 
-  heavy = false;
+  set hasFrame(value: boolean) {
+    this.updatePhysical({ hasFrame: value });
+  }
+
+  get hasBoxSpring(): boolean {
+    return this.value.hasBoxSpring;
+  }
+
+  set hasBoxSpring(value: boolean) {
+    this.updatePhysical({ hasBoxSpring: value });
+  }
+
+  get heavy(): boolean {
+    return this.value.heavy;
+  }
+
+  set heavy(value: boolean) {
+    this.updatePhysical({ heavy: value });
+  }
 
   // These will be set programmatically based on user input
-  set = false;
+  get set(): boolean {
+    return this.value.set;
+  }
 
-  numChairs = 0;
+  set set(value: boolean) {
+    this.updatePhysical({ set: value });
+  }
 
+  get numChairs(): number {
+    return this.value.numChairs;
+  }
+
+  set numChairs(value: number) {
+    this.updatePhysical({ numChairs: value });
+  }
+
+  /**
+   * Returns the strings that correspond to the size numbers for a given
+   * furniture class.
+   */
   getSizes(): string[] {
     return Size[this.fclass];
   }
