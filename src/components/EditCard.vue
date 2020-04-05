@@ -85,7 +85,11 @@
                 :readonly="!isEdit"
               />
 
-              <physical-attr :fclass="fclass" :readonly="!isEdit" />
+              <physical-attr
+                v-model="physical"
+                :fclass="fclass"
+                :readonly="!isEdit"
+              />
 
               <v-divider class="my-3" />
 
@@ -200,7 +204,7 @@ import { Prop, Component } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
 // data
 import { AttributesDict, Furniture } from "@/data/Furniture";
-import { FClass } from "@/data/furniture/Physical";
+import Physical, { FClass } from "@/data/furniture/Physical";
 // components
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
@@ -224,7 +228,7 @@ export default class EditCard extends Vue {
 
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
-  @Prop({ default: false })
+  @Prop({ default: true })
   readonly isEdit!: boolean;
 
   @Prop({ default: true })
@@ -252,25 +256,31 @@ export default class EditCard extends Vue {
     return this.current.donor.name;
   }
 
-  phone = "";
+  get phone(): string {
+    return this.current.donor.phone;
+  }
 
-  email = "";
+  get email(): string {
+    return this.current.donor.email;
+  }
 
-  address = "";
+  get address(): string {
+    return this.current.donor.address;
+  }
 
-  zone = "";
+  get zone(): string {
+    return this.current.donor.zone;
+  }
 
-  fclass = "";
+  get fclass(): string {
+    return this.current.physical.class;
+  }
 
-  readonly classOptions = Object.values(FClass);
-  // size = -1;
-  // material = "";
-  // materialAlt = "";
-  // set = false;
-  // hasFrame = false;
-  // hasBoxSpring = false;
-  // numChairs = -1;
-  // heavy = false;
+  readonly classOptions = Object.keys(FClass);
+
+  get physical(): Physical {
+    return this.current.physical;
+  }
 
   dateOffered = new Date().toISOString().substr(0, 10);
 
