@@ -30,6 +30,12 @@ async function getData(id: string[]): Promise<string> {
   const furnitureData = await furniture.get();
   furnitureData.forEach((doc) => {
     const item = doc.data();
+    Object.keys(item.timing).forEach(function(field) {
+      if (item.timing[field] !== undefined && field !== "urgent") {
+        const today = item.timing[field].toDate();
+        item.timing[field] = today.toDateString();
+      }
+    });
     if (id.includes(item.id)) {
       const newJSON = flattenObject(item, "");
       inventory.push(newJSON);
