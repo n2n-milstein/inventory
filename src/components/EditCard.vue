@@ -96,13 +96,7 @@
               <!-- Attributes -->
               <h2>Attributes</h2>
 
-              <attribute-question
-                v-for="attr in attributes"
-                :key="attr"
-                :attribute="attr"
-                @answer="updateAttr(attr, $event)"
-                :readonly="!isEdit"
-              />
+              <attribute-questions v-model="attributes" :readonly="!isEdit" />
 
               <v-divider class="my-3" />
 
@@ -203,13 +197,14 @@ import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
 // data
-import { AttributesDict, Furniture } from "@/data/Furniture";
+import { Furniture } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
 // components
+import Attributes from "@/data/furniture/Attributes";
 import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
-import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
+import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 
 const namespace = "inventory";
 
@@ -218,7 +213,7 @@ const namespace = "inventory";
     PhysicalAttr,
     ConditionalDate,
     DatePickerMenu,
-    AttributeQuestion,
+    AttributeQuestions,
   },
   computed: mapGetters(namespace, { current: "getCurrent" }),
   methods: mapActions(namespace, ["updateCurrent"]),
@@ -282,65 +277,59 @@ export default class EditCard extends Vue {
     return this.current.physical;
   }
 
-  dateOffered = new Date().toISOString().substr(0, 10);
-
-  pickupBy = new Date().toISOString().substr(0, 10);
-
-  urgent = false;
-
-  confirmedPickupDate = "";
-
-  dateCollected = "";
-
-  dateDelivered = "";
-
-  readonly attributes = Object.keys(AttributesDict);
-
-  partsIntact = false;
-
-  finishIntact = false;
-
-  smokeFree = false;
-
-  petFree = false;
-
-  bedbugFree = false;
-
-  mildewFree = false;
-
-  donateToFriend = false;
-
-  comments = "";
-
-  staffNotes = "";
-
-  updateAttr(attr: string, value: boolean): void {
-    switch (attr) {
-      case "partsIntact":
-        this.partsIntact = value;
-        break;
-      case "finishIntact":
-        this.finishIntact = value;
-        break;
-      case "smokeFree":
-        this.smokeFree = value;
-        break;
-      case "petFree":
-        this.petFree = value;
-        break;
-      case "bedbugFree":
-        this.bedbugFree = value;
-        break;
-      case "mildewFree":
-        this.mildewFree = value;
-        break;
-      case "donateToFriend":
-        this.donateToFriend = value;
-        break;
-      default:
-        break;
-    }
+  /**
+   * TODO: move this to external file
+   * Formats date to a string
+   */
+  static formatDate(date?: Date): string {
+    return date ? date.toISOString().substring(0, 10) : "";
   }
+
+  get dateOffered(): string {
+    return EditCard.formatDate(this.current.timing.dateOffered);
+  }
+
+  get pickupBy(): string {
+    return EditCard.formatDate(this.current.timing.pickupBy);
+  }
+
+  get urgent(): boolean {
+    return this.current.timing.urgent;
+  }
+
+  get confirmedPickupDate(): string {
+    return EditCard.formatDate(this.current.timing.confirmedPickupDate);
+  }
+
+  get dateCollected(): string {
+    return EditCard.formatDate(this.current.timing.dateCollected);
+  }
+
+  get dateDelivered(): string {
+    return EditCard.formatDate(this.current.timing.dateDelivered);
+  }
+
+  get comments(): string {
+    return this.current.comments;
+  }
+
+  get staffNotes(): string {
+    return this.current.staffNotes;
+  }
+
+  get attributes(): Attributes {
+    return this.current.attributes;
+  }
+
+  // TODO: update this to a real setter
+  // eslint-disable-next-line
+  set attributes(value: Attributes) {
+    console.log(value);
+  }
+
+  // set attributes(value: Attributes) {
+  //   this.updateCurrent({ updates: { attributes: value } });
+  // }
 }
 </script>
 
