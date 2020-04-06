@@ -1,29 +1,33 @@
+import * as firebase from "firebase/app";
+
+export type Timestamp = firebase.firestore.Timestamp;
+
 /**
  * Dates and timing information associated with a furniture item
  */
 export default class Timing {
   public urgent: boolean;
 
-  public pickupBy: Date;
+  public pickupBy: Date | Timestamp;
 
-  public dateOffered: Date;
+  public dateOffered: Date | Timestamp;
 
-  public confirmedPickupDate?: Date;
+  public confirmedPickupDate?: Date | Timestamp;
 
-  public dateAdded?: Date;
+  public dateAdded?: Date | Timestamp;
 
-  public dateCollected?: Date;
+  public dateCollected?: Date | Timestamp;
 
-  public dateDelivered?: Date;
+  public dateDelivered?: Date | Timestamp;
 
   public constructor(
     urgent: boolean,
-    pickupBy: Date,
-    dateOffered: Date,
-    confirmedPickupDate?: Date,
-    dateAdded?: Date,
-    dateCollected?: Date,
-    dateDelivered?: Date,
+    pickupBy: Date | Timestamp,
+    dateOffered: Date | Timestamp,
+    confirmedPickupDate?: Date | Timestamp,
+    dateAdded?: Date | Timestamp,
+    dateCollected?: Date | Timestamp,
+    dateDelivered?: Date | Timestamp,
   ) {
     this.urgent = urgent;
     this.pickupBy = pickupBy;
