@@ -1,5 +1,6 @@
 {
   "eslint.enable": true,
+  "eslint.alwaysShowStatus": true,
   "vetur.validation.template": false,
   "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "editor.codeActionsOnSave": {
