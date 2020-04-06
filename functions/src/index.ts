@@ -5,7 +5,10 @@ import functions = require("firebase-functions");
 
 admin.initializeApp();
 
-function flattenObject(ob: any, prefix: any) {
+/**
+ * Takes nested JSON object and flattens to one level
+ */
+function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
   const toReturn: { [key: string]: any[] } = {};
   const newPrefix = prefix ? `${prefix}.` : "";
 
@@ -22,6 +25,55 @@ function flattenObject(ob: any, prefix: any) {
   return toReturn;
 }
 
+/**
+ * Creates array of start and end indices of cells to be nested
+ */
+function mergedCells(indices: number[], totalLength: number): any {
+  const merged: any = [];
+  for (let i = 0; i < indices.length - 1; i += 1) {
+    merged.push({
+      s: { r: 0, c: indices[i] },
+      e: { r: 0, c: indices[i + 1] - 1 },
+    });
+  }
+  merged.push({
+    s: { r: 0, c: indices[indices.length - 1] },
+    e: { r: 0, c: totalLength - 1 },
+  });
+  return merged;
+}
+
+/**
+ * Creates main and sub headers and returns headers along with cells to be merged
+ */
+function sortHeaders(mainHeaders: string[], headers: string[]): any {
+  const result: any = [];
+  const indices: any = [];
+  headers.forEach(function(header) {
+    for (let i = 0; i < mainHeaders.length; i += 1) {
+      if (header.includes(mainHeaders[i])) {
+        result.push([i, header]);
+      }
+    }
+  });
+  result.sort((a: any, b: any) => a[0] - b[0]);
+  let counter = 0;
+  for (let i = 0; i < result.length; i += 1) {
+    if (result[i][0] === counter) {
+      indices.push(i);
+      counter += 1;
+    }
+  }
+  const topHeader = Array(result.length).fill("");
+  for (let i = 0; i < indices.length; i += 1) {
+    topHeader[indices[i]] = mainHeaders[i];
+  }
+  return [
+    [topHeader, result.map((x: any) => x[1])],
+    mergedCells(indices, headers.length),
+  ];
+}
+
 async function getData(id: string[]): Promise<string> {
   const inventory: any = [];
   const furniture = admin.firestore().collection("furniture");
@@ -32,8 +84,8 @@ async function getData(id: string[]): Promise<string> {
     const item = doc.data();
     Object.keys(item.timing).forEach(function(field) {
       if (item.timing[field] !== undefined && field !== "urgent") {
-        const today = item.timing[field].toDate();
-        item.timing[field] = today.toDateString();
+        const date = item.timing[field].toDate();
+        item.timing[field] = date.toDateString();
       }
     });
     if (id.includes(item.id)) {
@@ -42,7 +94,36 @@ async function getData(id: string[]): Promise<string> {
     }
   });
   wb.SheetNames.push("Inventory");
-  const inventoryWS = XLSX.utils.json_to_sheet(inventory);
+  let inventoryWS = XLSX.utils.json_to_sheet(inventory);
+  if (inventoryWS["!ref"] !== undefined) {
+    const cellRange = XLSX.utils.decode_range(inventoryWS["!ref"]);
+    cellRange.e.r = 0;
+    const cellNames = [];
+    for (let C = cellRange.s.c; C <= cellRange.e.c; C += 1) {
+      const cellAddress = { c: C, r: 0 };
+      const cellRef = XLSX.utils.encode_cell(cellAddress);
+      cellNames.push(inventoryWS[cellRef].v);
+    }
+    const mainHeaders = [
+      "id",
+      "status",
+      "donor",
+      "timing",
+      "physical",
+      "attributes",
+      "images",
+      "comments",
+      "staffNotes",
+    ];
+    const [headers, merged] = sortHeaders(mainHeaders, cellNames);
+    inventoryWS = XLSX.utils.aoa_to_sheet([headers[0]]);
+    XLSX.utils.sheet_add_json(inventoryWS, inventory, {
+      header: headers[1],
+      origin: "A2",
+    });
+
+    inventoryWS["!merges"] = merged;
+  }
   wb.Sheets.Inventory = inventoryWS;
 
   const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
