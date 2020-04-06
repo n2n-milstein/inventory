@@ -82,7 +82,7 @@ import { Size } from "@/data/Furniture";
 import Physical, { FClass, Material } from "@/data/furniture/Physical";
 
 @Component
-export default class PhysicalAttr extends Vue {
+export default class PhysicalAttributes extends Vue {
   @Prop()
   readonly value!: Physical;
 

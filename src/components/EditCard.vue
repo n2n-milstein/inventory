@@ -85,7 +85,7 @@
                 :readonly="!isEdit"
               />
 
-              <physical-attr
+              <physical-attributes
                 v-model="physical"
                 :fclass="fclass"
                 :readonly="!isEdit"
@@ -201,7 +201,7 @@ import { Furniture } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
 // components
 import Attributes from "@/data/furniture/Attributes";
-import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
+import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
@@ -210,7 +210,7 @@ const namespace = "inventory";
 
 @Component({
   components: {
-    PhysicalAttr,
+    PhysicalAttributes,
     ConditionalDate,
     DatePickerMenu,
     AttributeQuestions,
