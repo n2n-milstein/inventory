@@ -3,14 +3,14 @@
     ref="dateMenu"
     v-model="dateMenu"
     :close-on-content-click="false"
-    :return-value.sync="date"
+    :return-value="value"
     transition="scale-transition"
     min-width="18rem"
     :disabled="readonly"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="date"
+        :value="value"
         :label="label"
         :class="spacing"
         readonly
@@ -19,15 +19,9 @@
       />
     </template>
     <v-date-picker
-      v-model="date"
-      @input="
-        {
-          $refs.dateMenu.save(date);
-          $emit('date', date);
-          dateMenu = false;
-        }
-      "
+      :value="value"
       :readonly="readonly"
+      @input="updateDate($event)"
     />
   </v-menu>
 </template>
@@ -38,6 +32,9 @@ import { Prop, Component } from "vue-property-decorator";
 
 @Component
 export default class DatePickerMenu extends Vue {
+  @Prop()
+  readonly value!: string;
+
   @Prop({ default: "Default label" })
   readonly label!: string;
 
@@ -49,6 +46,10 @@ export default class DatePickerMenu extends Vue {
 
   dateMenu = false;
 
-  date = "";
+  updateDate(value: string): void {
+    const menu: any = this.$refs.dateMenu;
+    menu.save(value);
+    this.$emit("input", value);
+  }
 }
 </script>
