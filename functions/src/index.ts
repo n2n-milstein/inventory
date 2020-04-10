@@ -13,13 +13,15 @@ function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
   const newPrefix = prefix ? `${prefix}.` : "";
 
   Object.keys(ob).forEach(function(i) {
-    if (Object.prototype.hasOwnProperty.call(ob, i)) {
-      if (typeof ob[i] === "object" && ob[i] !== null) {
-        // Recursion on deeper objects
-        Object.assign(toReturn, flattenObject(ob[i], newPrefix + i));
-      } else {
-        toReturn[prefix + i] = ob[i];
-      }
+    if (typeof ob[i] === "object" && ob[i] !== null) {
+      // Recursion on deeper objects
+      Object.assign(toReturn, flattenObject(ob[i], newPrefix + i));
+    } else if (ob[i] === true) {
+      toReturn[prefix + i] = "Yes" as any;
+    } else if (ob[i] === false) {
+      toReturn[prefix + i] = "No" as any;
+    } else {
+      toReturn[prefix + i] = ob[i];
     }
   });
   return toReturn;
@@ -27,6 +29,7 @@ function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
 
 /**
  * Creates array of start and end indices of cells to be nested
+ * Returns: merged - array of cells to merge in excel document
  */
 function mergedCells(indices: number[], totalLength: number): any {
   const merged: any = [];
@@ -45,6 +48,7 @@ function mergedCells(indices: number[], totalLength: number): any {
 
 /**
  * Creates main and sub headers and returns headers along with cells to be merged
+ * Returns: The main headers with spaces and subheaders, along with the cells to be merged
  */
 function sortHeaders(mainHeaders: string[], headers: string[]): any {
   const result: any = [];
@@ -74,11 +78,31 @@ function sortHeaders(mainHeaders: string[], headers: string[]): any {
   ];
 }
 
+/**
+ * Rename the subheaders for more clarity
+ * @param mainHeaders Top level headers
+ * @param subheaders Subheaders that will be filtered
+ */
+function renameSubheaders(mainHeaders: string[], subheaders: string[]): any {
+  let counter = 0;
+  const newHeaders = subheaders.map((header) => {
+    if (!header.includes(mainHeaders[counter])) {
+      counter += 1;
+    }
+    if (mainHeaders[counter].length === header.length) {
+      return header;
+    }
+    return header.substring(mainHeaders[counter].length);
+  });
+  return newHeaders;
+}
+
 async function getData(id: string[]): Promise<string> {
   const inventory: any = [];
   const furniture = admin.firestore().collection("furniture");
   const wb = XLSX.utils.book_new();
 
+  // converting given JSON field to a flattened version
   const furnitureData = await furniture.get();
   furnitureData.forEach((doc) => {
     const item = doc.data();
@@ -93,12 +117,14 @@ async function getData(id: string[]): Promise<string> {
       inventory.push(newJSON);
     }
   });
+
   wb.SheetNames.push("Inventory");
   let inventoryWS = XLSX.utils.json_to_sheet(inventory);
   if (inventoryWS["!ref"] !== undefined) {
     const cellRange = XLSX.utils.decode_range(inventoryWS["!ref"]);
     cellRange.e.r = 0;
     const cellNames = [];
+    // get current header names
     for (let C = cellRange.s.c; C <= cellRange.e.c; C += 1) {
       const cellAddress = { c: C, r: 0 };
       const cellRef = XLSX.utils.encode_cell(cellAddress);
@@ -115,12 +141,19 @@ async function getData(id: string[]): Promise<string> {
       "comments",
       "staffNotes",
     ];
+    // headers -> main header with spaces and subheaders, merged -> cells to merge
+    // add main headers and reformat subheaders
     const [headers, merged] = sortHeaders(mainHeaders, cellNames);
     inventoryWS = XLSX.utils.aoa_to_sheet([headers[0]]);
     XLSX.utils.sheet_add_json(inventoryWS, inventory, {
       header: headers[1],
       origin: "A2",
     });
+    XLSX.utils.sheet_add_aoa(
+      inventoryWS,
+      [renameSubheaders(mainHeaders, headers[1])],
+      { origin: "A2" },
+    );
 
     inventoryWS["!merges"] = merged;
   }
