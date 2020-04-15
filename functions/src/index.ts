@@ -7,6 +7,9 @@ admin.initializeApp();
 
 /**
  * Takes nested JSON object and flattens to one level
+ * @param ob original multi-level JSON object
+ * @param prefix prefix to attach to keys
+ * @returns sortedJSON - JSON sorted by keys alphabetically
  */
 function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
   const toReturn: { [key: string]: any[] } = {};
@@ -24,12 +27,17 @@ function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
       toReturn[prefix + i] = ob[i];
     }
   });
-  return toReturn;
+  const sortedJSON = Object.keys(toReturn)
+    .sort()
+    .reduce((acc, key) => ({ ...acc, [key]: toReturn[key] }), {});
+  return sortedJSON;
 }
 
 /**
  * Creates array of start and end indices of cells to be nested
- * Returns: merged - array of cells to merge in excel document
+ * @param indices the start indices of each subheader
+ * @param totalLength total length of the header row
+ * @returns merged - array of cells to merge in excel document
  */
 function mergedCells(indices: number[], totalLength: number): any {
   const merged: any = [];
@@ -48,7 +56,9 @@ function mergedCells(indices: number[], totalLength: number): any {
 
 /**
  * Creates main and sub headers and returns headers along with cells to be merged
- * Returns: The main headers with spaces and subheaders, along with the cells to be merged
+ * @param mainHeaders the names of the main header fields
+ * @param headers the names of all the subheaders
+ * @returns The main headers with spaces and subheaders, along with the cells to be merged
  */
 function sortHeaders(mainHeaders: string[], headers: string[]): any {
   const result: any = [];
@@ -82,6 +92,7 @@ function sortHeaders(mainHeaders: string[], headers: string[]): any {
  * Rename the subheaders for more clarity
  * @param mainHeaders Top level headers
  * @param subheaders Subheaders that will be filtered
+ * @return array of headers with appropriate naming schemes
  */
 function renameSubheaders(mainHeaders: string[], subheaders: string[]): any {
   let counter = 0;
@@ -102,16 +113,18 @@ async function getData(id: string[]): Promise<string> {
   const furniture = admin.firestore().collection("furniture");
   const wb = XLSX.utils.book_new();
 
-  // converting given JSON field to a flattened version
+  // converting each inventory entry to single-layer JSON object
   const furnitureData = await furniture.get();
   furnitureData.forEach((doc) => {
     const item = doc.data();
     Object.keys(item.timing).forEach(function(field) {
+      // changing the way time data is represented
       if (item.timing[field] !== undefined && field !== "urgent") {
         const date = item.timing[field].toDate();
         item.timing[field] = date.toDateString();
       }
     });
+    // only putting selected items into spreadsheet
     if (id.includes(item.id)) {
       const newJSON = flattenObject(item, "");
       inventory.push(newJSON);
@@ -141,8 +154,7 @@ async function getData(id: string[]): Promise<string> {
       "comments",
       "staffNotes",
     ];
-    // headers -> main header with spaces and subheaders, merged -> cells to merge
-    // add main headers and reformat subheaders
+    // reformatting spreadsheet to include main headers and sub headers and changing some header names
     const [headers, merged] = sortHeaders(mainHeaders, cellNames);
     inventoryWS = XLSX.utils.aoa_to_sheet([headers[0]]);
     XLSX.utils.sheet_add_json(inventoryWS, inventory, {
