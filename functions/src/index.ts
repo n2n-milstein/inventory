@@ -117,15 +117,15 @@ async function getData(id: string[]): Promise<string> {
   const furnitureData = await furniture.get();
   furnitureData.forEach((doc) => {
     const item = doc.data();
-    Object.keys(item.timing).forEach(function(field) {
-      // changing the way time data is represented
-      if (item.timing[field] !== undefined && field !== "urgent") {
-        const date = item.timing[field].toDate();
-        item.timing[field] = date.toDateString();
-      }
-    });
     // only putting selected items into spreadsheet
     if (id.includes(item.id)) {
+      Object.keys(item.timing).forEach(function(field) {
+        // changing the way time data is represented
+        if (item.timing[field] !== undefined && field !== "urgent") {
+          const day = item.timing[field].toDate();
+          item.timing[field] = day.toDateString();
+        }
+      });
       const newJSON = flattenObject(item, "");
       inventory.push(newJSON);
     }
