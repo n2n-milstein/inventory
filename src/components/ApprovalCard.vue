@@ -74,7 +74,7 @@
               Images
             </h3>
 
-            <v-row class="flex-nowrap" style="overflow-x: scroll">
+            <v-row class="flex-nowrap" style="overflow-x: scroll;">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
