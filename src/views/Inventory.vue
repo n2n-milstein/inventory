@@ -55,7 +55,6 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
 import "firebase/storage";
-// import cors = require('cors')({ origin: true });
 
 @Component({
   components: {
