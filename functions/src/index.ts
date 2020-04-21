@@ -15,7 +15,7 @@ function flattenObject(ob: any, prefix: any): { [key: string]: any[] } {
   const toReturn: { [key: string]: any[] } = {};
   const newPrefix = prefix ? `${prefix}.` : "";
 
-  Object.keys(ob).forEach(function(i) {
+  Object.keys(ob).forEach((i) => {
     if (typeof ob[i] === "object" && ob[i] !== null) {
       // Recursion on deeper objects
       Object.assign(toReturn, flattenObject(ob[i], newPrefix + i));
@@ -63,7 +63,7 @@ function mergedCells(indices: number[], totalLength: number): any {
 function sortHeaders(mainHeaders: string[], headers: string[]): any {
   const result: any = [];
   const indices: any = [];
-  headers.forEach(function(header) {
+  headers.forEach((header) => {
     for (let i = 0; i < mainHeaders.length; i += 1) {
       if (header.includes(mainHeaders[i])) {
         result.push([i, header]);
@@ -119,7 +119,7 @@ async function getData(id: string[]): Promise<string> {
     const item = doc.data();
     // only putting selected items into spreadsheet
     if (id.includes(item.id)) {
-      Object.keys(item.timing).forEach(function(field) {
+      Object.keys(item.timing).forEach((field) => {
         // changing the way time data is represented
         if (item.timing[field] !== undefined && field !== "urgent") {
           const day = item.timing[field].toDate();
@@ -175,8 +175,9 @@ async function getData(id: string[]): Promise<string> {
   const storage = admin.storage();
   const bucket = storage.bucket("n2n-inventory");
   const today = new Date();
-  const date = `${today.getFullYear()}-${today.getMonth() +
-    1}-${today.getDate()}`;
+  const date = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
   const fileName = `${date}.xlsx`;
   const file = bucket.file(fileName);
   await file.save(buffer);
