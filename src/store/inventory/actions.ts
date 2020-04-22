@@ -18,6 +18,7 @@ const actions: ActionTree<InventoryState, RootState> = {
     commit(types.ADD_UPDATES, { updates });
     commit(types.UPDATE_CURRENT, { updates });
   },
+  // TODO: action to commit updates to Firebase
   setSelected({ commit }, { list }: { list: Furniture[] }) {
     commit(types.SET_SELECTED, { list });
   },
