@@ -103,48 +103,7 @@
               <!-- Timing -->
               <h2>Timing</h2>
 
-              <date-picker-menu
-                label="Date Offered"
-                @date="dateOffered = $event"
-                spacing="pb-3"
-                :readonly="!isEdit"
-              />
-
-              <date-picker-menu
-                label="Pickup By Date"
-                @date="pickupBy = $event"
-                spacing="pb-3"
-                :readonly="!isEdit"
-              />
-
-              <v-checkbox
-                v-model="urgent"
-                label="Urgent?"
-                hide-details
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the pickup date been confirmed?"
-                label="Confirmed Pickup Date"
-                @date="confirmedPickupDate = $event"
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the furniture been collected?"
-                label="Date Collected"
-                @date="dateCollected = $event"
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the furniture been delivered?"
-                label="Date Delivered"
-                @date="dateDelivered = $event"
-                class="pb-3"
-                :readonly="!isEdit"
-              />
+              <timing-dates v-model="timing" :readonly="!isEdit" />
 
               <v-divider class="my-3" />
 
@@ -199,12 +158,14 @@ import { mapGetters, mapActions } from "vuex";
 // data
 import { Furniture } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
+import Timing from "@/data/furniture/Timing";
 // components
 import Attributes from "@/data/furniture/Attributes";
 import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
+import TimingDates from "./EditCard/TimingDates.vue";
 
 const namespace = "inventory";
 
@@ -214,6 +175,7 @@ const namespace = "inventory";
     ConditionalDate,
     DatePickerMenu,
     AttributeQuestions,
+    TimingDates,
   },
   computed: mapGetters(namespace, { current: "getCurrent" }),
   methods: mapActions(namespace, ["updateCurrent"]),
@@ -277,36 +239,8 @@ export default class EditCard extends Vue {
     return this.current.physical;
   }
 
-  /**
-   * TODO: move this to external file
-   * Formats date to a string
-   */
-  static formatDate(date?: Date): string {
-    return date ? date.toISOString().substring(0, 10) : "";
-  }
-
-  get dateOffered(): string {
-    return EditCard.formatDate(this.current.timing.dateOffered);
-  }
-
-  get pickupBy(): string {
-    return EditCard.formatDate(this.current.timing.pickupBy);
-  }
-
-  get urgent(): boolean {
-    return this.current.timing.urgent;
-  }
-
-  get confirmedPickupDate(): string {
-    return EditCard.formatDate(this.current.timing.confirmedPickupDate);
-  }
-
-  get dateCollected(): string {
-    return EditCard.formatDate(this.current.timing.dateCollected);
-  }
-
-  get dateDelivered(): string {
-    return EditCard.formatDate(this.current.timing.dateDelivered);
+  get timing(): Timing {
+    return this.current.timing;
   }
 
   get comments(): string {
