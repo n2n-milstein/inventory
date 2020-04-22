@@ -1,16 +1,14 @@
 <template>
   <v-menu
-    ref="dateMenu"
     v-model="dateMenu"
     :close-on-content-click="false"
-    :return-value="value"
     transition="scale-transition"
     min-width="18rem"
     :disabled="readonly"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        :value="value"
+        :value="formattedValue"
         :label="label"
         :class="spacing"
         readonly
@@ -46,10 +44,20 @@ export default class DatePickerMenu extends Vue {
 
   dateMenu = false;
 
+  get formattedValue(): string {
+    return DatePickerMenu.formatDate(this.value);
+  }
+
   updateDate(value: string): void {
-    const menu: any = this.$refs.dateMenu;
-    menu.save(value);
+    this.dateMenu = false;
     this.$emit("input", value);
+  }
+
+  static formatDate(date: string): string {
+    if (!date) return "";
+
+    const [year, month, day] = date.split("-");
+    return `${month}/${day}/${year}`;
   }
 }
 </script>
