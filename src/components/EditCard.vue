@@ -23,7 +23,8 @@
 
               <!-- TODO: make these just normal text when in readonly -->
               <v-text-field
-                v-model="donorName"
+                :value="donor.name"
+                @input="updateDonor('name', $event)"
                 :rules="required"
                 label="Donor Name"
                 required
@@ -32,7 +33,8 @@
               />
 
               <v-text-field
-                v-model="phone"
+                :value="donor.phone"
+                @input="updateDonor('phone', $event)"
                 :rules="required"
                 label="Phone Number"
                 required
@@ -41,7 +43,8 @@
               />
 
               <v-text-field
-                v-model="email"
+                :value="donor.email"
+                @input="updateDonor('email', $event)"
                 :rules="emailRules"
                 label="Email"
                 required
@@ -50,7 +53,8 @@
               />
 
               <v-text-field
-                v-model="address"
+                :value="donor.address"
+                @input="updateDonor('address', $event)"
                 :rules="required"
                 label="Address"
                 required
@@ -59,7 +63,8 @@
               />
 
               <v-text-field
-                v-model="zone"
+                :value="donor.zone"
+                @input="updateDonor('zone', $event)"
                 :rules="required"
                 label="Zone"
                 required
@@ -166,6 +171,7 @@ import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
+import Donor from "../data/furniture/Donor";
 
 const namespace = "inventory";
 
@@ -209,28 +215,28 @@ export default class EditCard extends Vue {
 
   id = "";
 
-  get donorName(): string {
-    return this.current.donor.name;
+  get donor(): Donor {
+    return this.current.donor;
   }
 
-  get phone(): string {
-    return this.current.donor.phone;
+  updateDonor(key: string, value: string): void {
+    /* eslint-disable object-curly-newline */
+    this.updateCurrent({
+      updates: { donor: { ...this.current.donor, [key]: value } },
+    });
+    /* eslint-enable */
   }
 
-  get email(): string {
-    return this.current.donor.email;
-  }
-
-  get address(): string {
-    return this.current.donor.address;
-  }
-
-  get zone(): string {
-    return this.current.donor.zone;
-  }
-
-  get fclass(): string {
+  get fclass(): FClass {
     return this.current.physical.class;
+  }
+
+  set fclass(value: FClass) {
+    /* eslint-disable object-curly-newline */
+    this.updateCurrent({
+      updates: { physical: { ...this.current.physical, class: value } },
+    });
+    /* eslint-enable */
   }
 
   readonly classOptions = Object.keys(FClass);
@@ -239,8 +245,16 @@ export default class EditCard extends Vue {
     return this.current.physical;
   }
 
+  set physical(value: Physical) {
+    this.updateCurrent({ updates: { physical: value } });
+  }
+
   get timing(): Timing {
     return this.current.timing;
+  }
+
+  set timing(value: Timing) {
+    this.updateCurrent({ updates: { timing: value } });
   }
 
   get comments(): string {
@@ -251,19 +265,17 @@ export default class EditCard extends Vue {
     return this.current.staffNotes;
   }
 
+  set staffNotes(value: string) {
+    this.updateCurrent({ updates: { staffNotes: value } });
+  }
+
   get attributes(): Attributes {
     return this.current.attributes;
   }
 
-  // TODO: update this to a real setter
-  // eslint-disable-next-line
   set attributes(value: Attributes) {
-    console.log(value);
+    this.updateCurrent({ updates: { attributes: value } });
   }
-
-  // set attributes(value: Attributes) {
-  //   this.updateCurrent({ updates: { attributes: value } });
-  // }
 }
 </script>
 
