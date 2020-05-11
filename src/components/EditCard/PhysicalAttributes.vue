@@ -99,7 +99,6 @@ export default class PhysicalAttributes extends Vue {
    * Establishes two-way binding by emitting "input".
    */
   updatePhysical(updates: Partial<Physical>): void {
-    console.log("updates: ", updates);
     this.$emit("input", { ...this.value, ...updates });
   }
 
