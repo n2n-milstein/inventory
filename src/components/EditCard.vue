@@ -73,6 +73,20 @@
 
               <v-divider class="my-3" />
 
+              <!-- Status -->
+              <h2>Status</h2>
+
+              <v-select
+                v-model="status"
+                :items="statusOptions"
+                label="Furniture Status"
+                required
+                :prepend-icon="statusIcons[status]"
+                :readonly="!isEdit"
+              />
+
+              <v-divider class="my-3" />
+
               <!-- Physical Attributes -->
               <h2>Physical Attributes</h2>
 
@@ -147,10 +161,10 @@
     <v-card-actions>
       <v-spacer />
       <v-btn text color="primary" @click="$emit('cancel')">
-        CANCEL
+        Cancel
       </v-btn>
       <v-btn text color="primary">
-        SAVE
+        Save
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -161,7 +175,7 @@ import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
 // data
-import { Furniture } from "@/data/Furniture";
+import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
 import Timing from "@/data/furniture/Timing";
 // components
@@ -226,6 +240,28 @@ export default class EditCard extends Vue {
     });
     /* eslint-enable */
   }
+
+  get status(): Status {
+    return this.current.status;
+  }
+
+  set status(value: Status) {
+    this.updateCurrent({ updates: { status: value } });
+  }
+
+  readonly statusOptions = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((value, index) => {
+      return { text: value, value: index };
+    });
+
+  readonly statusIcons = [
+    "face",
+    "local_shipping",
+    "storefront",
+    "mood", // could also use "check" or "beenhere"
+    "not_listed_location",
+  ];
 
   get fclass(): FClass {
     return this.current.physical.class;
