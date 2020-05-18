@@ -163,7 +163,7 @@
       <v-btn text color="primary" @click="$emit('cancel')">
         Cancel
       </v-btn>
-      <v-btn text color="primary">
+      <v-btn text color="primary" @click="$emit('save')">
         Save
       </v-btn>
     </v-card-actions>

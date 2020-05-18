@@ -6,7 +6,7 @@
       @click:outside="exitDialog()"
       scrollable
     >
-      <edit-card @cancel="exitDialog()" />
+      <edit-card @cancel="exitDialog()" @save="saveUpdates()" />
     </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
@@ -70,6 +70,7 @@ const namespace = "inventory";
     "bindInventory",
     "setCurrent",
     "clearCurrent",
+    "commitUpdates",
   ]),
 })
 export default class Inventory extends Vue {
@@ -80,6 +81,8 @@ export default class Inventory extends Vue {
   setCurrent!: ({ item }: { item: Furniture }) => void;
 
   clearCurrent!: () => void;
+
+  commitUpdates!: () => void;
 
   // TODO: replace with store
   selected = [];
@@ -113,6 +116,11 @@ export default class Inventory extends Vue {
   exitDialog(): void {
     this.dialog = false;
     // this.clearCurrent();
+  }
+
+  saveUpdates(): void {
+    this.commitUpdates();
+    this.exitDialog();
   }
 
   /**
