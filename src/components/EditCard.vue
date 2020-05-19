@@ -178,14 +178,14 @@ import { mapGetters, mapActions } from "vuex";
 import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
 import Timing from "@/data/furniture/Timing";
-// components
+import Donor from "@/data/furniture/Donor";
 import Attributes from "@/data/furniture/Attributes";
+// components
 import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
-import Donor from "../data/furniture/Donor";
 
 const namespace = "inventory";
 
@@ -205,7 +205,7 @@ export default class EditCard extends Vue {
 
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
-  @Prop({ default: true })
+  @Prop({ default: false })
   readonly isEdit!: boolean;
 
   @Prop({ default: true })

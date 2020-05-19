@@ -26,7 +26,7 @@
         :color="showAltMaterial ? 'red' : 'primary'"
         @click="
           {
-            (showAltMaterial = !showAltMaterial), (altMaterial = '');
+            showAltMaterial = !showAltMaterial;
           }
         "
         class="mb-3"
@@ -118,13 +118,21 @@ export default class PhysicalAttributes extends Vue {
     this.updatePhysical({ material: value as Material });
   }
 
-  showAltMaterial = this.readonly;
+  get showAltMaterial(): boolean {
+    return !!this.altMaterial;
+  }
+
+  set showAltMaterial(value: boolean) {
+    if (value) this.altMaterial = Material.Wood;
+    else this.altMaterial = "";
+  }
 
   get altMaterial(): string {
     return this.value.altMaterial || "";
   }
 
   set altMaterial(value: string) {
+    if (!value) this.updatePhysical({ altMaterial: undefined });
     this.updatePhysical({ altMaterial: value as Material });
   }
 
