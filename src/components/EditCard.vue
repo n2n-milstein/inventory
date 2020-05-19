@@ -173,7 +173,7 @@
       <v-btn
         text
         color="primary"
-        :disabled="!isEdit || Object.keys(updates).length === 0"
+        :disabled="!isEdit || updatesLength === 0"
         @click="$emit('save')"
       >
         Save
@@ -214,6 +214,7 @@ const namespace = "inventory";
   computed: mapGetters(namespace, {
     getCurrent: "getCurrent",
     updates: "getCurrentUpdates",
+    updatesLength: "getUpdatesLength",
   }),
   methods: mapActions(namespace, ["updateCurrent"]),
 })

@@ -23,8 +23,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="unsavedDialog = false">Cancel</v-btn>
-          <v-btn text @click="closeDialog(true)">Discard</v-btn>
+          <v-btn color="primary" text @click="unsavedDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn color="primary" text @click="closeDialog(true)">Discard</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -88,7 +90,7 @@ const namespace = "inventory";
   computed: mapGetters(namespace, {
     inventory: "getInventory",
     current: "getCurrent",
-    updates: "getCurrentUpdates",
+    updatesLength: "getUpdatesLength",
   }),
   methods: mapActions(namespace, [
     "bindInventory",
@@ -101,7 +103,7 @@ const namespace = "inventory";
 export default class Inventory extends Vue {
   current!: Furniture;
 
-  updates!: Partial<Furniture>;
+  updatesLength!: number;
 
   bindInventory!: () => Promise<void>;
 
@@ -158,7 +160,7 @@ export default class Inventory extends Vue {
    * Exits dialog and clears the current item
    */
   closeDialog(forceClose = false): void {
-    if (Object.keys(this.updates).length === 0 || forceClose) {
+    if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
       this.editCard = false;
       this.isEdit = false;
