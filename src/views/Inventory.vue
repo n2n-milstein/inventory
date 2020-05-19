@@ -3,10 +3,10 @@
     <v-dialog
       v-model="dialog"
       width="750"
-      @click:outside="exitDialog()"
+      @click:outside="closeDialog()"
       scrollable
     >
-      <edit-card @cancel="exitDialog()" @save="saveUpdates()" />
+      <edit-card @close="closeDialog()" @save="saveUpdates()" />
     </v-dialog>
     <v-row class="mb-3 px-4" align="baseline">
       <view-title title="Inventory" />
@@ -113,14 +113,14 @@ export default class Inventory extends Vue {
   /**
    * Exits dialog and clears the current item
    */
-  exitDialog(): void {
+  closeDialog(): void {
     this.dialog = false;
     // this.clearCurrent();
   }
 
   saveUpdates(): void {
     this.commitUpdates();
-    this.exitDialog();
+    this.closeDialog();
   }
 
   /**

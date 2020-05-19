@@ -12,7 +12,11 @@
     >
       <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
       <v-spacer />
-      <view-actions @close="$emit('close')" />
+      <view-actions
+        v-if="!isEdit"
+        @close="$emit('close')"
+        @edit="isEdit = true"
+      />
     </v-card-title>
 
     <v-card-text id="scroll-target" class="pa-0">
@@ -162,7 +166,7 @@
 
     <v-card-actions v-if="isEdit">
       <v-spacer />
-      <v-btn text color="primary" @click="$emit('cancel')">
+      <v-btn text color="primary" @click="isEdit = false">
         Cancel
       </v-btn>
       <v-btn text color="primary" :disabled="!isEdit" @click="$emit('save')">
@@ -209,9 +213,6 @@ export default class EditCard extends Vue {
 
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
-  @Prop({ default: false })
-  readonly isEdit!: boolean;
-
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
@@ -220,6 +221,8 @@ export default class EditCard extends Vue {
   onScroll(e: any): void {
     this.offsetTop = e.target.scrollTop;
   }
+
+  isEdit = false;
 
   valid = true;
 
