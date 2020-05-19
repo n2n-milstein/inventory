@@ -15,7 +15,7 @@
       <view-actions
         v-if="!isEdit"
         @close="$emit('close')"
-        @edit="isEdit = true"
+        @edit="$emit('edit')"
       />
     </v-card-title>
 
@@ -166,11 +166,16 @@
 
     <v-card-actions v-if="isEdit">
       <v-spacer />
-      <v-btn text color="primary" @click="isEdit = false">
+      <v-btn text color="primary" @click="$emit('edit')">
         Cancel
       </v-btn>
       <!-- TODO: only enable when there are updates -->
-      <v-btn text color="primary" :disabled="!isEdit" @click="$emit('save')">
+      <v-btn
+        text
+        color="primary"
+        :disabled="!isEdit || Object.keys(updates).length === 0"
+        @click="$emit('save')"
+      >
         Save
       </v-btn>
     </v-card-actions>
@@ -206,24 +211,39 @@ const namespace = "inventory";
     TimingDates,
     ViewActions,
   },
-  computed: mapGetters(namespace, { current: "getCurrent" }),
+  computed: mapGetters(namespace, {
+    getCurrent: "getCurrent",
+    updates: "getCurrentUpdates",
+  }),
   methods: mapActions(namespace, ["updateCurrent"]),
 })
 export default class EditCard extends Vue {
-  current!: Furniture;
+  /* Properties for Vuex mapGetters and mapActions */
+
+  updates!: Partial<Furniture>;
+
+  getCurrent!: Furniture;
 
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
+
+  /* Props */
+
+  @Prop({ default: false })
+  readonly isEdit!: boolean;
 
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
-  offsetTop = 0;
-
+  /**
+   * Sets the offset when user scrolls
+   */
   onScroll(e: any): void {
     this.offsetTop = e.target.scrollTop;
   }
 
-  isEdit = false;
+  offsetTop = 0;
+
+  /* Form validation */
 
   valid = true;
 
@@ -235,7 +255,11 @@ export default class EditCard extends Vue {
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
-  id = "";
+  /* Getters and setters for form fields */
+
+  get current(): Furniture {
+    return { ...this.getCurrent, ...this.updates };
+  }
 
   get donor(): Donor {
     return this.current.donor;
