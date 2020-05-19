@@ -169,6 +169,7 @@
       <v-btn text color="primary" @click="isEdit = false">
         Cancel
       </v-btn>
+      <!-- TODO: only enable when there are updates -->
       <v-btn text color="primary" :disabled="!isEdit" @click="$emit('save')">
         Save
       </v-btn>

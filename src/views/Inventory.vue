@@ -111,6 +111,7 @@ export default class Inventory extends Vue {
   }
 
   /**
+   * TODO: warn when closing dialog with unsaved updates
    * Exits dialog and clears the current item
    */
   closeDialog(): void {
