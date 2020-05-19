@@ -10,7 +10,9 @@
       }"
       primary-title
     >
-      {{ isEdit ? "Edit" : "View" }} Furniture
+      <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
+      <v-spacer />
+      <view-actions @close="$emit('close')" />
     </v-card-title>
 
     <v-card-text id="scroll-target" class="pa-0">
@@ -158,12 +160,12 @@
       <v-divider />
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions v-if="isEdit">
       <v-spacer />
       <v-btn text color="primary" @click="$emit('cancel')">
         Cancel
       </v-btn>
-      <v-btn text color="primary" @click="$emit('save')">
+      <v-btn text color="primary" :disabled="!isEdit" @click="$emit('save')">
         Save
       </v-btn>
     </v-card-actions>
@@ -186,6 +188,7 @@ import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
+import ViewActions from "./EditCard/ViewActions.vue";
 
 const namespace = "inventory";
 
@@ -196,6 +199,7 @@ const namespace = "inventory";
     DatePickerMenu,
     AttributeQuestions,
     TimingDates,
+    ViewActions,
   },
   computed: mapGetters(namespace, { current: "getCurrent" }),
   methods: mapActions(namespace, ["updateCurrent"]),
