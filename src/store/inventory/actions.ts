@@ -22,10 +22,9 @@ const actions: ActionTree<InventoryState, RootState> = {
   async commitUpdates({ commit, state }) {
     try {
       await updateItem(state.current!.id, state.currentUpdates);
-      console.log("commit update success");
       commit(types.CLEAR_UPDATES);
     } catch (e) {
-      console.log("commit update failure");
+      console.log("commitUpdates error: ", e);
     }
   },
   setSelected({ commit }, { list }: { list: Furniture[] }) {

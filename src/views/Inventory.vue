@@ -128,7 +128,6 @@ export default class Inventory extends Vue {
    */
   onItemClick(item: Furniture): void {
     this.setCurrent({ item });
-    console.log("current: ", this.current);
     this.dialog = true;
   }
 }
