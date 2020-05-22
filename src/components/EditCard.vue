@@ -10,7 +10,7 @@
       }"
       primary-title
     >
-      {{ isEdit ? "Edit" : "Add" }} Furniture
+      {{ isEdit ? "Edit" : "View" }} Furniture
     </v-card-title>
 
     <v-card-text id="scroll-target" class="pa-0">
@@ -23,7 +23,8 @@
 
               <!-- TODO: make these just normal text when in readonly -->
               <v-text-field
-                v-model="donorName"
+                :value="donor.name"
+                @input="updateDonor('name', $event)"
                 :rules="required"
                 label="Donor Name"
                 required
@@ -32,7 +33,8 @@
               />
 
               <v-text-field
-                v-model="phone"
+                :value="donor.phone"
+                @input="updateDonor('phone', $event)"
                 :rules="required"
                 label="Phone Number"
                 required
@@ -41,7 +43,8 @@
               />
 
               <v-text-field
-                v-model="email"
+                :value="donor.email"
+                @input="updateDonor('email', $event)"
                 :rules="emailRules"
                 label="Email"
                 required
@@ -50,7 +53,8 @@
               />
 
               <v-text-field
-                v-model="address"
+                :value="donor.address"
+                @input="updateDonor('address', $event)"
                 :rules="required"
                 label="Address"
                 required
@@ -59,10 +63,25 @@
               />
 
               <v-text-field
-                v-model="zone"
+                :value="donor.zone"
+                @input="updateDonor('zone', $event)"
                 :rules="required"
                 label="Zone"
                 required
+                :readonly="!isEdit"
+              />
+
+              <v-divider class="my-3" />
+
+              <!-- Status -->
+              <h2>Status</h2>
+
+              <v-select
+                v-model="status"
+                :items="statusOptions"
+                label="Furniture Status"
+                required
+                :prepend-icon="statusIcons[status]"
                 :readonly="!isEdit"
               />
 
@@ -85,68 +104,25 @@
                 :readonly="!isEdit"
               />
 
-              <physical-attr :fclass="fclass" :readonly="!isEdit" />
+              <physical-attributes
+                v-model="physical"
+                :fclass="fclass"
+                :readonly="!isEdit"
+              />
 
               <v-divider class="my-3" />
 
               <!-- Attributes -->
               <h2>Attributes</h2>
 
-              <attribute-question
-                v-for="attr in attributes"
-                :key="attr"
-                :attribute="attr"
-                @answer="updateAttr(attr, $event)"
-                :readonly="!isEdit"
-              />
+              <attribute-questions v-model="attributes" :readonly="!isEdit" />
 
               <v-divider class="my-3" />
 
               <!-- Timing -->
               <h2>Timing</h2>
 
-              <date-picker-menu
-                label="Date Offered"
-                @date="dateOffered = $event"
-                spacing="pb-3"
-                :readonly="!isEdit"
-              />
-
-              <date-picker-menu
-                label="Pickup By Date"
-                @date="pickupBy = $event"
-                spacing="pb-3"
-                :readonly="!isEdit"
-              />
-
-              <v-checkbox
-                v-model="urgent"
-                label="Urgent?"
-                hide-details
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the pickup date been confirmed?"
-                label="Confirmed Pickup Date"
-                @date="confirmedPickupDate = $event"
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the furniture been collected?"
-                label="Date Collected"
-                @date="dateCollected = $event"
-                :readonly="!isEdit"
-              />
-
-              <conditional-date
-                question="Has the furniture been delivered?"
-                label="Date Delivered"
-                @date="dateDelivered = $event"
-                class="pb-3"
-                :readonly="!isEdit"
-              />
+              <timing-dates v-model="timing" :readonly="!isEdit" />
 
               <v-divider class="my-3" />
 
@@ -185,10 +161,10 @@
     <v-card-actions>
       <v-spacer />
       <v-btn text color="primary" @click="$emit('cancel')">
-        CANCEL
+        Cancel
       </v-btn>
-      <v-btn text color="primary">
-        SAVE
+      <v-btn text :disabled="!isEdit" color="primary" @click="$emit('save')">
+        Save
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -197,24 +173,37 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { AttributesDict, Furniture } from "@/data/Furniture";
-import { FClass } from "@/data/furniture/Physical";
-import PhysicalAttr from "./EditCard/PhysicalAttr.vue";
+import { mapGetters, mapActions } from "vuex";
+// data
+import { Furniture, Status } from "@/data/Furniture";
+import Physical, { FClass } from "@/data/furniture/Physical";
+import Timing from "@/data/furniture/Timing";
+import Donor from "@/data/furniture/Donor";
+import Attributes from "@/data/furniture/Attributes";
+// components
+import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
-import AttributeQuestion from "./EditCard/AttributeQuestion.vue";
+import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
+import TimingDates from "./EditCard/TimingDates.vue";
+
+const namespace = "inventory";
 
 @Component({
   components: {
-    PhysicalAttr,
+    PhysicalAttributes,
     ConditionalDate,
     DatePickerMenu,
-    AttributeQuestion,
+    AttributeQuestions,
+    TimingDates,
   },
+  computed: mapGetters(namespace, { current: "getCurrent" }),
+  methods: mapActions(namespace, ["updateCurrent"]),
 })
 export default class EditCard extends Vue {
-  @Prop()
-  readonly furniture!: Furniture;
+  current!: Furniture;
+
+  updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
   @Prop({ default: false })
   readonly isEdit!: boolean;
@@ -230,95 +219,98 @@ export default class EditCard extends Vue {
 
   valid = true;
 
-  required = [(v: any): boolean | string => !!v || "This is required"];
+  // TODO: consider factoring out validation rules that are reused across the application
+  readonly required = [(v: any): boolean | string => !!v || "This is required"];
 
-  emailRules = [
+  readonly emailRules = [
     (v: any): boolean | string => !!v || "This is required",
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
   id = "";
 
-  donorName = "";
+  get donor(): Donor {
+    return this.current.donor;
+  }
 
-  phone = "";
+  updateDonor(key: string, value: string): void {
+    /* eslint-disable object-curly-newline */
+    this.updateCurrent({
+      updates: { donor: { ...this.current.donor, [key]: value } },
+    });
+    /* eslint-enable */
+  }
 
-  email = "";
+  get status(): Status {
+    return this.current.status;
+  }
 
-  address = "";
+  set status(value: Status) {
+    this.updateCurrent({ updates: { status: value } });
+  }
 
-  zone = "";
+  readonly statusOptions = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((value, index) => {
+      return { text: value, value: index };
+    });
 
-  fclass = "";
+  readonly statusIcons = [
+    "face",
+    "local_shipping",
+    "storefront",
+    "mood", // could also use "check" or "beenhere"
+    "not_listed_location",
+  ];
 
-  classOptions = Object.keys(FClass);
-  // size = -1;
-  // material = "";
-  // materialAlt = "";
-  // set = false;
-  // hasFrame = false;
-  // hasBoxSpring = false;
-  // numChairs = -1;
-  // heavy = false;
+  get fclass(): FClass {
+    return this.current.physical.class;
+  }
 
-  dateOffered = new Date().toISOString().substr(0, 10);
+  set fclass(value: FClass) {
+    /* eslint-disable object-curly-newline */
+    this.updateCurrent({
+      updates: { physical: { ...this.current.physical, class: value } },
+    });
+    /* eslint-enable */
+  }
 
-  pickupBy = new Date().toISOString().substr(0, 10);
+  readonly classOptions = Object.keys(FClass);
 
-  urgent = false;
+  get physical(): Physical {
+    return this.current.physical;
+  }
 
-  confirmedPickupDate = "";
+  set physical(value: Physical) {
+    this.updateCurrent({ updates: { physical: value } });
+  }
 
-  dateCollected = "";
+  get timing(): Timing {
+    return this.current.timing;
+  }
 
-  dateDelivered = "";
+  set timing(value: Timing) {
+    this.updateCurrent({ updates: { timing: value } });
+  }
 
-  attributes = Object.keys(AttributesDict);
+  get comments(): string {
+    return this.current.comments;
+  }
 
-  partsIntact = false;
+  get staffNotes(): string {
+    return this.current.staffNotes;
+  }
 
-  finishIntact = false;
+  set staffNotes(value: string) {
+    this.updateCurrent({ updates: { staffNotes: value } });
+  }
 
-  smokeFree = false;
+  get attributes(): Attributes {
+    return this.current.attributes;
+  }
 
-  petFree = false;
-
-  bedbugFree = false;
-
-  mildewFree = false;
-
-  donateToFriend = false;
-
-  comments = "";
-
-  staffNotes = "";
-
-  updateAttr(attr: string, value: boolean): void {
-    switch (attr) {
-      case "partsIntact":
-        this.partsIntact = value;
-        break;
-      case "finishIntact":
-        this.finishIntact = value;
-        break;
-      case "smokeFree":
-        this.smokeFree = value;
-        break;
-      case "petFree":
-        this.petFree = value;
-        break;
-      case "bedbugFree":
-        this.bedbugFree = value;
-        break;
-      case "mildewFree":
-        this.mildewFree = value;
-        break;
-      case "donateToFriend":
-        this.donateToFriend = value;
-        break;
-      default:
-        break;
-    }
+  set attributes(value: Attributes) {
+    this.updateCurrent({ updates: { attributes: value } });
   }
 }
 </script>

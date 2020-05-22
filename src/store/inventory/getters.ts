@@ -7,7 +7,9 @@ import { RootState } from "../types";
 const getters: GetterTree<InventoryState, RootState> = {
   getInventory: (state: InventoryState): Furniture[] => state.inventory,
   getSelected: (state: InventoryState): Furniture[] => state.selected,
-  getCurrent: (state: InventoryState): Furniture | undefined => state.current,
+  getCurrent: (state: InventoryState): Furniture | null => state.current,
+  getCurrentUpdates: (state: InventoryState): Partial<Furniture> =>
+    state.currentUpdates,
   getItem: (state: InventoryState) => (id: string): Furniture | undefined =>
     state.inventory.find((item: Furniture) => item.id === id),
   getItemIndex: (state: InventoryState, getters: any) => (

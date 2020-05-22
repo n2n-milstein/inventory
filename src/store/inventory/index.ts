@@ -10,7 +10,8 @@ import { RootState } from "../types";
 export const state: InventoryState = {
   inventory: [] as Furniture[],
   selected: [] as Furniture[],
-  current: undefined,
+  current: null,
+  currentUpdates: {},
 };
 
 const inventory: Module<InventoryState, RootState> = {
