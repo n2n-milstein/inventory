@@ -6,7 +6,9 @@ module.exports = {
     // TODO: eventually switch this to "error" for deployment
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", {
+      "endOfLine": "auto",
+    }],
     indent: "off",
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/no-unused-vars": "error",
