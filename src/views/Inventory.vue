@@ -46,8 +46,12 @@
       </v-col>
     </v-row>
 
-    <inventory-actions class="px-4 mb-4" :selected="selected.length > 0" />
-
+    <inventory-actions
+      class="px-4 mb-4"
+      :selected="selected.length > 0"
+      @download="getSpreadsheet"
+    />
+    
     <v-data-table
       v-model="selected"
       :search="search"
@@ -79,6 +83,10 @@ import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/functions";
+import "firebase/storage";
 
 const namespace = "inventory";
 
@@ -146,6 +154,31 @@ export default class Inventory extends Vue {
     this.bindInventory();
   }
 
+  getSpreadsheet(): void {
+    const getInventoryXLSX = firebase
+      .functions()
+      .httpsCallable("getInventoryXLSX");
+    const parsedobj = JSON.parse(JSON.stringify(this.selected));
+    const idArray = [];
+    for (let i = 0; i < this.selected.length; i += 1) {
+      idArray.push(parsedobj[i].id);
+    }
+    // Uncomment if running `npm run shell` for backend functions:
+    // firebase.functions().useFunctionsEmulator("http://localhost:5000");
+    getInventoryXLSX({ id: idArray })
+      .then((res) => {
+        const storage = firebase.storage();
+        const gsref = storage.refFromURL(`gs:/${res.data}`);
+        gsref.getDownloadURL().then((url) => {
+          window.open(url);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(this.selected.length); // workaround not using this
+      });
+  }
+
   /**
    * Toggles edit state `isEdit` and clears update if setting `isEdit`
    * to false
@@ -185,7 +218,6 @@ export default class Inventory extends Vue {
    */
   onItemClick(item: Furniture): void {
     this.setCurrent({ item });
-    console.log("current: ", this.current);
     this.editCard = true;
   }
 }
