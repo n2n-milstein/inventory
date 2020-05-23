@@ -23,7 +23,12 @@
       <v-container>
         <v-row v-scroll:#scroll-target="onScroll" class="px-4">
           <v-col cols="12">
-            <v-form ref="edit-form" v-model="valid" lazy-validation>
+            <v-form
+              ref="edit-form"
+              v-model="valid"
+              :class="{ 'readonly-text': !isEdit }"
+              lazy-validation
+            >
               <!-- Donor Info -->
               <h2>Donor Info</h2>
 
@@ -169,7 +174,6 @@
       <v-btn text color="primary" @click="$emit('edit')">
         Cancel
       </v-btn>
-      <!-- TODO: only enable when there are updates -->
       <v-btn
         text
         color="primary"
@@ -369,5 +373,13 @@ h2 {
 
 .no-line {
   border-bottom: none;
+}
+
+.readonly-text ::v-deep .v-text-field > .v-input__control > .v-input__slot {
+  &::before,
+  &::after {
+    content: none;
+    border: none;
+  }
 }
 </style>

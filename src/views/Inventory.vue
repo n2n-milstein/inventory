@@ -40,6 +40,7 @@
           append-icon="search"
           label="Search inventory"
           single-line
+          clearable
           hide-details
         />
       </v-col>
