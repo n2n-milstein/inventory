@@ -5,6 +5,7 @@
       width="750"
       persistent
       @click:outside="closeDialog()"
+      @keydown.escape="closeDialog()"
       scrollable
     >
       <edit-card
