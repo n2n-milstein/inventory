@@ -87,7 +87,16 @@
               <!-- Status -->
               <h2>Status</h2>
 
+              <v-text-field
+                v-if="!isEdit"
+                :value="statusOptions[status].text"
+                label="Furniture Status"
+                readonly
+                :prepend-icon="statusIcons[status]"
+              />
+
               <v-select
+                v-else
                 v-model="status"
                 :items="statusOptions"
                 label="Furniture Status"
@@ -105,7 +114,16 @@
                 Select a furniture class
               </h3>
 
+              <v-text-field
+                v-if="!isEdit"
+                :value="fclass"
+                label="Furniture Class"
+                readonly
+                prepend-icon="category"
+              />
+
               <v-select
+                v-else
                 v-model="fclass"
                 :items="classOptions"
                 :rules="[(v) => !!v || 'Item is required']"
