@@ -1,0 +1,48 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	// check that user is signed in with Google
+    function isSignedIn() {
+    		return (request.auth != null) && (request.auth.token.firebase.sign_in_provider == "google.com");
+    }
+    
+    // check that email ends with correct domain
+    function containsDomain() {
+    		return request.auth.token.email.matches('.*@n2ntompkins[.]org');
+    }
+    
+    // check for staff role associated with uid...needs testing
+    function isStaff() {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "staff";
+    }
+    
+    // check for driver role associated with uid
+    function isDriver() {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "driver";
+    }
+    
+    // anyone signed in & with email domain can read (ADD DOMAIN BACK!!!)
+    match /{document=**} {
+      allow read: if isSignedIn(); 
+    }
+    
+    // only driver can update furniture items; only staff can delete/add items
+    match /furniture/{document=**} {
+    	allow update: if isSignedIn() && isVolunteer();
+      allow write: if isSignedIn() && isStaff();
+    }
+    
+    // only staff can edit pending/rejected items
+    match /pending/{document=**} {
+    	allow write: if isSignedIn() && isStaff();
+    }
+    
+    match /rejected/{document=**} {
+    	allow write: if isSignedIn() && isStaff();
+    }
+    
+    // TESTING PURPOSES ONLY; MUST BE DELETED
+    match /formTest/{document=**} {
+    	allow read,write;
+    }
+  }
+}
