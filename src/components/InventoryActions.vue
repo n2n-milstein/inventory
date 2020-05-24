@@ -11,6 +11,7 @@
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
     </v-btn>
+    <!-- TODO: add tooltips -->
     <v-btn
       v-for="action in actions"
       class="ml-3"
@@ -33,10 +34,10 @@ export default class InventoryActions extends Vue {
   @Prop({ default: false })
   selected!: boolean;
 
-  actions = [
-    { icon: "archive", emit: "archive" },
-    { icon: "cloud_download", emit: "download" },
-    { icon: "playlist_add", emit: "list-add" },
+  readonly actions = [
+    { icon: "archive", desc: "Archive", emit: "archive" },
+    { icon: "cloud_download", desc: "Export to spreadsheet", emit: "download" },
+    { icon: "playlist_add", desc: "Add to run", emit: "list-add" },
   ];
 }
 </script>

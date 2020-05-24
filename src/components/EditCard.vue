@@ -10,14 +10,25 @@
       }"
       primary-title
     >
-      {{ isEdit ? "Edit" : "View" }} Furniture
+      <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
+      <v-spacer />
+      <view-actions
+        v-if="!isEdit"
+        @close="$emit('close')"
+        @edit="$emit('edit')"
+      />
     </v-card-title>
 
     <v-card-text id="scroll-target" class="pa-0">
       <v-container>
         <v-row v-scroll:#scroll-target="onScroll" class="px-4">
           <v-col cols="12">
-            <v-form ref="edit-form" v-model="valid" lazy-validation>
+            <v-form
+              ref="edit-form"
+              v-model="valid"
+              :class="{ 'readonly-text': !isEdit }"
+              lazy-validation
+            >
               <!-- Donor Info -->
               <h2>Donor Info</h2>
 
@@ -76,7 +87,16 @@
               <!-- Status -->
               <h2>Status</h2>
 
+              <v-text-field
+                v-if="!isEdit"
+                :value="statusOptions[status].text"
+                label="Furniture Status"
+                readonly
+                :prepend-icon="statusIcons[status]"
+              />
+
               <v-select
+                v-else
                 v-model="status"
                 :items="statusOptions"
                 label="Furniture Status"
@@ -94,7 +114,16 @@
                 Select a furniture class
               </h3>
 
+              <v-text-field
+                v-if="!isEdit"
+                :value="fclass"
+                label="Furniture Class"
+                readonly
+                prepend-icon="category"
+              />
+
               <v-select
+                v-else
                 v-model="fclass"
                 :items="classOptions"
                 :rules="[(v) => !!v || 'Item is required']"
@@ -158,12 +187,17 @@
       <v-divider />
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions v-if="isEdit">
       <v-spacer />
-      <v-btn text color="primary" @click="$emit('cancel')">
+      <v-btn text color="primary" @click="$emit('edit')">
         Cancel
       </v-btn>
-      <v-btn text :disabled="!isEdit" color="primary" @click="$emit('save')">
+      <v-btn
+        text
+        color="primary"
+        :disabled="!isEdit || updatesLength === 0"
+        @click="$emit('save')"
+      >
         Save
       </v-btn>
     </v-card-actions>
@@ -186,6 +220,7 @@ import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
+import ViewActions from "./EditCard/ViewActions.vue";
 
 const namespace = "inventory";
 
@@ -196,14 +231,25 @@ const namespace = "inventory";
     DatePickerMenu,
     AttributeQuestions,
     TimingDates,
+    ViewActions,
   },
-  computed: mapGetters(namespace, { current: "getCurrent" }),
+  computed: mapGetters(namespace, {
+    getCurrent: "getCurrent",
+    updates: "getCurrentUpdates",
+    updatesLength: "getUpdatesLength",
+  }),
   methods: mapActions(namespace, ["updateCurrent"]),
 })
 export default class EditCard extends Vue {
-  current!: Furniture;
+  /* Properties for Vuex mapGetters and mapActions */
+
+  updates!: Partial<Furniture>;
+
+  getCurrent!: Furniture;
 
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
+
+  /* Props */
 
   @Prop({ default: false })
   readonly isEdit!: boolean;
@@ -211,11 +257,16 @@ export default class EditCard extends Vue {
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
-  offsetTop = 0;
-
+  /**
+   * Sets the offset when user scrolls
+   */
   onScroll(e: any): void {
     this.offsetTop = e.target.scrollTop;
   }
+
+  offsetTop = 0;
+
+  /* Form validation */
 
   valid = true;
 
@@ -227,7 +278,11 @@ export default class EditCard extends Vue {
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
-  id = "";
+  /* Getters and setters for form fields */
+
+  get current(): Furniture {
+    return { ...this.getCurrent, ...this.updates };
+  }
 
   get donor(): Donor {
     return this.current.donor;
@@ -336,5 +391,13 @@ h2 {
 
 .no-line {
   border-bottom: none;
+}
+
+.readonly-text ::v-deep .v-text-field > .v-input__control > .v-input__slot {
+  &::before,
+  &::after {
+    content: none;
+    border: none;
+  }
 }
 </style>

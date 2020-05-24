@@ -10,6 +10,8 @@ const getters: GetterTree<InventoryState, RootState> = {
   getCurrent: (state: InventoryState): Furniture | null => state.current,
   getCurrentUpdates: (state: InventoryState): Partial<Furniture> =>
     state.currentUpdates,
+  getUpdatesLength: (state: InventoryState): number =>
+    Object.keys(state.currentUpdates).length,
   getItem: (state: InventoryState) => (id: string): Furniture | undefined =>
     state.inventory.find((item: Furniture) => item.id === id),
   getItemIndex: (state: InventoryState, getters: any) => (

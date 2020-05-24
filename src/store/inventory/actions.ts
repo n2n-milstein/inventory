@@ -17,10 +17,13 @@ const actions: ActionTree<InventoryState, RootState> = {
   },
   updateCurrent({ commit }, { updates }: { updates: Partial<Furniture> }) {
     commit(types.ADD_UPDATES, { updates });
-    commit(types.UPDATE_CURRENT, { updates });
+  },
+  clearUpdates({ commit }) {
+    commit(types.CLEAR_UPDATES);
   },
   async commitUpdates({ commit, state }) {
     try {
+      commit(types.UPDATE_CURRENT, { updates: state.currentUpdates });
       await updateItem(state.current!.id, state.currentUpdates);
       commit(types.CLEAR_UPDATES);
     } catch (e) {
