@@ -52,7 +52,7 @@
       :selected="selected.length > 0"
       @download="getSpreadsheet"
     />
-    
+
     <v-data-table
       v-model="selected"
       :search="search"
