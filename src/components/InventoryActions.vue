@@ -11,17 +11,23 @@
       <v-icon>add</v-icon>
       {{ selected ? "" : "Add" }}
     </v-btn>
-    <!-- TODO: add tooltips -->
-    <v-btn
-      v-for="action in actions"
-      class="ml-3"
-      :key="action.icon"
-      :disabled="!selected"
-      icon
-      @click="$emit(action.emit)"
-    >
-      <v-icon>{{ action.icon }}</v-icon>
-    </v-btn>
+
+    <v-tooltip bottom v-for="action in actions" :key="action.emit">
+      <template v-slot:activator="{ on }">
+        <span v-on="on">
+          <v-btn
+            class="ml-3"
+            :disabled="!selected"
+            icon
+            @click="$emit(action.emit)"
+            :loading="action.emit === 'download' && downloading"
+          >
+            <v-icon>{{ action.icon }}</v-icon>
+          </v-btn>
+        </span>
+      </template>
+      <span>{{ action.desc }}</span>
+    </v-tooltip>
   </v-row>
 </template>
 
@@ -34,10 +40,21 @@ export default class InventoryActions extends Vue {
   @Prop({ default: false })
   selected!: boolean;
 
+  @Prop({ default: false })
+  downloading!: boolean;
+
   readonly actions = [
-    { icon: "archive", desc: "Archive", emit: "archive" },
-    { icon: "cloud_download", desc: "Export to spreadsheet", emit: "download" },
-    { icon: "playlist_add", desc: "Add to run", emit: "list-add" },
+    { icon: "archive", desc: "Archive selected items", emit: "archive" },
+    {
+      icon: "cloud_download",
+      desc: "Export selected items to spreadsheet",
+      emit: "download",
+    },
+    {
+      icon: "playlist_add",
+      desc: "Add selected items to run",
+      emit: "list-add",
+    },
   ];
 }
 </script>

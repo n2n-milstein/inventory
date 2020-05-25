@@ -51,6 +51,7 @@
       class="px-4 mb-4"
       :selected="selected.length > 0"
       @download="getSpreadsheet"
+      :downloading="downloading"
     />
 
     <v-data-table
@@ -125,6 +126,8 @@ export default class Inventory extends Vue {
 
   commitUpdates!: () => void;
 
+  downloading = false;
+
   // TODO: replace with store
   selected = [];
 
@@ -156,6 +159,7 @@ export default class Inventory extends Vue {
   }
 
   getSpreadsheet(): void {
+    this.downloading = true;
     const getInventoryXLSX = firebase
       .functions()
       .httpsCallable("getInventoryXLSX");
@@ -173,10 +177,12 @@ export default class Inventory extends Vue {
         gsref.getDownloadURL().then((url) => {
           window.open(url);
         });
+        this.downloading = false;
       })
       .catch((err) => {
         console.log(err);
         console.log(this.selected.length); // workaround not using this
+        this.downloading = false;
       });
   }
 
