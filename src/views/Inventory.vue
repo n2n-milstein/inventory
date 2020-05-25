@@ -182,6 +182,7 @@ export default class Inventory extends Vue {
       .catch((err) => {
         console.log(err);
         console.log(this.selected.length); // workaround not using this
+        this.downloading = false;
       });
   }
 
