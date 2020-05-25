@@ -20,6 +20,7 @@
             :disabled="!selected"
             icon
             @click="$emit(action.emit)"
+            :loading="action.emit === 'download' && downloading"
           >
             <v-icon>{{ action.icon }}</v-icon>
           </v-btn>
@@ -38,6 +39,9 @@ import { Component, Prop } from "vue-property-decorator";
 export default class InventoryActions extends Vue {
   @Prop({ default: false })
   selected!: boolean;
+
+  @Prop({ default: false })
+  downloading!: boolean;
 
   readonly actions = [
     { icon: "archive", desc: "Archive selected items", emit: "archive" },
