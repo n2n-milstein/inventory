@@ -6,7 +6,7 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
     >
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="(item, i) in items">
           <v-row v-if="item.heading" :key="item.heading" align="center">
             <v-col cols="6">
               <v-subheader v-if="item.heading">
@@ -33,8 +33,8 @@
               </v-list-item-content>
             </template>
             <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
+              v-for="(child, j) in item.children"
+              :key="`child-${j}`"
               @click="goTo(child.route)"
             >
               <v-list-item-action v-if="child.icon">
@@ -47,6 +47,8 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
+
+          <v-divider v-else-if="item.divider" :key="i" dark class="my-2" />
 
           <v-list-item v-else :key="item.text" @click="goTo(item.route)">
             <v-list-item-action>
@@ -137,6 +139,7 @@ export default class Navigation extends Vue {
     //     { icon: "cancel", text: "Rejected", route: "rejected" },
     //   ],
     // },
+    { divider: true },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
     // { icon: "info", text: "About", route: "about" },
