@@ -63,7 +63,7 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      color="blue"
+      color="primary"
       app
       dark
       fixed
@@ -74,18 +74,13 @@
         {{ $route.name.toUpperCase()[0] + $route.name.slice(1) }}
       </v-toolbar-title>
       <v-spacer />
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>notifications</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon large v-on="on">
-            <v-avatar size="32px" tile>
-              <img
-                src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                alt="Vuetify"
-              />
-            </v-avatar>
+            <v-icon>exit_to_app</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -113,11 +108,14 @@ import "firebase/auth";
 
 @Component
 export default class Navigation extends Vue {
+  @Prop({ default: "" })
+  readonly source!: string;
+
   dialog = false;
 
   drawer = null;
 
-  profileItems = [
+  readonly profileItems = [
     {
       icon: "exit_to_app",
       text: "Sign Out",
@@ -125,27 +123,24 @@ export default class Navigation extends Vue {
     },
   ];
 
-  items = [
-    { icon: "home", text: "Home", route: "hello" },
+  readonly items = [
+    // { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
-    {
-      icon: "keyboard_arrow_up",
-      "icon-alt": "keyboard_arrow_down",
-      text: "Approvals",
-      model: false,
-      children: [
-        { icon: "check_circle", text: "Pending", route: "pending" },
-        { icon: "cancel", text: "Rejected", route: "rejected" },
-      ],
-    },
+    // {
+    //   icon: "keyboard_arrow_up",
+    //   "icon-alt": "keyboard_arrow_down",
+    //   text: "Approvals",
+    //   model: false,
+    //   children: [
+    //     { icon: "check_circle", text: "Pending", route: "pending" },
+    //     { icon: "cancel", text: "Rejected", route: "rejected" },
+    //   ],
+    // },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    { icon: "info", text: "About", route: "about" },
+    // { icon: "info", text: "About", route: "about" },
   ];
-
-  @Prop({ default: "" })
-  source!: string;
 
   goTo(route: string): void {
     this.$router.push({ name: route });
