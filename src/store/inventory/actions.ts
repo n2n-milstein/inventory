@@ -45,6 +45,12 @@ const actions: ActionTree<InventoryState, RootState> = {
   unbindInventory: firestoreAction(({ unbindFirestoreRef }) => {
     unbindFirestoreRef("inventory");
   }),
+  bindArchive: firestoreAction(({ bindFirestoreRef }) => {
+    return bindFirestoreRef("archive", db.collection(collections.ARCHIVE));
+  }),
+  unbindArchive: firestoreAction(({ unbindFirestoreRef }) => {
+    unbindFirestoreRef("archive");
+  }),
 };
 
 export default actions;

@@ -2,6 +2,7 @@ import { Furniture } from "@/data/Furniture";
 
 export interface InventoryState {
   inventory: Furniture[];
+  archive: Furniture[];
   current: Furniture | null;
   selected: Furniture[];
   currentUpdates: Partial<Furniture>;

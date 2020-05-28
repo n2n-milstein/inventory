@@ -9,6 +9,7 @@ import { RootState } from "../types";
 
 export const state: InventoryState = {
   inventory: [] as Furniture[],
+  archive: [] as Furniture[],
   selected: [] as Furniture[],
   current: null,
   currentUpdates: {},
