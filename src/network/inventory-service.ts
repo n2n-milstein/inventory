@@ -2,6 +2,8 @@ import { Furniture } from "@/data/Furniture";
 import db from "./db";
 import collections from "./collections";
 
+// TODO: add support for different collections (e.g., archive)
+
 /**
  * Adds an item to Firestore, setting its `id` and `dateAdded`.
  * @param item - item to add to collection in Firestore

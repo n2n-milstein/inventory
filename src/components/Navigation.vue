@@ -128,6 +128,7 @@ export default class Navigation extends Vue {
   readonly items = [
     // { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
+    { icon: "archive", text: "Archive", route: "archive" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
     // {
     //   icon: "keyboard_arrow_up",
