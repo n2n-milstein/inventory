@@ -1,7 +1,7 @@
 import { ActionTree } from "vuex";
 import { firestoreAction } from "vuexfire";
 import db from "@/network/db";
-import { updateItem } from "@/network/inventory-service";
+import FirestoreService from "@/network/firestore-service";
 import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
 import { InventoryState, types } from "./types";
@@ -21,10 +21,14 @@ const actions: ActionTree<InventoryState, RootState> = {
   clearUpdates({ commit }) {
     commit(types.CLEAR_UPDATES);
   },
-  async commitUpdates({ commit, state }) {
+  async commitUpdates(
+    { commit, state },
+    { collection }: { collection: collections },
+  ) {
     try {
+      const service = new FirestoreService(collection);
       commit(types.UPDATE_CURRENT, { updates: state.currentUpdates });
-      await updateItem(state.current!.id, state.currentUpdates);
+      await service.updateItem(state.current!.id, state.currentUpdates);
       commit(types.CLEAR_UPDATES);
     } catch (e) {
       console.log("commitUpdates error: ", e);

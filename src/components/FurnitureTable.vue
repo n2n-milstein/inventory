@@ -82,10 +82,11 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
+import { Status, Furniture } from "@/data/Furniture";
+import collections from "@/network/collections";
 import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
-import { Status, Furniture } from "@/data/Furniture";
 
 const namespace = "inventory";
 
@@ -109,6 +110,9 @@ const namespace = "inventory";
   ]),
 })
 export default class Inventory extends Vue {
+  @Prop({ default: null })
+  collection!: collections;
+
   @Prop({ default: [] as Furniture[] })
   items!: Furniture[];
 
@@ -128,7 +132,7 @@ export default class Inventory extends Vue {
 
   clearUpdates!: () => void;
 
-  commitUpdates!: () => void;
+  commitUpdates!: ({ collection }: { collection: collections }) => void;
 
   selected!: Furniture[];
 
@@ -183,7 +187,7 @@ export default class Inventory extends Vue {
    * Commits updates to Firestore
    */
   saveUpdates(): void {
-    this.commitUpdates();
+    this.commitUpdates({ collection: this.collection });
     this.isEdit = false;
   }
 
