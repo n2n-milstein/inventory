@@ -38,11 +38,12 @@ import { Component, Prop } from "vue-property-decorator";
 @Component({})
 export default class InventoryActions extends Vue {
   @Prop({ default: false })
-  selected!: boolean;
+  readonly selected!: boolean;
 
   @Prop({ default: false })
-  downloading!: boolean;
+  readonly downloading!: boolean;
 
+  // TODO: abstract this
   readonly actions = [
     { icon: "archive", desc: "Archive selected items", emit: "archive" },
     {

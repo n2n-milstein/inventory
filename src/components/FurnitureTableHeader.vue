@@ -24,10 +24,10 @@ import ViewTitle from "@/components/ViewTitle.vue";
 @Component({ components: { ViewTitle } })
 export default class FurnitureTableHeader extends Vue {
   @Prop({ default: "Default title" })
-  title!: string;
+  readonly title!: string;
 
   @Prop({})
-  value!: string;
+  readonly value!: string;
 
   updateSearch(value: string): void {
     this.$emit("input", value);

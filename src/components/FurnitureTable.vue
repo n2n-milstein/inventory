@@ -83,13 +83,13 @@ const namespace = "inventory";
 })
 export default class Inventory extends Vue {
   @Prop({ default: null })
-  collection!: collections;
+  readonly collection!: collections;
 
   @Prop({ default: [] as Furniture[] })
-  items!: Furniture[];
+  readonly items!: Furniture[];
 
   @Prop({ default: "" })
-  search!: string;
+  readonly search!: string;
 
   current!: Furniture;
 
