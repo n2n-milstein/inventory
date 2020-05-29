@@ -3,6 +3,7 @@
     title="Inventory"
     :items="inventory"
     :downloading="downloading"
+    :collection="COLLECTION"
     @download="getSpreadsheet()"
   />
 </template>
@@ -15,6 +16,7 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
 import "firebase/storage";
+import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
 import FurnitureTable from "@/components/FurnitureTable.vue";
 
@@ -30,6 +32,8 @@ const namespace = "inventory";
   methods: mapActions(namespace, ["bindInventory"]),
 })
 export default class Inventory extends Vue {
+  readonly COLLECTION = collections.INVENTORY;
+
   bindInventory!: () => Promise<void>;
 
   selected!: Furniture[];

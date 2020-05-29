@@ -3,6 +3,7 @@
     title="Archive"
     :items="archive"
     :downloading="downloading"
+    :collection="COLLECTION"
   />
 </template>
 
@@ -11,6 +12,7 @@ import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
 import { Furniture } from "@/data/Furniture";
+import collections from "@/network/collections";
 import FurnitureTable from "@/components/FurnitureTable.vue";
 
 const namespace = "inventory";
@@ -25,6 +27,8 @@ const namespace = "inventory";
   methods: mapActions(namespace, ["bindArchive"]),
 })
 export default class Inventory extends Vue {
+  readonly COLLECTION = collections.ARCHIVE;
+
   bindArchive!: () => Promise<void>;
 
   selected!: Furniture[];
