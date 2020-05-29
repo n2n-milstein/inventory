@@ -147,7 +147,7 @@ export default class Navigation extends Vue {
   ];
 
   goTo(route: string): void {
-    this.$router.push({ name: route });
+    if (this.$route.name !== route) this.$router.push({ name: route });
   }
 
   signOut(): void {
