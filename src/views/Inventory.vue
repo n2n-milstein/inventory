@@ -1,11 +1,22 @@
 <template>
-  <furniture-table
-    title="Inventory"
-    :items="inventory"
-    :downloading="downloading"
-    :collection="COLLECTION"
-    @download="getSpreadsheet()"
-  />
+  <v-col cols="12">
+    <furniture-table-header v-model="search" title="Inventory" />
+
+    <inventory-actions
+      class="px-4 mb-4"
+      :selected="selected.length > 0"
+      @download="getSpreadsheet"
+      :downloading="downloading"
+    />
+
+    <furniture-table
+      :search="search"
+      :items="inventory"
+      :downloading="downloading"
+      :collection="COLLECTION"
+      @download="getSpreadsheet()"
+    />
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -16,14 +27,16 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
 import "firebase/storage";
-import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
+import collections from "@/network/collections";
 import FurnitureTable from "@/components/FurnitureTable.vue";
+import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import InventoryActions from "@/components/InventoryActions.vue";
 
 const namespace = "inventory";
 
 @Component({
-  components: { FurnitureTable },
+  components: { FurnitureTable, FurnitureTableHeader, InventoryActions },
   computed: mapGetters(namespace, {
     inventory: "getInventory",
     current: "getCurrent",
@@ -39,6 +52,8 @@ export default class Inventory extends Vue {
   selected!: Furniture[];
 
   downloading = false;
+
+  search = "";
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in

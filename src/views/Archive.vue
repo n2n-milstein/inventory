@@ -1,10 +1,14 @@
 <template>
-  <furniture-table
-    title="Archive"
-    :items="archive"
-    :downloading="downloading"
-    :collection="COLLECTION"
-  />
+  <v-col cols="12">
+    <furniture-table-header v-model="search" title="Archive" />
+
+    <furniture-table
+      :search="search"
+      :items="archive"
+      :downloading="downloading"
+      :collection="COLLECTION"
+    />
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -14,11 +18,12 @@ import Component from "vue-class-component";
 import { Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 import FurnitureTable from "@/components/FurnitureTable.vue";
+import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 
 const namespace = "inventory";
 
 @Component({
-  components: { FurnitureTable },
+  components: { FurnitureTable, FurnitureTableHeader },
   computed: mapGetters(namespace, {
     archive: "getArchive",
     current: "getCurrent",
@@ -34,6 +39,8 @@ export default class Inventory extends Vue {
   selected!: Furniture[];
 
   downloading = false;
+
+  search = "";
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
