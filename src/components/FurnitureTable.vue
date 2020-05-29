@@ -174,8 +174,6 @@ export default class Inventory extends Vue {
       this.unsavedDialog = false;
       this.editCard = false;
       this.isEdit = false;
-      // TODO: determine why this causes null error on close
-      this.clearCurrent();
     } else {
       this.unsavedDialog = true;
     }
@@ -193,6 +191,8 @@ export default class Inventory extends Vue {
    * Activates dialog that displays the item information
    */
   onItemClick(item: Furniture): void {
+    // TODO: is this clearCurrent necessary?
+    this.clearCurrent();
     this.setCurrent({ item });
     this.editCard = true;
   }
