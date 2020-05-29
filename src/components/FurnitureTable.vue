@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12">
+  <div>
     <v-dialog
       v-model="editCard"
       width="750"
@@ -32,28 +32,6 @@
       </v-card>
     </v-dialog>
 
-    <v-row class="mb-3 px-4" align="baseline">
-      <view-title :title="title" />
-      <v-spacer />
-      <v-col cols="6">
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search inventory"
-          single-line
-          clearable
-          hide-details
-        />
-      </v-col>
-    </v-row>
-
-    <inventory-actions
-      class="px-4 mb-4"
-      :selected="selected.length > 0"
-      @download="getSpreadsheet"
-      :downloading="downloading"
-    />
-
     <v-data-table
       :value="selected"
       @input="setSelected({ list: $event })"
@@ -75,7 +53,7 @@
         {{ STATUS[item.status] }}
       </template>
     </v-data-table>
-  </v-col>
+  </div>
 </template>
 
 <script lang="ts">
@@ -84,18 +62,12 @@ import { mapActions, mapGetters } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
-import ViewTitle from "@/components/ViewTitle.vue";
-import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 
 const namespace = "inventory";
 
 @Component({
-  components: {
-    ViewTitle,
-    InventoryActions,
-    EditCard,
-  },
+  components: { EditCard },
   computed: mapGetters(namespace, {
     current: "getCurrent",
     updatesLength: "getUpdatesLength",
@@ -116,11 +88,11 @@ export default class Inventory extends Vue {
   @Prop({ default: [] as Furniture[] })
   items!: Furniture[];
 
-  @Prop({ default: "Default title" })
-  title!: string;
-
   @Prop({ default: false })
   downloading!: boolean;
+
+  @Prop({ default: "" })
+  search!: string;
 
   current!: Furniture;
 
@@ -141,8 +113,6 @@ export default class Inventory extends Vue {
   editCard = false;
 
   unsavedDialog = false;
-
-  search = "";
 
   readonly STATUS = Status;
 
