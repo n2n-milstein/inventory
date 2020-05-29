@@ -88,9 +88,6 @@ export default class Inventory extends Vue {
   @Prop({ default: [] as Furniture[] })
   items!: Furniture[];
 
-  @Prop({ default: false })
-  downloading!: boolean;
-
   @Prop({ default: "" })
   search!: string;
 
@@ -124,10 +121,6 @@ export default class Inventory extends Vue {
     { text: "Address", value: "donor.address" },
     { text: "Status", value: "status" },
   ];
-
-  getSpreadsheet(): void {
-    this.$emit("download");
-  }
 
   /**
    * Toggles edit state `isEdit` and clears update if setting `isEdit`
