@@ -12,7 +12,8 @@
     >
       <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
       <v-spacer />
-      <view-actions
+      <view-action-group
+        :actions="ACTIONS"
         v-if="!isEdit"
         @close="$emit('close')"
         @edit="$emit('edit')"
@@ -214,13 +215,14 @@ import Physical, { FClass } from "@/data/furniture/Physical";
 import Timing from "@/data/furniture/Timing";
 import Donor from "@/data/furniture/Donor";
 import Attributes from "@/data/furniture/Attributes";
+import ViewAction from "@/data/ViewAction";
 // components
 import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
-import ViewActions from "./EditCard/ViewActions.vue";
+import ViewActionGroup from "./ViewActionGroup.vue";
 
 const namespace = "inventory";
 
@@ -231,7 +233,7 @@ const namespace = "inventory";
     DatePickerMenu,
     AttributeQuestions,
     TimingDates,
-    ViewActions,
+    ViewActionGroup,
   },
   computed: mapGetters(namespace, {
     getCurrent: "getCurrent",
@@ -276,6 +278,24 @@ export default class EditCard extends Vue {
   readonly emailRules = [
     (v: any): boolean | string => !!v || "This is required",
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
+  ];
+
+  readonly ACTIONS: ViewAction[] = [
+    { icon: "edit", desc: "Edit Item", emit: "edit" },
+    {
+      icon: "more_vert",
+      desc: "More Actions",
+      emit: "menu",
+      menu: [
+        { icon: "archive", desc: "Archive", emit: "archive" },
+        {
+          icon: "cloud_download",
+          desc: "Export",
+          emit: "export",
+        },
+      ],
+    },
+    { icon: "close", desc: "Close", emit: "close" },
   ];
 
   /* Getters and setters for form fields */

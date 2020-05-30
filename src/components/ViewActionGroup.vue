@@ -38,26 +38,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ViewAction from "@/data/ViewAction";
+import { Prop } from "vue-property-decorator";
 
 @Component
-export default class ViewActions extends Vue {
-  readonly actions = [
-    { icon: "edit", desc: "Edit Item", emit: "edit" },
-    {
-      icon: "more_vert",
-      desc: "More Actions",
-      emit: "menu",
-      menu: [
-        // TODO: maybe import from InventoryActions
-        { icon: "archive", desc: "Archive", emit: "archive" },
-        {
-          icon: "cloud_download",
-          desc: "Export",
-          emit: "export",
-        },
-      ],
-    },
-    { icon: "close", desc: "Close", emit: "close" },
-  ];
+export default class ViewActionGroup extends Vue {
+  @Prop({})
+  readonly actions!: ViewAction[];
 }
 </script>
