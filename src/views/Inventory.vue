@@ -20,6 +20,7 @@
         :disabled="selected.length < 1"
         :downloading="downloading"
         @download="getSpreadsheet"
+        @archive="archiveItems()"
       />
     </v-row>
 
@@ -62,7 +63,7 @@ const namespace = "inventory";
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(namespace, ["bindInventory"]),
+  methods: mapActions(namespace, ["bindInventory", "archiveItems"]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.INVENTORY;
