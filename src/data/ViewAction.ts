@@ -6,6 +6,7 @@ interface SimpleAction {
 
 interface ViewAction extends SimpleAction {
   menu?: SimpleAction[];
+  loading?: () => boolean;
 }
 
 export default ViewAction;
