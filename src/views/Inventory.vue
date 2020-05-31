@@ -2,17 +2,30 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Inventory" />
 
-    <inventory-actions
-      class="px-4 mb-4"
-      :selected="selected.length > 0"
-      @download="getSpreadsheet"
-      :downloading="downloading"
-    />
+    <v-row class="px-4 mb-4">
+      <v-btn
+        :disabled="selected.length > 0"
+        :icon="selected.length > 0"
+        :outlined="selected.length > 0"
+        color="primary"
+        rounded
+      >
+        <v-icon>add</v-icon>
+        {{ selected.length > 0 ? "" : "Add" }}
+      </v-btn>
+      <view-action-group
+        class="ml-3"
+        disabled-message="Select items to use actions"
+        :actions="ACTIONS"
+        :disabled="selected.length < 1"
+        :downloading="downloading"
+        @download="getSpreadsheet"
+      />
+    </v-row>
 
     <furniture-table
       :search="search"
       :items="inventory"
-      :downloading="downloading"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
     />
@@ -27,16 +40,23 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
 import "firebase/storage";
-import { Furniture } from "@/data/Furniture";
+// network, data
 import collections from "@/network/collections";
+import { Furniture } from "@/data/Furniture";
+import ViewAction from "@/data/ViewAction";
+// components
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
-import InventoryActions from "@/components/InventoryActions.vue";
+import ViewActionGroup from "@/components/ViewActionGroup.vue";
 
 const namespace = "inventory";
 
 @Component({
-  components: { FurnitureTable, FurnitureTableHeader, InventoryActions },
+  components: {
+    FurnitureTable,
+    FurnitureTableHeader,
+    ViewActionGroup,
+  },
   computed: mapGetters(namespace, {
     inventory: "getInventory",
     current: "getCurrent",
@@ -54,6 +74,22 @@ export default class Inventory extends Vue {
   downloading = false;
 
   search = "";
+
+  readonly ACTIONS: ViewAction[] = [
+    { icon: "archive", desc: "Archive selected items", emit: "archive" },
+    {
+      icon: "cloud_download",
+      desc: "Export selected items to spreadsheet",
+      emit: "download",
+      // TODO: this doens't do anything, make this work
+      loading: (): boolean => this.downloading,
+    },
+    {
+      icon: "playlist_add",
+      desc: "Add selected items to run",
+      emit: "list-add",
+    },
+  ];
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
