@@ -8,7 +8,7 @@ export interface InventoryState {
   currentUpdates: Partial<Furniture>;
 }
 
-export enum types {
+export enum mutation {
   CLEAR_INVENTORY = "CLEAR_INVENTORY",
   SET_CURRENT = "SET_CURRENT",
   CLEAR_CURRENT = "CLEAR_CURRENT",

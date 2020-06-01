@@ -1,45 +1,45 @@
 import { MutationTree } from "vuex";
 import { Furniture } from "@/data/Furniture";
-import { InventoryState, types } from "./types";
+import { InventoryState, mutation } from "./types";
 
 const mutations: MutationTree<InventoryState> = {
-  [types.CLEAR_INVENTORY](state: InventoryState): void {
+  [mutation.CLEAR_INVENTORY](state: InventoryState): void {
     state.inventory = [];
   },
-  [types.SET_CURRENT](
+  [mutation.SET_CURRENT](
     state: InventoryState,
     { item }: { item: Furniture },
   ): void {
     state.current = item;
   },
-  [types.CLEAR_CURRENT](state: InventoryState): void {
+  [mutation.CLEAR_CURRENT](state: InventoryState): void {
     state.current = null;
   },
-  [types.UPDATE_CURRENT](
+  [mutation.UPDATE_CURRENT](
     state: InventoryState,
     { updates }: { updates: Partial<Furniture> },
   ): void {
     state.current = state.current ? { ...state.current, ...updates } : null;
   },
-  [types.ADD_UPDATES](
+  [mutation.ADD_UPDATES](
     state: InventoryState,
     { updates }: { updates: Partial<Furniture> },
   ): void {
     state.currentUpdates = { ...state.currentUpdates, ...updates };
   },
-  [types.CLEAR_UPDATES](state: InventoryState): void {
+  [mutation.CLEAR_UPDATES](state: InventoryState): void {
     state.currentUpdates = {};
   },
-  [types.SET_SELECTED](
+  [mutation.SET_SELECTED](
     state: InventoryState,
     { list }: { list: Furniture[] },
   ): void {
     state.selected = list;
   },
-  [types.CLEAR_SELECTED](state: InventoryState): void {
+  [mutation.CLEAR_SELECTED](state: InventoryState): void {
     state.selected = [];
   },
-  [types.ADD_SELECTED](
+  [mutation.ADD_SELECTED](
     state: InventoryState,
     { item }: { item: Furniture },
   ): void {
