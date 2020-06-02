@@ -1,10 +1,8 @@
 /* eslint no-shadow: ["error", { "allow": ["getters"] }] */
-import { GetterTree } from "vuex";
 import { Furniture } from "@/data/Furniture";
 import { InventoryState } from "./types";
-import { RootState } from "../types";
 
-const getters: GetterTree<InventoryState, RootState> = {
+const getters = {
   getInventory: (state: InventoryState): Furniture[] => state.inventory,
   getArchive: (state: InventoryState): Furniture[] => state.archive,
   getSelected: (state: InventoryState): Furniture[] => state.selected,

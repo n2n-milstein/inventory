@@ -1,8 +1,7 @@
-import { MutationTree } from "vuex";
 import { Furniture } from "@/data/Furniture";
 import { InventoryState, mutation } from "./types";
 
-const mutations: MutationTree<InventoryState> = {
+const mutations = {
   [mutation.CLEAR_INVENTORY](state: InventoryState): void {
     state.inventory = [];
   },

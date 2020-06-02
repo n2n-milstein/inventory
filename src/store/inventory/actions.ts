@@ -1,50 +1,51 @@
-import { ActionTree } from "vuex";
 import { firestoreAction } from "vuexfire";
 import db from "@/network/db";
 import FirestoreService from "@/network/firestore-service";
 import { archiveItem } from "@/network/inventory-service";
 import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
-import { InventoryState, mutation } from "./types";
-import { RootState } from "../types";
+import { mutation } from "./types";
 
-const actions: ActionTree<InventoryState, RootState> = {
-  setCurrent({ commit }, { item }: { item: Furniture }) {
+const actions = {
+  setCurrent({ commit }: any, { item }: { item: Furniture }): void {
     commit(mutation.SET_CURRENT, { item });
   },
-  clearCurrent({ commit }) {
+  clearCurrent({ commit }: any): void {
     commit(mutation.CLEAR_UPDATES);
     commit(mutation.CLEAR_CURRENT);
   },
-  updateCurrent({ commit }, { updates }: { updates: Partial<Furniture> }) {
+  updateCurrent(
+    { commit }: any,
+    { updates }: { updates: Partial<Furniture> },
+  ): void {
     commit(mutation.ADD_UPDATES, { updates });
   },
-  clearUpdates({ commit }) {
+  clearUpdates({ commit }: any): void {
     commit(mutation.CLEAR_UPDATES);
   },
   async commitUpdates(
-    { commit, state },
+    { commit, state }: any,
     { collection }: { collection: collections },
-  ) {
+  ): Promise<void> {
     try {
       const service = new FirestoreService(collection);
       commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
-      await service.updateItem(state.current!.id, state.currentUpdates);
+      await service.updateItem(state.current.id, state.currentUpdates);
       commit(mutation.CLEAR_UPDATES);
     } catch (e) {
       console.log("commitUpdates error: ", e);
     }
   },
-  setSelected({ commit }, { list }: { list: Furniture[] }) {
+  setSelected({ commit }: any, { list }: { list: Furniture[] }): void {
     commit(mutation.SET_SELECTED, { list });
   },
-  clearSelected({ commit }) {
+  clearSelected({ commit }: any): void {
     commit(mutation.CLEAR_SELECTED);
   },
-  addSelected({ commit }, { item }: { item: Furniture }) {
+  addSelected({ commit }: any, { item }: { item: Furniture }): void {
     commit(mutation.ADD_SELECTED, { item });
   },
-  archiveItems({ commit, state }) {
+  archiveItems({ commit, state }: any): void {
     try {
       state.selected.forEach(async (item: Furniture) => {
         await archiveItem(item.id);
