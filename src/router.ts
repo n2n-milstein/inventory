@@ -28,7 +28,7 @@ const router = new Router({
       path: "/home",
       name: "home",
       component: () => import("./views/Home.vue"),
-      redirect: { name: "hello" },
+      redirect: { name: "inventory" },
       beforeEnter(to, from, next): void {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
@@ -38,7 +38,7 @@ const router = new Router({
           }
         });
       },
-      // TODO: this is where most of the routes should be added
+      /** This is where most of the routes should be added */
       children: [
         {
           path: "/inventory",

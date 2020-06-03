@@ -6,7 +6,7 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
     >
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="(item, i) in items">
           <v-row v-if="item.heading" :key="item.heading" align="center">
             <v-col cols="6">
               <v-subheader v-if="item.heading">
@@ -33,8 +33,8 @@
               </v-list-item-content>
             </template>
             <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
+              v-for="(child, j) in item.children"
+              :key="`child-${j}`"
               @click="goTo(child.route)"
             >
               <v-list-item-action v-if="child.icon">
@@ -47,6 +47,8 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
+
+          <v-divider v-else-if="item.divider" :key="i" dark class="my-2" />
 
           <v-list-item v-else :key="item.text" @click="goTo(item.route)">
             <v-list-item-action>
@@ -63,7 +65,7 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      color="blue"
+      color="primary"
       app
       dark
       fixed
@@ -74,18 +76,13 @@
         {{ $route.name.toUpperCase()[0] + $route.name.slice(1) }}
       </v-toolbar-title>
       <v-spacer />
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>notifications</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon large v-on="on">
-            <v-avatar size="32px" tile>
-              <img
-                src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                alt="Vuetify"
-              />
-            </v-avatar>
+            <v-icon>exit_to_app</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -113,11 +110,14 @@ import "firebase/auth";
 
 @Component
 export default class Navigation extends Vue {
+  @Prop({ default: "" })
+  readonly source!: string;
+
   dialog = false;
 
   drawer = null;
 
-  profileItems = [
+  readonly profileItems = [
     {
       icon: "exit_to_app",
       text: "Sign Out",
@@ -125,27 +125,25 @@ export default class Navigation extends Vue {
     },
   ];
 
-  items = [
-    { icon: "home", text: "Home", route: "hello" },
+  readonly items = [
+    // { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
-    {
-      icon: "keyboard_arrow_up",
-      "icon-alt": "keyboard_arrow_down",
-      text: "Approvals",
-      model: false,
-      children: [
-        { icon: "check_circle", text: "Pending", route: "pending" },
-        { icon: "cancel", text: "Rejected", route: "rejected" },
-      ],
-    },
+    // {
+    //   icon: "keyboard_arrow_up",
+    //   "icon-alt": "keyboard_arrow_down",
+    //   text: "Approvals",
+    //   model: false,
+    //   children: [
+    //     { icon: "check_circle", text: "Pending", route: "pending" },
+    //     { icon: "cancel", text: "Rejected", route: "rejected" },
+    //   ],
+    // },
+    { divider: true },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    { icon: "info", text: "About", route: "about" },
+    // { icon: "info", text: "About", route: "about" },
   ];
-
-  @Prop({ default: "" })
-  source!: string;
 
   goTo(route: string): void {
     this.$router.push({ name: route });
