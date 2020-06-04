@@ -63,6 +63,7 @@
       label="Status Filter"
       multiple
     ></v-select>
+    <v-date-picker v-model="datesFilter" multiple> </v-date-picker>
 
     <inventory-actions
       class="px-4 mb-4"
@@ -103,6 +104,7 @@ import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
 import { FClass } from "@/data/furniture/Physical";
+import { Timestamp } from "@/data/furniture/Timing";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
@@ -157,6 +159,8 @@ export default class Inventory extends Vue {
 
   search = "";
 
+  datesFilter = [] as string[];
+
   classFilter = Object.keys(FClass);
 
   statusFilter = Object.values(Status)
@@ -186,7 +190,14 @@ export default class Inventory extends Vue {
           return this.classFilter.includes(value);
         },
       },
-      { text: "Date Added", value: "timing.dateAdded" },
+      {
+        text: "Date Added",
+        value: "timing.dateAdded",
+        filter: (value: any) => {
+          if (this.datesFilter.length === 0) return true;
+          return this.datesFilter.includes(Inventory.formatDate(value));
+        },
+      },
       { text: "Address", value: "donor.address" },
       {
         text: "Status",
@@ -196,6 +207,12 @@ export default class Inventory extends Vue {
         },
       },
     ];
+  }
+
+  static formatDate(date?: Date | Timestamp): string {
+    if (!date) return "";
+    if (date instanceof Date) return date.toISOString().substring(0, 10);
+    return date.toDate().toISOString().substring(0, 10);
   }
 
   /**
