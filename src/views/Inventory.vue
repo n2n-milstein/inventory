@@ -64,8 +64,6 @@
       multiple
     ></v-select>
 
-    <p>{{ statusFilter }}</p>
-
     <inventory-actions
       class="px-4 mb-4"
       :selected="selected.length > 0"
@@ -104,6 +102,7 @@ import ViewTitle from "@/components/ViewTitle.vue";
 import InventoryActions from "@/components/InventoryActions.vue";
 import EditCard from "@/components/EditCard.vue";
 import { Status, Furniture } from "@/data/Furniture";
+import { FClass } from "@/data/furniture/Physical";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/functions";
@@ -158,13 +157,21 @@ export default class Inventory extends Vue {
 
   search = "";
 
-  classFilter = ["Chair"]; // Kira made
+  classFilter = Object.keys(FClass);
 
-  statusFilter = [0, 1]; // Kira made
+  statusFilter = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((text, index) => {
+      return index;
+    });
 
-  readonly classCheckboxes = ["Chair"]; // Kira made
+  readonly classCheckboxes = Object.keys(FClass);
 
-  readonly statusCheckboxes = [0, 1]; // Kira made
+  readonly statusCheckboxes = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((value, index) => {
+      return { text: value, value: index };
+    });
 
   readonly status = Status;
 
