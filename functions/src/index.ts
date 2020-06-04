@@ -115,7 +115,6 @@ async function getData(id: string[], category: string): Promise<string> {
 
   // converting each inventory entry to single-layer JSON object
   const furnitureData = await furniture.get();
-  console.log(category);
   furnitureData.forEach((doc) => {
     const item = doc.data();
     // only putting selected items into spreadsheet
