@@ -1,6 +1,6 @@
 import { Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
-import { Module } from "vuex";
+import { Module, ActionTree } from "vuex";
 import getters from "./getters";
 import actions from "./actions";
 import mutations from "./mutations";
@@ -17,12 +17,13 @@ export const state: CollectionState = {
 
 export default function createCollectionModule(
   collection: collections,
+  moduleActions?: ActionTree<CollectionState, RootState>,
 ): Module<CollectionState, RootState> {
   return {
     namespaced: true,
     state: (): CollectionState => ({ ...state, collection }),
     getters,
-    actions,
+    actions: { ...actions, ...moduleActions },
     mutations,
   };
 }
