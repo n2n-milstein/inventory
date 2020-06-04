@@ -20,21 +20,21 @@ import collections from "@/network/collections";
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 
-const namespace = "inventory";
+const namespace = "archive";
 
 @Component({
   components: { FurnitureTable, FurnitureTableHeader },
   computed: mapGetters(namespace, {
-    archive: "getArchive",
+    archive: "getItems",
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(namespace, ["bindArchive"]),
+  methods: mapActions(namespace, ["bindItems"]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
 
-  bindArchive!: () => Promise<void>;
+  bindItems!: () => Promise<void>;
 
   selected!: Furniture[];
 
@@ -47,7 +47,7 @@ export default class Inventory extends Vue {
    * store to Firebase.
    */
   mounted(): void {
-    this.bindArchive();
+    this.bindItems();
   }
 
   // getSpreadsheet(): void {

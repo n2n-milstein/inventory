@@ -59,16 +59,16 @@ const namespace = "inventory";
     ViewActionGroup,
   },
   computed: mapGetters(namespace, {
-    inventory: "getInventory",
+    inventory: "getItems",
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(namespace, ["bindInventory", "archiveItems"]),
+  methods: mapActions(namespace, ["bindItems", "archiveItems"]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.INVENTORY;
 
-  bindInventory!: () => Promise<void>;
+  bindItems!: () => Promise<void>;
 
   selected!: Furniture[];
 
@@ -97,7 +97,7 @@ export default class Inventory extends Vue {
    * store to Firebase.
    */
   mounted(): void {
-    this.bindInventory();
+    this.bindItems();
   }
 
   getSpreadsheet(): void {
