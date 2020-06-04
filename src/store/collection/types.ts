@@ -40,7 +40,6 @@ export enum action {
   SET_SELECTED = "setSelected",
   CLEAR_SELECTED = "clearSelected",
   ADD_SELECTED = "addSelected",
-  ARCHIVE_ITEMS = "archiveItems",
   BIND_ITEMS = "bindItems",
   UNBIND_ITEMS = "unbindItems",
 }

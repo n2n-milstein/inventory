@@ -1,7 +1,6 @@
 import { firestoreAction } from "vuexfire";
 import db from "@/network/db";
 import FirestoreService from "@/network/firestore-service";
-import { archiveItem } from "@/network/inventory-service";
 import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
 import { ActionTree } from "vuex";
@@ -46,16 +45,6 @@ const actions: ActionTree<CollectionState, RootState> = {
   },
   [action.ADD_SELECTED]({ commit }, { item }: { item: Furniture }): void {
     commit(mutation.ADD_SELECTED, { item });
-  },
-  [action.ARCHIVE_ITEMS]({ commit, state }): void {
-    try {
-      state.selected.forEach(async (item: Furniture) => {
-        await archiveItem(item.id);
-      });
-      commit(mutation.CLEAR_SELECTED);
-    } catch (e) {
-      console.log("archiveItems error: ", e);
-    }
   },
   [action.BIND_ITEMS]: firestoreAction<CollectionState, RootState>(
     ({ bindFirestoreRef, state }) => {
