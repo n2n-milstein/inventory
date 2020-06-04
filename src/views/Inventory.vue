@@ -47,6 +47,25 @@
       </v-col>
     </v-row>
 
+    <v-select
+      v-model="classFilter"
+      :items="classCheckboxes"
+      attach
+      chips
+      label="Class Filter"
+      multiple
+    ></v-select>
+    <v-select
+      v-model="statusFilter"
+      :items="statusCheckboxes"
+      attach
+      chips
+      label="Status Filter"
+      multiple
+    ></v-select>
+
+    <p>{{ statusFilter }}</p>
+
     <inventory-actions
       class="px-4 mb-4"
       :selected="selected.length > 0"
@@ -139,15 +158,35 @@ export default class Inventory extends Vue {
 
   search = "";
 
+  classFilter = ["Chair"]; // Kira made
+
+  statusFilter = [0, 1]; // Kira made
+
+  readonly classCheckboxes = ["Chair"]; // Kira made
+
+  readonly statusCheckboxes = [0, 1]; // Kira made
+
   readonly status = Status;
 
   readonly pagination = { itemsPerPage: -1 };
 
   readonly headers = [
-    { text: "Class", value: "physical.class" },
+    {
+      text: "Class",
+      value: "physical.class",
+      filter: (value) => {
+        return this.classFilter.includes(value);
+      },
+    },
     { text: "Date Added", value: "timing.dateAdded" },
     { text: "Address", value: "donor.address" },
-    { text: "Status", value: "status" },
+    {
+      text: "Status",
+      value: "status",
+      filter: (value) => {
+        return this.statusFilter.includes(value);
+      },
+    },
   ];
 
   /**
