@@ -170,24 +170,26 @@ export default class Inventory extends Vue {
 
   readonly pagination = { itemsPerPage: -1 };
 
-  readonly headers = [
-    {
-      text: "Class",
-      value: "physical.class",
-      filter: (value) => {
-        return this.classFilter.includes(value);
+  get headers(): any {
+    return [
+      {
+        text: "Class",
+        value: "physical.class",
+        filter: (value: any) => {
+          return this.classFilter.includes(value);
+        },
       },
-    },
-    { text: "Date Added", value: "timing.dateAdded" },
-    { text: "Address", value: "donor.address" },
-    {
-      text: "Status",
-      value: "status",
-      filter: (value) => {
-        return this.statusFilter.includes(value);
+      { text: "Date Added", value: "timing.dateAdded" },
+      { text: "Address", value: "donor.address" },
+      {
+        text: "Status",
+        value: "status",
+        filter: (value: any) => {
+          return this.statusFilter.includes(value);
+        },
       },
-    },
-  ];
+    ];
+  }
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
