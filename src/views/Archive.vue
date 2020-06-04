@@ -62,7 +62,7 @@ export default class Inventory extends Vue {
   //   }
   //   // Uncomment if running `npm run shell` for backend functions:
   //   // firebase.functions().useFunctionsEmulator("http://localhost:5000");
-  //   getInventoryXLSX({ id: idArray })
+  //   getInventoryXLSX({ id: idArray, category: "archive" })
   //     .then((res) => {
   //       const storage = firebase.storage();
   //       const gsref = storage.refFromURL(`gs:/${res.data}`);
