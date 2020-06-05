@@ -15,9 +15,8 @@
                   v-on="{ ...tooltip }"
                   @click="$emit(action.emit)"
                   :disabled="disabled"
-                  :loading="action.emit === 'download' && downloading"
+                  :loading="action.loading && action.loading()"
                 >
-                  <!-- TODO: abstract this loading -->
                   <v-icon>{{ action.icon }}</v-icon>
                 </v-btn>
               </template>
@@ -59,8 +58,5 @@ export default class ViewActionGroup extends Vue {
 
   @Prop({ default: "" })
   readonly disabledMessage!: string;
-
-  @Prop({ default: false })
-  readonly downloading!: boolean;
 }
 </script>

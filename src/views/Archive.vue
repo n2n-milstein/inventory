@@ -6,7 +6,7 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="ACTIONS"
+        :actions="actions"
         :disabled="selected.length < 1"
         @unarchive="unarchiveItems()"
       />
@@ -53,15 +53,21 @@ const NAMESPACE = "archive";
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
 
-  readonly ACTIONS: ViewAction[] = [
-    { icon: "unarchive", desc: "Unarchive selected items", emit: "unarchive" },
-    {
-      icon: "cloud_download",
-      desc: "Export selected items to spreadsheet",
-      emit: "download",
-      loading: (): boolean => this.downloading,
-    },
-  ];
+  get actions(): ViewAction[] {
+    return [
+      {
+        icon: "unarchive",
+        desc: "Unarchive selected items",
+        emit: "unarchive",
+      },
+      {
+        icon: "cloud_download",
+        desc: "Export selected items to spreadsheet",
+        emit: "download",
+        loading: (): boolean => this.downloading,
+      },
+    ];
+  }
 
   bindItems!: () => Promise<void>;
 

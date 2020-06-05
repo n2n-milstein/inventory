@@ -16,9 +16,8 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="ACTIONS"
+        :actions="actions"
         :disabled="selected.length < 1"
-        :downloading="downloading"
         @download="getSpreadsheet"
         @archive="archiveItems()"
       />
@@ -77,22 +76,22 @@ export default class Inventory extends Vue {
 
   search = "";
 
-  // TODO: try making this computed
-  readonly ACTIONS: ViewAction[] = [
-    { icon: "archive", desc: "Archive selected items", emit: "archive" },
-    {
-      icon: "cloud_download",
-      desc: "Export selected items to spreadsheet",
-      emit: "download",
-      // TODO: this doens't do anything, make this work
-      loading: (): boolean => this.downloading,
-    },
-    {
-      icon: "playlist_add",
-      desc: "Add selected items to run",
-      emit: "list-add",
-    },
-  ];
+  get actions(): ViewAction[] {
+    return [
+      { icon: "archive", desc: "Archive selected items", emit: "archive" },
+      {
+        icon: "cloud_download",
+        desc: "Export selected items to spreadsheet",
+        emit: "download",
+        loading: (): boolean => this.downloading,
+      },
+      {
+        icon: "playlist_add",
+        desc: "Add selected items to run",
+        emit: "list-add",
+      },
+    ];
+  }
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
