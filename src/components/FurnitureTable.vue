@@ -9,6 +9,7 @@
       scrollable
     >
       <edit-card
+        :namespace="namespace"
         :is-edit="isEdit"
         @edit="toggleEdit()"
         @close="closeDialog()"
@@ -58,30 +59,47 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 import EditCard from "@/components/EditCard.vue";
 
-const namespace = "inventory";
-
 @Component({
   components: { EditCard },
-  computed: mapGetters(namespace, {
-    current: "getCurrent",
-    updatesLength: "getUpdatesLength",
-    selected: "getSelected",
+  computed: mapState({
+    current(state, getters) {
+      return getters[`${this.namespace}/getCurrent`];
+    },
+    updatesLength(state, getters) {
+      return getters[`${this.namespace}/getUpdatesLength`];
+    },
+    selected(state, getters) {
+      return getters[`${this.namespace}/getSelected`];
+    },
   }),
-  methods: mapActions(namespace, [
-    "setCurrent",
-    "clearCurrent",
-    "clearUpdates",
-    "commitUpdates",
-    "setSelected",
-  ]),
+  methods: mapActions({
+    setCurrent(dispatch, payload) {
+      return dispatch(`${this.namespace}/setCurrent`, payload);
+    },
+    clearCurrent(dispatch) {
+      return dispatch(`${this.namespace}/clearCurrent`);
+    },
+    clearUpdates(dispatch) {
+      return dispatch(`${this.namespace}/clearUpdates`);
+    },
+    commitUpdates(dispatch, payload) {
+      return dispatch(`${this.namespace}/commitUpdates`, payload);
+    },
+    setSelected(dispatch, payload) {
+      return dispatch(`${this.namespace}/setSelected`, payload);
+    },
+  }),
 })
 export default class Inventory extends Vue {
+  @Prop({ default: "inventory" })
+  readonly namespace!: string;
+
   @Prop({ default: null })
   readonly collection!: collections;
 
@@ -159,7 +177,7 @@ export default class Inventory extends Vue {
    */
   onItemClick(item: Furniture): void {
     // TODO: is this clearCurrent necessary?
-    this.clearCurrent();
+    // this.clearCurrent();
     this.setCurrent({ item });
     this.editCard = true;
   }

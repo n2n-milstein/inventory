@@ -25,6 +25,7 @@
     </v-row>
 
     <furniture-table
+      namespace="inventory"
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
@@ -50,7 +51,7 @@ import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 
-const namespace = "inventory";
+const NAMESPACE = "inventory";
 
 @Component({
   components: {
@@ -58,12 +59,12 @@ const namespace = "inventory";
     FurnitureTableHeader,
     ViewActionGroup,
   },
-  computed: mapGetters(namespace, {
+  computed: mapGetters(NAMESPACE, {
     inventory: "getItems",
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(namespace, ["bindItems", "archiveItems"]),
+  methods: mapActions(NAMESPACE, ["bindItems", "archiveItems"]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.INVENTORY;
@@ -76,6 +77,7 @@ export default class Inventory extends Vue {
 
   search = "";
 
+  // TODO: try making this computed
   readonly ACTIONS: ViewAction[] = [
     { icon: "archive", desc: "Archive selected items", emit: "archive" },
     {

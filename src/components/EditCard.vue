@@ -208,7 +208,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 // data
 import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
@@ -224,8 +224,6 @@ import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
 import ViewActionGroup from "./ViewActionGroup.vue";
 
-const namespace = "inventory";
-
 @Component({
   components: {
     PhysicalAttributes,
@@ -235,12 +233,22 @@ const namespace = "inventory";
     TimingDates,
     ViewActionGroup,
   },
-  computed: mapGetters(namespace, {
-    getCurrent: "getCurrent",
-    updates: "getCurrentUpdates",
-    updatesLength: "getUpdatesLength",
+  computed: mapState({
+    getCurrent(state, getters) {
+      return getters[`${this.namespace}/getCurrent`];
+    },
+    updatesLength(state, getters) {
+      return getters[`${this.namespace}/getUpdatesLength`];
+    },
+    updates(state, getters) {
+      return getters[`${this.namespace}/getCurrentUpdates`];
+    },
   }),
-  methods: mapActions(namespace, ["updateCurrent"]),
+  methods: mapActions({
+    updateCurrent(dispatch, payload) {
+      return dispatch(`${this.namespace}/updateCurrent`, payload);
+    },
+  }),
 })
 export default class EditCard extends Vue {
   /* Properties for Vuex mapGetters and mapActions */
@@ -252,6 +260,9 @@ export default class EditCard extends Vue {
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
   /* Props */
+
+  @Prop({ default: "inventory" })
+  readonly namespace!: string;
 
   @Prop({ default: false })
   readonly isEdit!: boolean;

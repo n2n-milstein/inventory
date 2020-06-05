@@ -3,6 +3,7 @@
     <furniture-table-header v-model="search" title="Archive" />
 
     <furniture-table
+      namespace="archive"
       :search="search"
       :items="archive"
       :downloading="downloading"
@@ -15,24 +16,42 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
+// data
 import { Furniture } from "@/data/Furniture";
+import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
+// components
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import ViewActionGroup from "@/components/ViewActionGroup.vue";
 
-const namespace = "archive";
+const NAMESPACE = "archive";
 
 @Component({
-  components: { FurnitureTable, FurnitureTableHeader },
-  computed: mapGetters(namespace, {
+  components: {
+    FurnitureTable,
+    FurnitureTableHeader,
+    ViewActionGroup,
+  },
+  computed: mapGetters(NAMESPACE, {
     archive: "getItems",
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(namespace, ["bindItems"]),
+  methods: mapActions(NAMESPACE, ["bindItems", "unarchiveItems"]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
+
+  readonly ACTIONS: ViewAction[] = [
+    { icon: "unarchive", desc: "Unarchive selected items", emit: "unarchive" },
+    {
+      icon: "cloud_download",
+      desc: "Export selected items to spreadsheet",
+      emit: "download",
+      loading: (): boolean => this.downloading,
+    },
+  ];
 
   bindItems!: () => Promise<void>;
 
