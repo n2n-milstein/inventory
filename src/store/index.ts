@@ -4,7 +4,8 @@ import { vuexfireMutations } from "vuexfire";
 import collections from "@/network/collections";
 import { RootState } from "./types";
 import createCollectionModule from "./collection";
-import { actions } from "./collection/modules/inventory";
+import { actions as inventoryActions } from "./collection/modules/inventory";
+import { actions as archiveActions } from "./collection/modules/archive";
 
 Vue.use(Vuex);
 
@@ -12,8 +13,8 @@ const store: StoreOptions<RootState> = {
   state: () => ({ version: "0.3" }),
   mutations: { ...vuexfireMutations },
   modules: {
-    inventory: createCollectionModule(collections.INVENTORY, actions),
-    archive: createCollectionModule(collections.ARCHIVE),
+    inventory: createCollectionModule(collections.INVENTORY, inventoryActions),
+    archive: createCollectionModule(collections.ARCHIVE, archiveActions),
   },
   strict: process.env.NODE_ENV !== "production",
 };
