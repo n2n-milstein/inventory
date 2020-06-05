@@ -2,6 +2,16 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Archive" />
 
+    <v-row class="px-4 mb-4">
+      <view-action-group
+        class="ml-3"
+        disabled-message="Select items to use actions"
+        :actions="ACTIONS"
+        :disabled="selected.length < 1"
+        @unarchive="unarchiveItems()"
+      />
+    </v-row>
+
     <furniture-table
       namespace="archive"
       :search="search"
