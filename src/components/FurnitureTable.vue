@@ -176,8 +176,7 @@ export default class Inventory extends Vue {
    * Activates dialog that displays the item information
    */
   onItemClick(item: Furniture): void {
-    // TODO: is this clearCurrent necessary?
-    // this.clearCurrent();
+    this.clearUpdates();
     this.setCurrent({ item });
     this.editCard = true;
   }
