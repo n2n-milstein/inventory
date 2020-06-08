@@ -47,23 +47,48 @@
       </v-col>
     </v-row>
 
-    <v-select
-      v-model="classFilter"
-      :items="classCheckboxes"
-      attach
-      chips
-      label="Class Filter"
-      multiple
-    ></v-select>
-    <v-select
-      v-model="statusFilter"
-      :items="statusCheckboxes"
-      attach
-      chips
-      label="Status Filter"
-      multiple
-    ></v-select>
-    <v-date-picker v-model="datesFilter" multiple> </v-date-picker>
+    <v-row>
+      <v-col cols="4">
+        <v-select
+          v-model="classFilter"
+          :items="classCheckboxes"
+          attach
+          chips
+          label="Class Filter"
+          multiple
+        ></v-select>
+      </v-col>
+      <v-col cols="4">
+        <v-select
+          v-model="statusFilter"
+          :items="statusCheckboxes"
+          attach
+          chips
+          label="Status Filter"
+          multiple
+        ></v-select>
+      </v-col>
+      <v-col cols="4">
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          :close-on-click="true"
+          :offset-y="true"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="datesFilter"
+              label="Date Filter"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="datesFilter" no-title multiple width="320">
+          </v-date-picker>
+        </v-menu>
+      </v-col>
+    </v-row>
 
     <inventory-actions
       class="px-4 mb-4"
@@ -158,6 +183,8 @@ export default class Inventory extends Vue {
   unsavedDialog = false;
 
   search = "";
+
+  menu = false;
 
   datesFilter = [] as string[];
 
