@@ -47,49 +47,63 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="4">
-        <v-select
-          v-model="classFilter"
-          :items="classCheckboxes"
-          attach
-          chips
-          label="Class Filter"
-          multiple
-        ></v-select>
-      </v-col>
-      <v-col cols="4">
-        <v-select
-          v-model="statusFilter"
-          :items="statusCheckboxes"
-          attach
-          chips
-          label="Status Filter"
-          multiple
-        ></v-select>
-      </v-col>
-      <v-col cols="4">
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :close-on-click="true"
-          :offset-y="true"
-        >
-          <template v-slot:activator="{ on }">
-            <v-combobox
-              v-model="datesFilter"
-              chips
-              label="Date Filter"
-              multiple
-              v-on="on"
-            ></v-combobox>
-          </template>
-          <v-date-picker v-model="datesFilter" no-title multiple width="320">
-          </v-date-picker>
-        </v-menu>
-      </v-col>
-    </v-row>
+    <v-menu
+      ref="menu"
+      v-model="menu"
+      :close-on-content-click="false"
+      :close-on-click="true"
+      :offset-y="true"
+      :open-on-hover="true"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" rounded v-on="on">
+          Filters
+        </v-btn>
+      </template>
+      <v-card>
+        <v-col>
+          <v-select
+            v-model="classFilter"
+            :items="classCheckboxes"
+            attach
+            chips
+            label="Class Filter"
+            multiple
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+            v-model="statusFilter"
+            :items="statusCheckboxes"
+            attach
+            chips
+            label="Status Filter"
+            multiple
+          ></v-select>
+        </v-col>
+        <v-col>
+          <!-- <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            :close-on-click="true"
+            :offset-y="true"
+          >
+            <template v-slot:activator="{ overon }">
+              <v-combobox
+                v-model="datesFilter"
+                chips
+                label="Date Filter"
+                multiple
+                v-on="overon"
+              ></v-combobox>
+            </template>
+            <v-date-picker v-model="datesFilter" no-title multiple width="320">
+            </v-date-picker>
+          </v-menu> -->
+        </v-col>
+      </v-card>
+    </v-menu>
 
     <inventory-actions
       class="px-4 mb-4"
