@@ -77,12 +77,13 @@
           :offset-y="true"
         >
           <template v-slot:activator="{ on }">
-            <v-text-field
+            <v-combobox
               v-model="datesFilter"
+              chips
               label="Date Filter"
-              readonly
+              multiple
               v-on="on"
-            ></v-text-field>
+            ></v-combobox>
           </template>
           <v-date-picker v-model="datesFilter" no-title multiple width="320">
           </v-date-picker>
