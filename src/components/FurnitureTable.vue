@@ -1,21 +1,13 @@
 <template>
   <div>
-    <v-dialog
-      v-model="editCard"
-      width="750"
-      persistent
-      @click:outside="closeDialog()"
-      @keydown.escape="closeDialog()"
-      scrollable
-    >
-      <edit-card
-        :namespace="namespace"
-        :is-edit="isEdit"
-        @edit="toggleEdit()"
-        @close="closeDialog()"
-        @save="saveUpdates()"
-      />
-    </v-dialog>
+    <furniture-card-dialog
+      :dialog="editCard"
+      :namespace="namespace"
+      :is-edit="isEdit"
+      @edit="toggleEdit()"
+      @close="closeDialog()"
+      @save="saveUpdates()"
+    />
 
     <unsaved-dialog
       :dialog="unsavedDialog"
@@ -53,11 +45,11 @@ import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
-import EditCard from "@/components/EditCard.vue";
+import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { EditCard, UnsavedDialog },
+  components: { FurnitureCardDialog, UnsavedDialog },
   computed: mapState({
     current(state, getters) {
       return getters[`${this.namespace}/getCurrent`];
