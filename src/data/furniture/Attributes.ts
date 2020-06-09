@@ -19,13 +19,13 @@ export default class Attributes {
   public donateToFriend: boolean;
 
   public constructor(
-    partsIntact: boolean,
-    finishIntact: boolean,
-    smokeFree: boolean,
-    petFree: boolean,
-    bedbugFree: boolean,
-    mildewFree: boolean,
-    donateToFriend: boolean,
+    partsIntact = false,
+    finishIntact = false,
+    smokeFree = false,
+    petFree = false,
+    bedbugFree = false,
+    mildewFree = false,
+    donateToFriend = false,
   ) {
     this.partsIntact = partsIntact;
     this.finishIntact = finishIntact;

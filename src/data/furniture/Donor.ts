@@ -13,11 +13,11 @@ export default class Donor {
   public zone: string; // of Tompkins County
 
   public constructor(
-    name: string,
-    phone: string,
-    email: string,
-    address: string,
-    zone: string,
+    name = "",
+    phone = "",
+    email = "",
+    address = "",
+    zone = "",
   ) {
     this.name = name;
     this.phone = phone;

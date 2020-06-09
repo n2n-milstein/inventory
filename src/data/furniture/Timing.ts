@@ -12,28 +12,28 @@ export default class Timing {
 
   public dateOffered: Date | Timestamp;
 
-  public confirmedPickupDate?: Date | Timestamp;
+  public dateAdded: Date | Timestamp;
 
-  public dateAdded?: Date | Timestamp;
+  public confirmedPickupDate?: Date | Timestamp;
 
   public dateCollected?: Date | Timestamp;
 
   public dateDelivered?: Date | Timestamp;
 
   public constructor(
-    urgent: boolean,
-    pickupBy: Date | Timestamp,
-    dateOffered: Date | Timestamp,
+    urgent = false,
+    pickupBy = new Date(),
+    dateOffered = new Date(),
+    dateAdded = new Date(),
     confirmedPickupDate?: Date | Timestamp,
-    dateAdded?: Date | Timestamp,
     dateCollected?: Date | Timestamp,
     dateDelivered?: Date | Timestamp,
   ) {
     this.urgent = urgent;
     this.pickupBy = pickupBy;
     this.dateOffered = dateOffered;
+    this.dateAdded = dateAdded;
     if (confirmedPickupDate) this.confirmedPickupDate = confirmedPickupDate;
-    if (dateAdded) this.dateAdded = dateAdded;
     if (dateCollected) this.dateCollected = dateCollected;
     if (dateDelivered) this.dateDelivered = dateDelivered;
   }
