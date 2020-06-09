@@ -1,3 +1,4 @@
+// TODO: delete this file
 import { Furniture, Status } from "./Furniture";
 import { FClass, Material } from "./furniture/Physical";
 
@@ -24,6 +25,7 @@ export const Approvals: Furniture[] = [
     timing: {
       urgent: false,
       pickupBy: new Date(2019, 6, 21),
+      dateAdded: new Date(),
       dateOffered: new Date(2019, 6, 1),
     },
     attributes: {
@@ -38,53 +40,43 @@ export const Approvals: Furniture[] = [
     status: Status.OnTruck,
     images: [
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.1",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.2",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.3",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.4",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.5",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.6",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.7",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.8",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.9",
       },
     ],
@@ -113,6 +105,7 @@ export const Approvals: Furniture[] = [
     timing: {
       urgent: false,
       pickupBy: new Date(2019, 6, 21),
+      dateAdded: new Date(),
       dateOffered: new Date(2019, 6, 1),
     },
     attributes: {
@@ -127,43 +120,35 @@ export const Approvals: Furniture[] = [
     status: Status.Donor,
     images: [
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.1",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.2",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.3",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.4",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.5",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.6",
       },
       {
-        url:
-          "https://www.uredeals.com/wp-content/uploads/2018/08/Used-Shelby-Williams-Brown-Wood-Ladder-Back-Chairs1.jpg",
+        url: "assets/logo.png",
         caption: "test caption 1.7",
       },
     ],
