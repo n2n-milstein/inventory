@@ -17,21 +17,11 @@
       />
     </v-dialog>
 
-    <v-dialog v-model="unsavedDialog" width="450">
-      <v-card>
-        <v-card-title>You have unsaved changes</v-card-title>
-        <v-card-text>
-          Are you sure you want to discard your unsaved changes?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" text @click="unsavedDialog = false">
-            Cancel
-          </v-btn>
-          <v-btn color="primary" text @click="closeDialog(true)">Discard</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <unsaved-dialog
+      :dialog="unsavedDialog"
+      @cancel="unsavedDialog = false"
+      @discard="closeDialog(true)"
+    />
 
     <v-data-table
       :value="selected"
@@ -64,9 +54,10 @@ import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 import EditCard from "@/components/EditCard.vue";
+import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { EditCard },
+  components: { EditCard, UnsavedDialog },
   computed: mapState({
     current(state, getters) {
       return getters[`${this.namespace}/getCurrent`];
@@ -178,6 +169,7 @@ export default class Inventory extends Vue {
   onItemClick(item: Furniture): void {
     this.clearUpdates();
     this.setCurrent({ item });
+    this.$emit("itemClick");
     this.editCard = true;
   }
 }
