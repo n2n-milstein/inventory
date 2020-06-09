@@ -23,6 +23,6 @@ import { Prop, Component } from "vue-property-decorator";
 @Component
 export default class UnsavedDialog extends Vue {
   @Prop({ default: false })
-  dialog!: boolean;
+  readonly dialog!: boolean;
 }
 </script>
