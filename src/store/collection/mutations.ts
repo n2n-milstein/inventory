@@ -18,6 +18,21 @@ const mutations: MutationTree<CollectionState> = {
   ): void {
     state.current = state.current ? { ...state.current, ...updates } : null;
   },
+  [mutation.CLEAN_CURRENT](state): void {
+    if (state.current === null) return;
+    const current = { ...state.current } as Furniture;
+    const cleanUndefined = (obj: any): void => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === "object") cleanUndefined(obj[key]);
+        else if (obj[key] === undefined) {
+          // eslint-disable-next-line no-param-reassign
+          delete obj[key];
+        }
+      });
+    };
+    cleanUndefined(current);
+    state.current = current;
+  },
   [mutation.ADD_UPDATES](
     state,
     { updates }: { updates: Partial<Furniture> },
