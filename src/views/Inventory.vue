@@ -41,6 +41,7 @@
       @edit="toggleEdit()"
       @close="closeDialog()"
       @save="saveUpdates()"
+      @add="commitAddItem()"
     />
 
     <unsaved-dialog
@@ -93,7 +94,9 @@ const NAMESPACE = "inventory";
     action.SET_CURRENT,
     action.CLEAR_UPDATES,
     action.CLEAR_CURRENT,
+    action.COMMIT_UPDATES,
     "archiveItems",
+    "commitItem",
   ]),
 })
 export default class Inventory extends Vue {
@@ -119,6 +122,8 @@ export default class Inventory extends Vue {
   readonly clearUpdates!: () => void;
 
   readonly updatesLength!: number;
+
+  readonly commitItem!: () => Promise<void>;
 
   /** Furniture card dialog */
   isEdit = false;
@@ -229,6 +234,14 @@ export default class Inventory extends Vue {
     this.isEdit = true;
     this.isAdd = true;
     this.editCard = true;
+  }
+
+  /**
+   * Commits new item to Firestore
+   */
+  async commitAddItem(): Promise<void> {
+    await this.commitItem();
+    this.closeDialog();
   }
 }
 </script>
