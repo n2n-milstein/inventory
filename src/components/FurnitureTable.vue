@@ -1,20 +1,5 @@
 <template>
   <div>
-    <furniture-card-dialog
-      :dialog="editCard"
-      :namespace="namespace"
-      :is-edit="isEdit"
-      @edit="toggleEdit()"
-      @close="closeDialog()"
-      @save="saveUpdates()"
-    />
-
-    <unsaved-dialog
-      :dialog="unsavedDialog"
-      @cancel="unsavedDialog = false"
-      @discard="closeDialog(true)"
-    />
-
     <v-data-table
       :value="selected"
       @input="setSelected({ list: $event })"
@@ -45,17 +30,12 @@ import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
-import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
-import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { FurnitureCardDialog, UnsavedDialog },
+  components: {},
   computed: mapState({
     current(state, getters) {
       return getters[`${this.namespace}/getCurrent`];
-    },
-    updatesLength(state, getters) {
-      return getters[`${this.namespace}/getUpdatesLength`];
     },
     selected(state, getters) {
       return getters[`${this.namespace}/getSelected`];
@@ -64,9 +44,6 @@ import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
   methods: mapActions({
     setCurrent(dispatch, payload) {
       return dispatch(`${this.namespace}/setCurrent`, payload);
-    },
-    clearCurrent(dispatch) {
-      return dispatch(`${this.namespace}/clearCurrent`);
     },
     clearUpdates(dispatch) {
       return dispatch(`${this.namespace}/clearUpdates`);
@@ -92,25 +69,11 @@ export default class Inventory extends Vue {
   @Prop({ default: "" })
   readonly search!: string;
 
-  current!: Furniture;
-
-  updatesLength!: number;
-
   setCurrent!: ({ item }: { item: Furniture }) => void;
-
-  clearCurrent!: () => void;
 
   clearUpdates!: () => void;
 
-  commitUpdates!: ({ collection }: { collection: collections }) => void;
-
   selected!: Furniture[];
-
-  isEdit = false;
-
-  editCard = false;
-
-  unsavedDialog = false;
 
   readonly STATUS = Status;
 
@@ -124,45 +87,11 @@ export default class Inventory extends Vue {
   ];
 
   /**
-   * Toggles edit state `isEdit` and clears update if setting `isEdit`
-   * to false
-   */
-  toggleEdit(): void {
-    if (this.isEdit) {
-      this.clearUpdates();
-    }
-    this.isEdit = !this.isEdit;
-  }
-
-  /**
-   * Exits dialog and clears the current item
-   */
-  closeDialog(forceClose = false): void {
-    if (this.updatesLength === 0 || forceClose) {
-      this.unsavedDialog = false;
-      this.editCard = false;
-      this.isEdit = false;
-    } else {
-      this.unsavedDialog = true;
-    }
-  }
-
-  /**
-   * Commits updates to Firestore
-   */
-  saveUpdates(): void {
-    this.commitUpdates({ collection: this.collection });
-    this.isEdit = false;
-  }
-
-  /**
    * Activates dialog that displays the item information
    */
   onItemClick(item: Furniture): void {
-    this.clearUpdates();
     this.setCurrent({ item });
-    this.$emit("itemClick");
-    this.editCard = true;
+    this.$emit("item-click");
   }
 }
 </script>

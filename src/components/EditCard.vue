@@ -25,7 +25,7 @@
         <v-row v-scroll:#scroll-target="onScroll" class="px-4">
           <v-col cols="12">
             <v-form
-              ref="edit-form"
+              ref="editForm"
               v-model="valid"
               :class="{ 'readonly-text': !isEdit }"
               lazy-validation
@@ -190,16 +190,16 @@
 
     <v-card-actions v-if="isEdit">
       <v-spacer />
-      <v-btn text color="primary" @click="$emit('edit')">
+      <v-btn v-if="!isAdd" text color="primary" @click="$emit('edit')">
         Cancel
       </v-btn>
       <v-btn
         text
         color="primary"
         :disabled="!isEdit || updatesLength === 0"
-        @click="$emit('save')"
+        @click="saveChanges()"
       >
-        Save
+        {{ isAdd ? "Add" : "Save" }}
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -266,6 +266,9 @@ export default class EditCard extends Vue {
 
   @Prop({ default: false })
   readonly isEdit!: boolean;
+
+  @Prop({ default: false })
+  readonly isAdd!: boolean;
 
   @Prop({ default: true })
   readonly isStaff!: boolean;
@@ -397,6 +400,16 @@ export default class EditCard extends Vue {
 
   set attributes(value: Attributes) {
     this.updateCurrent({ updates: { attributes: value } });
+  }
+
+  /**
+   * Validates form and emits save if form is valid
+   */
+  saveChanges(): void {
+    const form = this.$refs.editForm as any;
+    if (form.validate()) {
+      this.$emit("save");
+    }
   }
 }
 </script>

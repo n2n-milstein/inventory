@@ -10,9 +10,10 @@
     <edit-card
       :namespace="namespace"
       :is-edit="isEdit"
+      :is-add="isAdd"
       @edit="$emit('edit')"
       @close="closeDialog()"
-      @save="$emit('save')"
+      @save="saveChanges()"
     />
   </v-dialog>
 </template>
@@ -30,11 +31,23 @@ export default class FurnitureCardDialog extends Vue {
   @Prop({ default: false })
   readonly isEdit!: boolean;
 
+  @Prop({ default: false })
+  readonly isAdd!: boolean;
+
   @Prop({})
   readonly namespace!: string;
 
   closeDialog(): void {
     this.$emit("close");
+  }
+
+  saveChanges(): void {
+    if (this.isAdd) {
+      this.$emit("add");
+      console.log("saveChanges", "add");
+    } else {
+      this.$emit("save");
+    }
   }
 }
 </script>
