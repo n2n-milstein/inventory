@@ -1,6 +1,7 @@
 import { Furniture } from "@/data/Furniture";
 import db from "./db";
 import collections from "./collections";
+import { deepCopy } from "./converters";
 
 export default class FirestoreService {
   collection: collections;
@@ -18,7 +19,7 @@ export default class FirestoreService {
    * @param item - item to add to collection in Firestore
    */
   addItem = (item: Furniture): Promise<void> => {
-    const data = { ...item };
+    const data = deepCopy(item) as Furniture;
     const ref = db.collection(this.collection).doc();
     data.id = ref.id;
     data.timing.dateAdded = new Date();
