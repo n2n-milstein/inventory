@@ -37,14 +37,20 @@ export default class FurnitureCardDialog extends Vue {
   @Prop({})
   readonly namespace!: string;
 
+  /**
+   * Emits `close` event
+   */
   closeDialog(): void {
     this.$emit("close");
   }
 
+  /**
+   * Emits `add` when dialog is used to add new items and `save`,
+   * otherwise
+   */
   saveChanges(): void {
     if (this.isAdd) {
       this.$emit("add");
-      console.log("saveChanges", "add");
     } else {
       this.$emit("save");
     }
