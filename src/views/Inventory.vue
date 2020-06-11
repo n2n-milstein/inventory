@@ -58,7 +58,7 @@
       </v-col>
       <v-col>
         <v-btn color="primary" rounded @click="showFilter = !showFilter">
-          Filters
+          <v-icon left>mdi-filter</v-icon> Filters
         </v-btn>
       </v-col>
     </v-row>
