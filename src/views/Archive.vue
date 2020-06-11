@@ -9,6 +9,7 @@
         :actions="actions"
         :disabled="selected.length < 1"
         @unarchive="unarchiveItems()"
+        @delete="deleteItems()"
       />
     </v-row>
 
@@ -48,7 +49,11 @@ const NAMESPACE = "archive";
     current: "getCurrent",
     selected: "getSelected",
   }),
-  methods: mapActions(NAMESPACE, ["bindItems", "unarchiveItems"]),
+  methods: mapActions(NAMESPACE, [
+    "bindItems",
+    "unarchiveItems",
+    "deleteItems",
+  ]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
@@ -65,6 +70,11 @@ export default class Inventory extends Vue {
         desc: "Export selected items to spreadsheet",
         emit: "download",
         loading: (): boolean => this.downloading,
+      },
+      {
+        icon: "delete",
+        desc: "Delete selected items",
+        emit: "delete",
       },
     ];
   }
