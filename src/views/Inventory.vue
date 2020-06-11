@@ -47,69 +47,52 @@
       </v-col>
     </v-row>
 
-    <v-menu
-      ref="filterMenu"
-      v-model="filterMenu"
-      :close-on-content-click="false"
-      :close-on-click="true"
-      :offset-y="true"
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" rounded v-on="on">
+    <v-row>
+      <v-col>
+        <inventory-actions
+          class="px-4 mb-4"
+          :selected="selected.length > 0"
+          @download="getSpreadsheet"
+          :downloading="downloading"
+        />
+      </v-col>
+      <v-col>
+        <v-btn color="primary" rounded @click="showFilter = !showFilter">
           Filters
         </v-btn>
-      </template>
-      <v-card>
-        <v-col>
-          <v-select
-            v-model="classFilter"
-            :items="classCheckboxes"
-            attach
-            chips
-            label="Class Filter"
-            multiple
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-select
-            v-model="statusFilter"
-            :items="statusCheckboxes"
-            attach
-            chips
-            label="Status Filter"
-            multiple
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-menu
-            ref="dateMenu"
-            v-model="dateMenu"
-            :close-on-content-click="false"
-            :close-on-click="true"
-            :offset-y="true"
-          >
-            <template v-slot:activator="{ on: dateOn }">
-              <v-combobox
-                v-model="datesFilter"
-                chips
-                label="Date Filter"
-                multiple
-                v-on="dateOn"
-              ></v-combobox>
-            </template>
-            <v-date-picker v-model="datesFilter" no-title multiple width="320">
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-      </v-card>
-    </v-menu>
+      </v-col>
+    </v-row>
 
-    <inventory-actions
-      class="px-4 mb-4"
-      :selected="selected.length > 0"
-      @download="getSpreadsheet"
-      :downloading="downloading"
-    />
+    <v-container v-show="showFilter">
+      <v-row>
+        <v-col>
+          <v-text>Class Filter</v-text>
+          <v-checkbox
+            v-model="classFilter"
+            v-for="box in classCheckboxes"
+            :key="box"
+            :label="box"
+            :value="box"
+          >
+          </v-checkbox>
+        </v-col>
+        <v-col>
+          <v-text>Status Filter</v-text>
+          <v-checkbox
+            v-model="statusFilter"
+            v-for="box in statusCheckboxes"
+            :key="box.value"
+            :label="box.text"
+            :value="box.value"
+          >
+          </v-checkbox>
+        </v-col>
+        <v-col>
+          <v-text>Date Added Filter</v-text>
+          <v-date-picker v-model="datesFilter" multiple> </v-date-picker>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-data-table
       v-model="selected"
@@ -197,6 +180,8 @@ export default class Inventory extends Vue {
   unsavedDialog = false;
 
   search = "";
+
+  showFilter = false;
 
   filterMenu = false;
 
