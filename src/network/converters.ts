@@ -6,7 +6,11 @@ import { Furniture } from "@/data/Furniture";
 export const deepCopy = (obj: any): any => {
   const copy = {} as any;
   Object.keys(obj).forEach((key) => {
-    if (obj[key] && typeof obj[key] === "object") {
+    if (
+      obj[key] &&
+      !(obj[key] instanceof Date) &&
+      typeof obj[key] === "object"
+    ) {
       // eslint-disable-next-line no-param-reassign
       copy[key] = deepCopy(obj[key]);
     } else {
