@@ -368,6 +368,7 @@ export default class EditCard extends Vue {
   }
 
   set physical(value: Physical) {
+    if (!this.isEdit) return;
     this.updateCurrent({ updates: { physical: value } });
   }
 
