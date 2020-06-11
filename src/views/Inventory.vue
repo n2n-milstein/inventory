@@ -48,12 +48,11 @@
     </v-row>
 
     <v-menu
-      ref="menu"
-      v-model="menu"
+      ref="filterMenu"
+      v-model="filterMenu"
       :close-on-content-click="false"
       :close-on-click="true"
       :offset-y="true"
-      :open-on-hover="true"
     >
       <template v-slot:activator="{ on }">
         <v-btn color="primary" rounded v-on="on">
@@ -82,25 +81,25 @@
           ></v-select>
         </v-col>
         <v-col>
-          <!-- <v-menu
-            ref="menu"
-            v-model="menu"
+          <v-menu
+            ref="dateMenu"
+            v-model="dateMenu"
             :close-on-content-click="false"
             :close-on-click="true"
             :offset-y="true"
           >
-            <template v-slot:activator="{ overon }">
+            <template v-slot:activator="{ on: dateOn }">
               <v-combobox
                 v-model="datesFilter"
                 chips
                 label="Date Filter"
                 multiple
-                v-on="overon"
+                v-on="dateOn"
               ></v-combobox>
             </template>
             <v-date-picker v-model="datesFilter" no-title multiple width="320">
             </v-date-picker>
-          </v-menu> -->
+          </v-menu>
         </v-col>
       </v-card>
     </v-menu>
@@ -199,7 +198,9 @@ export default class Inventory extends Vue {
 
   search = "";
 
-  menu = false;
+  filterMenu = false;
+
+  dateMenu = false;
 
   datesFilter = [] as string[];
 
