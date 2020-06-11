@@ -178,7 +178,7 @@ async function getData(id: string[], category: string): Promise<string> {
   const date = `${today.getFullYear()}-${
     today.getMonth() + 1
   }-${today.getDate()}`;
-  const fileName = `${date}.xlsx`;
+  const fileName = category.concat(`${date}.xlsx`);
   const file = bucket.file(fileName);
   await file.save(buffer);
   return `/n2n-inventory/${fileName}`;
