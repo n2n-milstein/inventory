@@ -102,15 +102,12 @@ export default class Inventory extends Vue {
   }
 
   getSpreadsheet(): void {
+    // TODO: maybe abstract this to the firestore-service
     this.downloading = true;
     const getInventoryXLSX = firebase
       .functions()
       .httpsCallable("getInventoryXLSX");
-    const parsedobj = JSON.parse(JSON.stringify(this.selected));
-    const idArray = [];
-    for (let i = 0; i < this.selected.length; i += 1) {
-      idArray.push(parsedobj[i].id);
-    }
+    const idArray = this.selected.map((value) => value.id);
     // Uncomment if running `npm run shell` for backend functions:
     // firebase.functions().useFunctionsEmulator("http://localhost:5001");
     getInventoryXLSX({ id: idArray, category: "furniture" })
