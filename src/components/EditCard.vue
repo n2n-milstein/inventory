@@ -12,7 +12,8 @@
     >
       <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
       <v-spacer />
-      <view-actions
+      <view-action-group
+        :actions="ACTIONS"
         v-if="!isEdit"
         @close="$emit('close')"
         @edit="$emit('edit')"
@@ -207,22 +208,21 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 // data
 import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
 import Timing from "@/data/furniture/Timing";
 import Donor from "@/data/furniture/Donor";
 import Attributes from "@/data/furniture/Attributes";
+import ViewAction from "@/data/ViewAction";
 // components
 import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
 import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
-import ViewActions from "./EditCard/ViewActions.vue";
-
-const namespace = "inventory";
+import ViewActionGroup from "./ViewActionGroup.vue";
 
 @Component({
   components: {
@@ -231,14 +231,24 @@ const namespace = "inventory";
     DatePickerMenu,
     AttributeQuestions,
     TimingDates,
-    ViewActions,
+    ViewActionGroup,
   },
-  computed: mapGetters(namespace, {
-    getCurrent: "getCurrent",
-    updates: "getCurrentUpdates",
-    updatesLength: "getUpdatesLength",
+  computed: mapState({
+    getCurrent(state, getters) {
+      return getters[`${this.namespace}/getCurrent`];
+    },
+    updatesLength(state, getters) {
+      return getters[`${this.namespace}/getUpdatesLength`];
+    },
+    updates(state, getters) {
+      return getters[`${this.namespace}/getCurrentUpdates`];
+    },
   }),
-  methods: mapActions(namespace, ["updateCurrent"]),
+  methods: mapActions({
+    updateCurrent(dispatch, payload) {
+      return dispatch(`${this.namespace}/updateCurrent`, payload);
+    },
+  }),
 })
 export default class EditCard extends Vue {
   /* Properties for Vuex mapGetters and mapActions */
@@ -250,6 +260,9 @@ export default class EditCard extends Vue {
   updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
 
   /* Props */
+
+  @Prop({ default: "inventory" })
+  readonly namespace!: string;
 
   @Prop({ default: false })
   readonly isEdit!: boolean;
@@ -276,6 +289,24 @@ export default class EditCard extends Vue {
   readonly emailRules = [
     (v: any): boolean | string => !!v || "This is required",
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
+  ];
+
+  readonly ACTIONS: ViewAction[] = [
+    { icon: "edit", desc: "Edit Item", emit: "edit" },
+    {
+      icon: "more_vert",
+      desc: "More Actions",
+      emit: "menu",
+      menu: [
+        { icon: "archive", desc: "Archive", emit: "archive" },
+        {
+          icon: "cloud_download",
+          desc: "Export",
+          emit: "export",
+        },
+      ],
+    },
+    { icon: "close", desc: "Close", emit: "close" },
   ];
 
   /* Getters and setters for form fields */
@@ -337,6 +368,7 @@ export default class EditCard extends Vue {
   }
 
   set physical(value: Physical) {
+    if (!this.isEdit) return;
     this.updateCurrent({ updates: { physical: value } });
   }
 

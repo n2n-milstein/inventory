@@ -6,6 +6,7 @@ enum collections {
   INVENTORY = "furniture",
   PENDING = "pending",
   REJECTED = "rejected",
+  ARCHIVE = "archive",
 }
 
 export default collections;
