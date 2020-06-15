@@ -47,22 +47,25 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="mb-3 px-4" align="baseline">
       <v-col>
         <inventory-actions
-          class="px-4 mb-4"
           :selected="selected.length > 0"
           @download="getSpreadsheet"
           :downloading="downloading"
         />
       </v-col>
       <v-col>
-        <v-btn color="primary" rounded @click="showFilter = !showFilter">
-          <v-icon left>mdi-filter</v-icon> Filters
-        </v-btn>
-        <v-li v-for="(chip, i) in filterChips" :key="chip">
-          <v-chip close @click:close="closeChip(chip, i)"> {{ chip }} </v-chip>
-        </v-li>
+        <v-row justify="end">
+          <v-li v-for="(chip, i) in filterChips" :key="chip">
+            <v-chip close @click:close="closeChip(chip, i)">
+              {{ chip }}
+            </v-chip>
+          </v-li>
+          <v-btn color="primary" rounded @click="showFilter = !showFilter">
+            <v-icon left>mdi-filter</v-icon> Filters
+          </v-btn>
+        </v-row>
       </v-col>
     </v-row>
 
@@ -71,6 +74,7 @@
         <v-col>
           <v-text>Class Filter</v-text>
           <v-checkbox
+            @change="updateChip('Class')"
             v-model="classFilter"
             v-for="box in classCheckboxes"
             :key="box"
@@ -82,6 +86,7 @@
         <v-col>
           <v-text>Status Filter</v-text>
           <v-checkbox
+            @change="updateChip('Status')"
             v-model="statusFilter"
             v-for="box in statusCheckboxes"
             :key="box.value"
@@ -92,7 +97,12 @@
         </v-col>
         <v-col>
           <v-text>Date Added Filter</v-text>
-          <v-date-picker v-model="datesFilter" multiple> </v-date-picker>
+          <v-date-picker
+            @change="updateChip('Date')"
+            v-model="datesFilter"
+            multiple
+          >
+          </v-date-picker>
         </v-col>
       </v-row>
     </v-container>
@@ -184,7 +194,7 @@ export default class Inventory extends Vue {
 
   search = "";
 
-  filterChips = ["Class", "Status", "Date"];
+  filterChips = [] as string[];
 
   showFilter = false;
 
@@ -246,6 +256,31 @@ export default class Inventory extends Vue {
     if (!date) return "";
     if (date instanceof Date) return date.toISOString().substring(0, 10);
     return date.toDate().toISOString().substring(0, 10);
+  }
+
+  updateChip(filter: any): void {
+    if (!this.filterChips.includes(filter)) {
+      if (
+        (filter === "Class" &&
+          this.classFilter.length !== this.classCheckboxes.length) ||
+        (filter === "Status" &&
+          this.statusFilter.length !== this.statusCheckboxes.length) ||
+        (filter === "Date" && this.datesFilter.length !== 0)
+      ) {
+        this.filterChips.push(filter);
+      }
+    } else if (
+      (filter === "Class" &&
+        this.classFilter.length === this.classCheckboxes.length) ||
+      (filter === "Status" &&
+        this.statusFilter.length === this.statusCheckboxes.length) ||
+      (filter === "Date" && this.datesFilter.length === 0)
+    ) {
+      this.filterChips.splice(
+        this.filterChips.findIndex((x) => x === filter),
+        1,
+      );
+    }
   }
 
   closeChip(filter: any, index: any): void {
