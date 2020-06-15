@@ -61,7 +61,7 @@
           <v-icon left>mdi-filter</v-icon> Filters
         </v-btn>
         <v-li v-for="(chip, i) in filterChips" :key="chip">
-          <v-chip close @click:close="closeChip(i)"> {{ chip }} </v-chip>
+          <v-chip close @click:close="closeChip(chip, i)"> {{ chip }} </v-chip>
         </v-li>
       </v-col>
     </v-row>
@@ -248,8 +248,15 @@ export default class Inventory extends Vue {
     return date.toDate().toISOString().substring(0, 10);
   }
 
-  closeChip(index: any): void {
+  closeChip(filter: any, index: any): void {
     this.filterChips.splice(index, 1);
+    if (filter === "Class") {
+      this.classFilter = this.classCheckboxes;
+    } else if (filter === "Status") {
+      this.statusFilter = this.statusCheckboxes.map((x) => x.value);
+    } else {
+      this.datesFilter = [];
+    }
   }
 
   /**
