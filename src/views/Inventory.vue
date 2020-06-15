@@ -60,6 +60,9 @@
         <v-btn color="primary" rounded @click="showFilter = !showFilter">
           <v-icon left>mdi-filter</v-icon> Filters
         </v-btn>
+        <v-li v-for="(chip, i) in filterChips" :key="chip">
+          <v-chip close @click:close="closeChip(i)"> {{ chip }} </v-chip>
+        </v-li>
       </v-col>
     </v-row>
 
@@ -181,6 +184,8 @@ export default class Inventory extends Vue {
 
   search = "";
 
+  filterChips = ["Class", "Status", "Date"];
+
   showFilter = false;
 
   filterMenu = false;
@@ -241,6 +246,10 @@ export default class Inventory extends Vue {
     if (!date) return "";
     if (date instanceof Date) return date.toISOString().substring(0, 10);
     return date.toDate().toISOString().substring(0, 10);
+  }
+
+  closeChip(index: any): void {
+    this.filterChips.splice(index, 1);
   }
 
   /**
