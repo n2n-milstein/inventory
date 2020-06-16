@@ -9,7 +9,7 @@
         :actions="actions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
-        @unarchive="unarchiveItems()"
+        @unarchive="unarchiveSelected()"
         @delete="deleteItems()"
       />
     </v-row>
@@ -56,7 +56,7 @@ const NAMESPACE = "archive";
   }),
   methods: mapActions(NAMESPACE, [
     "bindItems",
-    "unarchiveItems",
+    "unarchiveSelected",
     "deleteItems",
   ]),
 })

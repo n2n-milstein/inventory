@@ -5,14 +5,14 @@ import { unarchiveItem, deleteItem } from "@/network/archive-service";
 import { CollectionState, mutation } from "../types";
 
 export const actions: ActionTree<CollectionState, RootState> = {
-  unarchiveItems({ commit, state }): void {
+  unarchiveSelected({ commit, state }): void {
     try {
       state.selected.forEach(async (item: Furniture) => {
         await unarchiveItem(item.id);
       });
       commit(mutation.CLEAR_SELECTED);
     } catch (e) {
-      console.log("archiveItems error: ", e);
+      console.log("archiveSelected error: ", e);
     }
   },
   deleteItems({ commit, state }): void {

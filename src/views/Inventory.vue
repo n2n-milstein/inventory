@@ -20,7 +20,7 @@
         :actions="actions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
-        @archive="archiveItems()"
+        @archive="archiveSelected()"
       />
     </v-row>
 
@@ -95,7 +95,7 @@ const NAMESPACE = "inventory";
     action.CLEAR_UPDATES,
     action.CLEAR_CURRENT,
     action.COMMIT_UPDATES,
-    "archiveItems",
+    "archiveSelected",
     "commitItem",
   ]),
 })
