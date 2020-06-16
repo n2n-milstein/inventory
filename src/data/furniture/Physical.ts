@@ -25,17 +25,19 @@ export enum FClass {
 export default class Physical {
   public class: FClass;
 
+  // 1-5 (small-big)
   public size: number;
 
-  // 1-5 (small-big)
   public material: Material;
 
   public altMaterial?: Material;
 
   public set: boolean;
 
+  // TODO: create new furniture class
   public hasFrame: boolean;
 
+  // TODO: create new furniture class
   public hasBoxSpring: boolean;
 
   public numChairs: number;
@@ -43,14 +45,14 @@ export default class Physical {
   public heavy: boolean;
 
   public constructor(
-    size: number,
-    fclass: FClass,
-    material: Material,
-    set: boolean,
-    heavy: boolean,
-    hasFrame: boolean,
-    hasBoxSpring: boolean,
-    numChairs: number,
+    size = 1,
+    fclass = FClass.Chair,
+    material = Material.Wood,
+    set = false,
+    heavy = false,
+    hasFrame = false,
+    hasBoxSpring = false,
+    numChairs = 0,
     altMaterial?: Material,
   ) {
     this.class = fclass;

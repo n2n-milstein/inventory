@@ -1,6 +1,6 @@
 import { ActionTree } from "vuex";
 import { RootState } from "@/store/types";
-import { archiveItem } from "@/network/inventory-service";
+import { archiveItem, addItem } from "@/network/inventory-service";
 import { Furniture } from "@/data/Furniture";
 import { CollectionState, mutation } from "../types";
 
@@ -13,6 +13,16 @@ export const actions: ActionTree<CollectionState, RootState> = {
       commit(mutation.CLEAR_SELECTED);
     } catch (e) {
       console.log("archiveItems error: ", e);
+    }
+  },
+  async commitItem({ commit, state }): Promise<void> {
+    try {
+      commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
+      commit(mutation.CLEAN_CURRENT);
+      await addItem(state.current!);
+      commit(mutation.CLEAR_UPDATES);
+    } catch (e) {
+      console.log("addItem error: ", e);
     }
   },
 };

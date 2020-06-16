@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="start" align="start">
       <v-col class="pb-3" cols="12">
-        <view-title title="Rejections" />
+        <h2>Rejections</h2>
       </v-col>
       <v-col cols="12" v-if="rejected.length === 0">
         <p>
@@ -27,16 +27,10 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Furniture } from "@/data/Furniture";
 import ApprovalCard from "@/components/ApprovalCard.vue";
-import ViewTitle from "@/components/ViewTitle.vue";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
-@Component({
-  components: {
-    ApprovalCard,
-    ViewTitle,
-  },
-})
+@Component({ components: { ApprovalCard } })
 export default class Approval extends Vue {
   show = false;
 
@@ -48,7 +42,7 @@ export default class Approval extends Vue {
    * Gets a snapshot of the "rejected" collection and sets it to the local
    * variable.
    */
-  getRejected() {
+  getRejected(): void {
     const rejected = this.db.collection("rejected");
     rejected.onSnapshot((snapshot) => {
       this.rejected = [];
@@ -61,7 +55,7 @@ export default class Approval extends Vue {
   /**
    * Moves the furniture "furn" to the "pending" collection.
    */
-  pushPending(furn: Furniture) {
+  pushPending(furn: Furniture): void {
     const collection = this.db.collection("pending");
     collection.doc(furn.id).set(furn);
 
@@ -71,7 +65,7 @@ export default class Approval extends Vue {
   /**
    * Calls functions when the page is loaded.
    */
-  mounted() {
+  mounted(): void {
     this.getRejected();
   }
 }

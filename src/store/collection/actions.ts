@@ -31,6 +31,7 @@ const actions: ActionTree<CollectionState, RootState> = {
     try {
       const service = new FirestoreService(collection);
       commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
+      commit(mutation.CLEAN_CURRENT);
       await service.updateItem(state.current!.id, state.currentUpdates);
       commit(mutation.CLEAR_UPDATES);
     } catch (e) {

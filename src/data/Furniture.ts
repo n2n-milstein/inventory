@@ -110,15 +110,15 @@ export class Furniture {
   public staffNotes: string;
 
   public constructor(
-    id: string,
-    donor: DonorInfo,
-    physical: Physical,
-    timing: Timing,
-    attributes: Attributes,
-    status: Status,
-    images: Image[],
-    comments: string,
-    staffNotes: string,
+    id = "",
+    donor = new DonorInfo(),
+    physical = new Physical(),
+    timing = new Timing(),
+    attributes = new Attributes(),
+    status = Status.Unknown,
+    images = [] as Image[],
+    comments = "",
+    staffNotes = "",
   ) {
     this.id = id;
     this.donor = donor;

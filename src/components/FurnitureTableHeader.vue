@@ -1,6 +1,8 @@
 <template>
   <v-row class="mb-3 px-4" align="baseline">
-    <view-title :title="title" />
+    <h2 class="title">
+      {{ title }}
+    </h2>
     <v-spacer />
     <v-col cols="6">
       <v-text-field
@@ -19,9 +21,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import ViewTitle from "@/components/ViewTitle.vue";
 
-@Component({ components: { ViewTitle } })
+@Component
 export default class FurnitureTableHeader extends Vue {
   @Prop({ default: "Default title" })
   readonly title!: string;
