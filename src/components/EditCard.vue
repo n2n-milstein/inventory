@@ -17,6 +17,8 @@
         v-if="!isEdit"
         @close="$emit('close')"
         @edit="$emit('edit')"
+        @export="$emit('export')"
+        @archive="$emit('archive')"
       />
     </v-card-title>
 
@@ -34,6 +36,7 @@
               <h2>Donor Info</h2>
 
               <!-- TODO: make these just normal text when in readonly -->
+              <!-- :value="donor ? donor.name : ''" -->
               <v-text-field
                 :value="donor.name"
                 @input="updateDonor('name', $event)"
@@ -90,7 +93,7 @@
 
               <v-text-field
                 v-if="!isEdit"
-                :value="statusOptions[status].text"
+                :value="statusOptions[status] ? statusOptions[status].text : ''"
                 label="Furniture Status"
                 readonly
                 :prepend-icon="statusIcons[status]"
@@ -319,7 +322,7 @@ export default class EditCard extends Vue {
   }
 
   get donor(): Donor {
-    return this.current.donor;
+    return this.current.donor || new Donor();
   }
 
   updateDonor(key: string, value: string): void {
@@ -353,7 +356,7 @@ export default class EditCard extends Vue {
   ];
 
   get fclass(): FClass {
-    return this.current.physical.class;
+    return this.current.physical ? this.current.physical.class : FClass.Bed;
   }
 
   set fclass(value: FClass) {
@@ -367,7 +370,7 @@ export default class EditCard extends Vue {
   readonly classOptions = Object.keys(FClass);
 
   get physical(): Physical {
-    return this.current.physical;
+    return this.current.physical || new Physical();
   }
 
   set physical(value: Physical) {
@@ -376,7 +379,7 @@ export default class EditCard extends Vue {
   }
 
   get timing(): Timing {
-    return this.current.timing;
+    return this.current.timing || new Timing();
   }
 
   set timing(value: Timing) {
@@ -396,7 +399,7 @@ export default class EditCard extends Vue {
   }
 
   get attributes(): Attributes {
-    return this.current.attributes;
+    return this.current.attributes || new Attributes();
   }
 
   set attributes(value: Attributes) {

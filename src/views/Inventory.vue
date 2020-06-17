@@ -30,7 +30,6 @@
       :items="inventory"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
-      @item-click="editCard = true"
     />
 
     <furniture-card-dialog
@@ -103,6 +102,8 @@ export default class Inventory extends Vue {
   readonly COLLECTION = collections.INVENTORY;
 
   /** Vuex map helper properties */
+  readonly current!: Furniture;
+
   readonly bindItems!: () => Promise<void>;
 
   readonly setCurrent!: ({ item }: { item: Furniture }) => void;
@@ -130,7 +131,9 @@ export default class Inventory extends Vue {
 
   isAdd = false;
 
-  editCard = false;
+  get editCard(): boolean {
+    return !!this.current;
+  }
 
   unsavedDialog = false;
 
@@ -206,10 +209,9 @@ export default class Inventory extends Vue {
   closeDialog(forceClose = false): void {
     if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
-      this.editCard = false;
       this.isEdit = false;
       this.isAdd = false;
-      this.clearUpdates();
+      this.clearCurrent();
     } else {
       this.unsavedDialog = true;
     }
@@ -230,7 +232,6 @@ export default class Inventory extends Vue {
     this.setCurrent({ item: new Furniture() });
     this.isEdit = true;
     this.isAdd = true;
-    this.editCard = true;
   }
 
   /**
