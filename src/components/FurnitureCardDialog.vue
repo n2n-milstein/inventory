@@ -14,6 +14,8 @@
       @edit="$emit('edit')"
       @close="closeDialog()"
       @save="saveChanges()"
+      @export="$emit('export')"
+      @archive="$emit('archive')"
     />
   </v-dialog>
 </template>
