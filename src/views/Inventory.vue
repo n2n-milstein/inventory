@@ -55,10 +55,6 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
 // network, data
 import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
@@ -94,6 +90,7 @@ const NAMESPACE = "inventory";
     action.CLEAR_UPDATES,
     action.CLEAR_CURRENT,
     action.COMMIT_UPDATES,
+    action.EXPORT_SELECTED,
     "archiveSelected",
     "commitItem",
   ]),
@@ -104,23 +101,25 @@ export default class Inventory extends Vue {
   /** Vuex map helper properties */
   readonly current!: Furniture;
 
-  readonly bindItems!: () => Promise<void>;
-
-  readonly setCurrent!: ({ item }: { item: Furniture }) => void;
-
   readonly selected!: Furniture[];
 
+  readonly [action.BIND_ITEMS]!: () => Promise<void>;
+
+  readonly [action.SET_CURRENT]!: ({ item }: { item: Furniture }) => void;
+
+  readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
+
   /* eslint-disable object-curly-newline */
-  readonly commitUpdates!: ({
+  readonly [action.COMMIT_UPDATES]!: ({
     collection,
   }: {
     collection: collections;
   }) => void;
   /* eslint-enable object-curly-newline */
 
-  readonly clearCurrent!: () => void;
+  readonly [action.CLEAR_CURRENT]!: () => void;
 
-  readonly clearUpdates!: () => void;
+  readonly [action.CLEAR_UPDATES]!: () => void;
 
   readonly updatesLength!: number;
 
@@ -167,29 +166,10 @@ export default class Inventory extends Vue {
     this.bindItems();
   }
 
-  getSpreadsheet(): void {
-    // TODO: maybe abstract this to the firestore-service
+  async getSpreadsheet(): Promise<void> {
     this.downloading = true;
-    const getInventoryXLSX = firebase
-      .functions()
-      .httpsCallable("getInventoryXLSX");
-    const idArray = this.selected.map((value) => value.id);
-    // Uncomment if running `npm run shell` for backend functions:
-    // firebase.functions().useFunctionsEmulator("http://localhost:5001");
-    getInventoryXLSX({ id: idArray, collection: collections.INVENTORY })
-      .then((res) => {
-        const storage = firebase.storage();
-        const gsref = storage.refFromURL(`gs:/${res.data}`);
-        gsref.getDownloadURL().then((url) => {
-          window.open(url);
-        });
-        this.downloading = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(this.selected.length); // workaround not using this
-        this.downloading = false;
-      });
+    await this.exportSelected();
+    this.downloading = false;
   }
 
   /**
