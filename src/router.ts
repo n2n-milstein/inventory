@@ -51,6 +51,11 @@ const router = new Router({
           component: () => import("./views/Archive.vue"),
         },
         {
+          path: "/runs",
+          name: "runs",
+          component: () => import("./views/RunsPage.vue"),
+        },
+        {
           path: "/about",
           name: "about",
           // route level code-splitting
