@@ -47,7 +47,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="mb-3 px-4" align="baseline">
+    <v-row class="mb-3 px-4" align="center">
       <v-col>
         <inventory-actions
           :selected="selected.length > 0"
@@ -56,12 +56,12 @@
         />
       </v-col>
       <v-col>
-        <v-row justify="end">
-          <v-li v-for="(chip, i) in filterChips" :key="chip">
-            <v-chip close @click:close="closeChip(chip, i)">
+        <v-row align="center" justify="end">
+          <div v-for="(chip, i) in filterChips" :key="chip">
+            <v-chip class="mr-3" close @click:close="closeChip(chip, i)">
               {{ chip }}
             </v-chip>
-          </v-li>
+          </div>
           <v-btn color="primary" rounded @click="showFilter = !showFilter">
             <v-icon left>mdi-filter</v-icon> Filters
           </v-btn>
@@ -72,7 +72,7 @@
     <v-container v-show="showFilter">
       <v-row>
         <v-col>
-          <v-text>Class Filter</v-text>
+          Class Filter
           <v-checkbox
             @change="updateChip('Class')"
             v-model="classFilter"
@@ -84,7 +84,7 @@
           </v-checkbox>
         </v-col>
         <v-col>
-          <v-text>Status Filter</v-text>
+          Status Filter
           <v-checkbox
             @change="updateChip('Status')"
             v-model="statusFilter"
@@ -96,9 +96,9 @@
           </v-checkbox>
         </v-col>
         <v-col>
-          <v-text>Date Added Filter</v-text>
+          Date Added Filter
           <v-date-picker
-            @change="updateChip('Date')"
+            @input="updateChip('Date')"
             v-model="datesFilter"
             multiple
           >
