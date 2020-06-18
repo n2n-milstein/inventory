@@ -1,7 +1,7 @@
 import { Furniture } from "@/data/Furniture";
 import collections from "./collections";
 import FirestoreService from "./firestore-service";
-import { db } from "./db";
+import { db } from "./firebase";
 
 class InventoryService extends FirestoreService {
   archiveItem = async (id: string): Promise<void> => {

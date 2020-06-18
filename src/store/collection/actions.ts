@@ -1,5 +1,5 @@
 import { firestoreAction } from "vuexfire";
-import { db } from "@/network/db";
+import { db } from "@/network/firebase";
 import FirestoreService from "@/network/firestore-service";
 import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
