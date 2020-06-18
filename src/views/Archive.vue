@@ -10,7 +10,7 @@
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @unarchive="unarchiveSelected()"
-        @delete="deleteItems()"
+        @delete="deleteSelected()"
       />
     </v-row>
 
@@ -57,7 +57,7 @@ const NAMESPACE = "archive";
   methods: mapActions(NAMESPACE, [
     "bindItems",
     "unarchiveSelected",
-    "deleteItems",
+    "deleteSelected",
   ]),
 })
 export default class Inventory extends Vue {
