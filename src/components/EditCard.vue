@@ -19,6 +19,7 @@
         @edit="$emit('edit')"
         @export="$emit('export')"
         @archive="$emit('archive')"
+        @unarchive="$emit('unarchive')"
       />
     </v-card-title>
 

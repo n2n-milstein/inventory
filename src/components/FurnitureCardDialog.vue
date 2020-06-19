@@ -19,6 +19,7 @@
         @save="saveChanges()"
         @export="$emit('export')"
         @archive="$emit('archive')"
+        @unarchive="$emit('unarchive')"
       />
     </v-dialog>
 
