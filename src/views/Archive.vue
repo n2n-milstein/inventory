@@ -21,6 +21,12 @@
       :downloading="downloading"
       :collection="COLLECTION"
     />
+
+    <furniture-card-dialog
+      namespace="archive"
+      :dialog="editCard"
+      @add="commitAddItem()"
+    />
   </v-col>
 </template>
 
@@ -28,18 +34,16 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
 // data
 import { Furniture } from "@/data/Furniture";
 import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
+import { action } from "@/store/collection/types";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
+import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 
 const NAMESPACE = "archive";
 
@@ -48,6 +52,7 @@ const NAMESPACE = "archive";
     FurnitureTable,
     FurnitureTableHeader,
     ViewActionGroup,
+    FurnitureCardDialog,
   },
   computed: mapGetters(NAMESPACE, {
     archive: "getItems",
@@ -55,13 +60,21 @@ const NAMESPACE = "archive";
     selected: "getSelected",
   }),
   methods: mapActions(NAMESPACE, [
-    "bindItems",
+    action.BIND_ITEMS,
+    action.EXPORT_SELECTED,
+    action.COMMIT_UPDATES,
     "unarchiveSelected",
     "deleteSelected",
   ]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
+
+  readonly current!: Furniture;
+
+  readonly [action.BIND_ITEMS]!: () => Promise<void>;
+
+  readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
 
   get actions(): ViewAction[] {
     return [
@@ -84,9 +97,12 @@ export default class Inventory extends Vue {
     ];
   }
 
-  bindItems!: () => Promise<void>;
+  /** Furniture card dialog */
+  isEdit = false;
 
-  selected!: Furniture[];
+  get editCard(): boolean {
+    return !!this.current;
+  }
 
   downloading = false;
 
@@ -100,28 +116,10 @@ export default class Inventory extends Vue {
     this.bindItems();
   }
 
-  getSpreadsheet(): void {
+  async getSpreadsheet(): Promise<void> {
     this.downloading = true;
-    const getInventoryXLSX = firebase
-      .functions()
-      .httpsCallable("getInventoryXLSX");
-    const idArray = this.selected.map((value) => value.id);
-    // Uncomment if running `npm run shell` for backend functions:
-    // firebase.functions().useFunctionsEmulator("http://localhost:5001");
-    getInventoryXLSX({ id: idArray, collection: collections.ARCHIVE })
-      .then((res) => {
-        const storage = firebase.storage();
-        const gsref = storage.refFromURL(`gs:/${res.data}`);
-        gsref.getDownloadURL().then((url) => {
-          window.open(url);
-        });
-        this.downloading = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(this.selected.length); // workaround not using this
-        this.downloading = false;
-      });
+    await this.exportSelected();
+    this.downloading = false;
   }
 }
 </script>
