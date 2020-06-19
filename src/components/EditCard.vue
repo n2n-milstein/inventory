@@ -276,6 +276,12 @@ export default class EditCard extends Vue {
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
+  @Prop({ default: [] })
+  readonly menuActions!: ViewAction[];
+
+  @Prop({ default: false })
+  readonly menuLoading!: boolean;
+
   /**
    * Sets the offset when user scrolls
    */
@@ -297,23 +303,19 @@ export default class EditCard extends Vue {
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
-  readonly ACTIONS: ViewAction[] = [
-    { icon: "edit", desc: "Edit Item", emit: "edit" },
-    {
-      icon: "more_vert",
-      desc: "More Actions",
-      emit: "menu",
-      menu: [
-        { icon: "archive", desc: "Archive", emit: "archive" },
-        {
-          icon: "cloud_download",
-          desc: "Export",
-          emit: "export",
-        },
-      ],
-    },
-    { icon: "close", desc: "Close", emit: "close" },
-  ];
+  get ACTIONS(): ViewAction[] {
+    return [
+      { icon: "edit", desc: "Edit Item", emit: "edit" },
+      {
+        icon: "more_vert",
+        desc: "More Actions",
+        emit: "menu",
+        menu: this.menuActions,
+        loading: (): boolean => this.menuLoading,
+      },
+      { icon: "close", desc: "Close", emit: "close" },
+    ];
+  }
 
   /* Getters and setters for form fields */
 

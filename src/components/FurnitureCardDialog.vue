@@ -12,6 +12,8 @@
         :namespace="namespace"
         :is-edit="isEdit"
         :is-add="isAdd"
+        :menu-actions="menuActions"
+        :menu-loading="menuLoading"
         @edit="toggleEdit()"
         @close="closeDialog()"
         @save="saveChanges()"
@@ -32,6 +34,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { mapActions, mapState } from "vuex";
+import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
 import EditCard from "@/components/EditCard.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
@@ -67,6 +70,12 @@ export default class FurnitureCardDialog extends Vue {
 
   @Prop({})
   readonly namespace!: string;
+
+  @Prop({})
+  readonly menuActions!: ViewAction[];
+
+  @Prop({ default: false })
+  readonly menuLoading!: boolean;
 
   readonly updatesLength!: number;
 
