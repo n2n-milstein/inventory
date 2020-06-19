@@ -6,8 +6,15 @@
           <template v-slot:activator="{ on: menu }">
             <v-tooltip bottom :disabled="disabled">
               <template v-slot:activator="{ on: tooltip }">
-                <v-btn icon v-on="{ ...tooltip, ...menu }" v-if="action.menu">
-                  <v-icon>{{ action.icon }}</v-icon>
+                <v-btn
+                  icon
+                  v-on="{ ...tooltip, ...menu }"
+                  v-if="action.menu"
+                  :loading="action.loading && action.loading()"
+                >
+                  <v-icon>
+                    {{ action.icon }}
+                  </v-icon>
                 </v-btn>
                 <v-btn
                   v-else
