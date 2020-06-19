@@ -6,7 +6,7 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="actions"
+        :actions="archiveActions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @unarchive="unarchiveSelected()"
@@ -25,7 +25,11 @@
     <furniture-card-dialog
       namespace="archive"
       :dialog="editCard"
+      :menu-actions="menuActions"
+      :menu-loading="menuLoading"
       @add="commitAddItem()"
+      @unarchive="commitUnarchive()"
+      @export="commitExport()"
     />
   </v-col>
 </template>
@@ -61,9 +65,11 @@ const NAMESPACE = "archive";
   }),
   methods: mapActions(NAMESPACE, [
     action.BIND_ITEMS,
+    action.CLEAR_CURRENT,
     action.EXPORT_SELECTED,
-    action.COMMIT_UPDATES,
+    action.EXPORT_CURRENT,
     "unarchiveSelected",
+    "unarchiveCurrent",
     "deleteSelected",
   ]),
 })
@@ -76,7 +82,24 @@ export default class Inventory extends Vue {
 
   readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
 
-  get actions(): ViewAction[] {
+  readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
+
+  readonly [action.CLEAR_CURRENT]!: () => void;
+
+  readonly unarchiveCurrent!: () => Promise<void>;
+
+  /** Furniture card dialog */
+  isEdit = false;
+
+  get editCard(): boolean {
+    return !!this.current;
+  }
+
+  downloading = false;
+
+  search = "";
+
+  get archiveActions(): ViewAction[] {
     return [
       {
         icon: "unarchive",
@@ -97,16 +120,16 @@ export default class Inventory extends Vue {
     ];
   }
 
-  /** Furniture card dialog */
-  isEdit = false;
+  menuLoading = false;
 
-  get editCard(): boolean {
-    return !!this.current;
-  }
-
-  downloading = false;
-
-  search = "";
+  readonly menuActions: ViewAction[] = [
+    { icon: "unarchive", desc: "Unarchive", emit: "unarchive" },
+    {
+      icon: "cloud_download",
+      desc: "Export",
+      emit: "export",
+    },
+  ];
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
@@ -120,6 +143,19 @@ export default class Inventory extends Vue {
     this.downloading = true;
     await this.exportSelected();
     this.downloading = false;
+  }
+
+  async commitUnarchive(): Promise<void> {
+    this.menuLoading = true;
+    await this.unarchiveCurrent();
+    this.menuLoading = false;
+    this.clearCurrent();
+  }
+
+  async commitExport(): Promise<void> {
+    this.menuLoading = true;
+    await this.exportCurrent();
+    this.menuLoading = false;
   }
 }
 </script>

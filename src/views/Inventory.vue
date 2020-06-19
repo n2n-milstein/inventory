@@ -17,7 +17,7 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="actions"
+        :actions="inventoryActions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @archive="archiveSelected()"
@@ -36,7 +36,11 @@
       namespace="inventory"
       :dialog="editCard"
       :is-add="isAdd"
+      :menu-actions="menuActions"
+      :menu-loading="menuLoading"
       @add="commitAddItem()"
+      @archive="commitArchive()"
+      @export="commitExport()"
     />
   </v-col>
 </template>
@@ -76,7 +80,9 @@ const NAMESPACE = "inventory";
     action.SET_CURRENT,
     action.CLEAR_CURRENT,
     action.EXPORT_SELECTED,
+    action.EXPORT_CURRENT,
     "archiveSelected",
+    "archiveCurrent",
     "commitItem",
   ]),
 })
@@ -94,7 +100,11 @@ export default class Inventory extends Vue {
 
   readonly [action.CLEAR_CURRENT]!: () => void;
 
+  readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
+
   readonly commitItem!: () => Promise<void>;
+
+  readonly archiveCurrent!: () => Promise<void>;
 
   /** Furniture card dialog */
   isAdd = false;
@@ -108,7 +118,7 @@ export default class Inventory extends Vue {
 
   downloading = false;
 
-  get actions(): ViewAction[] {
+  get inventoryActions(): ViewAction[] {
     return [
       { icon: "archive", desc: "Archive selected items", emit: "archive" },
       {
@@ -124,6 +134,17 @@ export default class Inventory extends Vue {
       },
     ];
   }
+
+  menuLoading = false;
+
+  readonly menuActions: ViewAction[] = [
+    { icon: "archive", desc: "Archive", emit: "archive" },
+    {
+      icon: "cloud_download",
+      desc: "Export",
+      emit: "export",
+    },
+  ];
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
@@ -154,6 +175,19 @@ export default class Inventory extends Vue {
     await this.commitItem();
     this.isAdd = false;
     this.clearCurrent();
+  }
+
+  async commitArchive(): Promise<void> {
+    this.menuLoading = true;
+    await this.archiveCurrent();
+    this.menuLoading = false;
+    this.clearCurrent();
+  }
+
+  async commitExport(): Promise<void> {
+    this.menuLoading = true;
+    await this.exportCurrent();
+    this.menuLoading = false;
   }
 }
 </script>
