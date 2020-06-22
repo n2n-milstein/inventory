@@ -1,9 +1,21 @@
 <template>
   <v-card>
     <v-card-title>{{ title }}</v-card-title>
-    <v-list-item><v-lits-item-title>Volunteers</v-lits-item-title></v-list-item>
-    <v-list-item><v-lits-item-title>Pick Ups</v-lits-item-title></v-list-item>
-    <v-list-item><v-lits-item-title>Drop Offs</v-lits-item-title></v-list-item>
+    <v-list-item
+      ><v-lits-item-title
+        >{{ volunteers.length }} Volunteer(s)</v-lits-item-title
+      ></v-list-item
+    >
+    <v-list-item
+      ><v-lits-item-title>
+        {{ pickUps.length }} Pick Up(s)</v-lits-item-title
+      ></v-list-item
+    >
+    <v-list-item
+      ><v-lits-item-title>
+        {{ dropOffs.length }} Drop Off(s)</v-lits-item-title
+      ></v-list-item
+    >
   </v-card>
 </template>
 
