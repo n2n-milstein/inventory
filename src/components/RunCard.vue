@@ -1,21 +1,19 @@
 <template>
   <v-card>
     <v-card-title>{{ title }}</v-card-title>
-    <v-list-item
-      ><v-lits-item-title
-        >{{ volunteers.length }} Volunteer(s)</v-lits-item-title
-      ></v-list-item
-    >
-    <v-list-item
-      ><v-lits-item-title>
-        {{ pickUps.length }} Pick Up(s)</v-lits-item-title
-      ></v-list-item
-    >
-    <v-list-item
-      ><v-lits-item-title>
-        {{ dropOffs.length }} Drop Off(s)</v-lits-item-title
-      ></v-list-item
-    >
+    <div class="mx-4 my-2">{{ volunteers.length }} Volunteer(s)</div>
+    <v-div v-for="vol in volunteers" :key="vol.name"
+      ><v-list-item class="ml-4"
+        ><v-list-item-icon>
+          <v-icon>mdi-account</v-icon>
+        </v-list-item-icon>
+        <v-list-item-subtitle
+          >{{ vol.type }}: {{ vol.name }} {{ vol.phone }}</v-list-item-subtitle
+        >
+      </v-list-item>
+    </v-div>
+    <div class="mx-4 my-2">{{ pickUps.length }} Pick Up(s)</div>
+    <div class="mx-4 my-2">{{ dropOffs.length }} Drop Off(s)</div>
   </v-card>
 </template>
 
