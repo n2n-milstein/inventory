@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="start" align="start">
       <v-col class="pb-3" cols="12">
-        <view-title title="Pending Approvals" />
+        <h2>Pending Approvals</h2>
       </v-col>
       <v-col cols="12" v-if="pending.length === 0">
         <p>
@@ -28,16 +28,10 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Furniture } from "@/data/Furniture";
 import ApprovalCard from "@/components/ApprovalCard.vue";
-import ViewTitle from "@/components/ViewTitle.vue";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
-@Component({
-  components: {
-    ApprovalCard,
-    ViewTitle,
-  },
-})
+@Component({ components: { ApprovalCard } })
 export default class Approval extends Vue {
   show = false;
 
@@ -49,7 +43,7 @@ export default class Approval extends Vue {
    * Gets a snapshot of the `pending` collection and sets it to the local
    * variable.
    */
-  getPending() {
+  getPending(): void {
     const pending = this.db.collection("pending");
     pending.onSnapshot((snapshot) => {
       this.pending = [];
@@ -64,7 +58,7 @@ export default class Approval extends Vue {
    * furniture `furn`.
    * @param furn - a given Furniture object
    */
-  updateNotes(furn: Furniture) {
+  updateNotes(furn: Furniture): void {
     const furnRef = this.db.collection("pending").doc(furn.id);
     furnRef.update({ staffNotes: furn.staffNotes });
   }
@@ -76,7 +70,7 @@ export default class Approval extends Vue {
    * @param approve - true if the given Furniture object is approved, false
    * otherwise
    */
-  pushPending(furn: Furniture, approve: boolean) {
+  pushPending(furn: Furniture, approve: boolean): void {
     const col = approve ? "furniture" : "rejected";
     const collection = this.db.collection(col);
     const push = furn;
@@ -91,7 +85,7 @@ export default class Approval extends Vue {
   /**
    * Calls functions when the page is loaded.
    */
-  mounted() {
+  mounted(): void {
     this.getPending();
   }
 }
