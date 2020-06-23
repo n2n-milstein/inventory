@@ -2,7 +2,7 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Inventory" />
 
-    <v-row class="px-4 mb-4" align="center">
+    <div class="mb-4 d-inline-flex" align="center">
       <v-btn
         :disabled="selected.length > 0"
         :icon="selected.length > 0"
@@ -22,63 +22,16 @@
         @download="getSpreadsheet"
         @archive="archiveItems()"
       />
+    </div>
 
-      <v-col>
-        <v-row align="center" justify="end">
-          <div v-for="(chip, i) in filterChips" :key="chip">
-            <v-chip class="mr-3" close @click:close="closeChip(chip, i)">
-              {{ chip }}
-            </v-chip>
-          </div>
-          <v-btn rounded text @click="showFilter = !showFilter">
-            <v-icon left>filter_list</v-icon> Filters
-          </v-btn>
-        </v-row>
-      </v-col>
-    </v-row>
-
-    <v-expand-transition>
-      <v-container v-show="showFilter" class="grey lighten-4 px-8">
-        <v-row>
-          <v-col>
-            <div>Furniture Class</div>
-            <v-checkbox
-              @change="updateChip('Class')"
-              v-model="classFilter"
-              v-for="box in classCheckboxes"
-              :key="box"
-              :label="box"
-              :value="box"
-              hide-details
-            >
-            </v-checkbox>
-          </v-col>
-          <v-col>
-            <div>Status</div>
-            <v-checkbox
-              @change="updateChip('Status')"
-              v-model="statusFilter"
-              v-for="box in statusCheckboxes"
-              :key="box.value"
-              :label="box.text"
-              :value="box.value"
-              hide-details
-            >
-            </v-checkbox>
-          </v-col>
-          <v-col>
-            <div>Date Added</div>
-            <v-date-picker
-              @input="updateChip('Date')"
-              v-model="datesFilter"
-              multiple
-              class="elevation-0 mt-5"
-            >
-            </v-date-picker>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-expand-transition>
+    <table-filters
+      :dates-filter="datesFilter"
+      :status-filter="statusFilter"
+      :class-filter="classFilter"
+      @date="datesFilter = $event"
+      @status="statusFilter = $event"
+      @class="classFilter = $event"
+    />
 
     <furniture-table
       namespace="inventory"
@@ -125,10 +78,11 @@ import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
-import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
+import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 // store
 import { action } from "@/store/collection/types";
 
@@ -141,6 +95,7 @@ const NAMESPACE = "inventory";
     ViewActionGroup,
     FurnitureCardDialog,
     UnsavedDialog,
+    TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
     inventory: "getItems",
@@ -196,13 +151,7 @@ export default class Inventory extends Vue {
   /** Actions and search */
   search = "";
 
-  /** start filter stuff  */
-  filterChips = [] as string[];
-
-  showFilter = false;
-
-  dateMenu = false;
-
+  /** start filters */
   datesFilter = [] as string[];
 
   classFilter = Object.keys(FClass);
@@ -211,14 +160,6 @@ export default class Inventory extends Vue {
     .filter((v) => typeof (v as any) !== "number")
     .map((text, index) => {
       return index;
-    });
-
-  readonly classCheckboxes = Object.keys(FClass);
-
-  readonly statusCheckboxes = Object.values(Status)
-    .filter((v) => typeof (v as any) !== "number")
-    .map((value, index) => {
-      return { text: value, value: index };
     });
 
   get headers(): any {
@@ -248,44 +189,8 @@ export default class Inventory extends Vue {
       },
     ];
   }
+  /** end filters */
 
-  updateChip(filter: any): void {
-    if (!this.filterChips.includes(filter)) {
-      if (
-        (filter === "Class" &&
-          this.classFilter.length !== this.classCheckboxes.length) ||
-        (filter === "Status" &&
-          this.statusFilter.length !== this.statusCheckboxes.length) ||
-        (filter === "Date" && this.datesFilter.length !== 0)
-      ) {
-        this.filterChips.push(filter);
-      }
-    } else if (
-      (filter === "Class" &&
-        this.classFilter.length === this.classCheckboxes.length) ||
-      (filter === "Status" &&
-        this.statusFilter.length === this.statusCheckboxes.length) ||
-      (filter === "Date" && this.datesFilter.length === 0)
-    ) {
-      this.filterChips.splice(
-        this.filterChips.findIndex((x) => x === filter),
-        1,
-      );
-    }
-  }
-
-  closeChip(filter: any, index: any): void {
-    this.filterChips.splice(index, 1);
-    if (filter === "Class") {
-      this.classFilter = this.classCheckboxes;
-    } else if (filter === "Status") {
-      this.statusFilter = this.statusCheckboxes.map((x) => x.value);
-    } else {
-      this.datesFilter = [];
-    }
-  }
-
-  /** end filter stuff */
   downloading = false;
 
   get actions(): ViewAction[] {
