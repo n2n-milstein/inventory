@@ -82,13 +82,6 @@ export default class Inventory extends Vue {
 
   readonly PAGINATION = { itemsPerPage: -1 };
 
-  // readonly HEADERS = [
-  //   { text: "Class", value: "physical.class" },
-  //   { text: "Date Added", value: "timing.dateAdded" },
-  //   { text: "Address", value: "donor.address" },
-  //   { text: "Status", value: "status" },
-  // ];
-
   /**
    * Activates dialog that displays the item information
    */
