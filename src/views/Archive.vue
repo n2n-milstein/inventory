@@ -2,7 +2,7 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Archive" />
 
-    <v-row class="px-4 mb-4">
+    <div class="mb-4 d-inline-flex" align="center">
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
@@ -12,7 +12,16 @@
         @unarchive="unarchiveItems()"
         @delete="deleteItems()"
       />
-    </v-row>
+    </div>
+
+    <table-filters
+      :dates-filter="datesFilter"
+      :status-filter="statusFilter"
+      :class-filter="classFilter"
+      @date="datesFilter = $event"
+      @status="statusFilter = $event"
+      @class="classFilter = $event"
+    />
 
     <furniture-table
       namespace="archive"
@@ -43,6 +52,7 @@ import collections from "@/network/collections";
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
+import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 
 const NAMESPACE = "archive";
 
@@ -51,6 +61,7 @@ const NAMESPACE = "archive";
     FurnitureTable,
     FurnitureTableHeader,
     ViewActionGroup,
+    TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
     archive: "getItems",
@@ -87,6 +98,7 @@ export default class Inventory extends Vue {
     ];
   }
 
+  /** Filters */
   datesFilter = [] as string[];
 
   classFilter = Object.keys(FClass);
