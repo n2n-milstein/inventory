@@ -30,50 +30,55 @@
               {{ chip }}
             </v-chip>
           </div>
-          <v-btn color="primary" rounded @click="showFilter = !showFilter">
-            <v-icon left>mdi-filter</v-icon> Filters
+          <v-btn rounded text @click="showFilter = !showFilter">
+            <v-icon left>filter_list</v-icon> Filters
           </v-btn>
         </v-row>
       </v-col>
     </v-row>
 
-    <v-container v-show="showFilter">
-      <v-row>
-        <v-col>
-          Class Filter
-          <v-checkbox
-            @change="updateChip('Class')"
-            v-model="classFilter"
-            v-for="box in classCheckboxes"
-            :key="box"
-            :label="box"
-            :value="box"
-          >
-          </v-checkbox>
-        </v-col>
-        <v-col>
-          Status Filter
-          <v-checkbox
-            @change="updateChip('Status')"
-            v-model="statusFilter"
-            v-for="box in statusCheckboxes"
-            :key="box.value"
-            :label="box.text"
-            :value="box.value"
-          >
-          </v-checkbox>
-        </v-col>
-        <v-col>
-          Date Added Filter
-          <v-date-picker
-            @input="updateChip('Date')"
-            v-model="datesFilter"
-            multiple
-          >
-          </v-date-picker>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-expand-transition>
+      <v-container v-show="showFilter" class="grey lighten-4 px-8">
+        <v-row>
+          <v-col>
+            <div>Furniture Class</div>
+            <v-checkbox
+              @change="updateChip('Class')"
+              v-model="classFilter"
+              v-for="box in classCheckboxes"
+              :key="box"
+              :label="box"
+              :value="box"
+              hide-details
+            >
+            </v-checkbox>
+          </v-col>
+          <v-col>
+            <div>Status</div>
+            <v-checkbox
+              @change="updateChip('Status')"
+              v-model="statusFilter"
+              v-for="box in statusCheckboxes"
+              :key="box.value"
+              :label="box.text"
+              :value="box.value"
+              hide-details
+            >
+            </v-checkbox>
+          </v-col>
+          <v-col>
+            <div>Date Added</div>
+            <v-date-picker
+              @input="updateChip('Date')"
+              v-model="datesFilter"
+              multiple
+              class="elevation-0 mt-5"
+            >
+            </v-date-picker>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-expand-transition>
 
     <furniture-table
       namespace="inventory"
