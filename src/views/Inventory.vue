@@ -121,7 +121,7 @@ import "firebase/storage";
 import collections from "@/network/collections";
 import { Furniture, Status } from "@/data/Furniture";
 import { FClass } from "@/data/furniture/Physical";
-import { Timestamp } from "@/data/furniture/Timing";
+import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
@@ -235,7 +235,7 @@ export default class Inventory extends Vue {
         value: "timing.dateAdded",
         filter: (value: any): boolean => {
           if (this.datesFilter.length === 0) return true;
-          return this.datesFilter.includes(Inventory.formatDate(value));
+          return this.datesFilter.includes(Timing.formatDate(value));
         },
       },
       { text: "Address", value: "donor.address" },
@@ -247,12 +247,6 @@ export default class Inventory extends Vue {
         },
       },
     ];
-  }
-
-  static formatDate(date?: Date | Timestamp): string {
-    if (!date) return "";
-    if (date instanceof Date) return date.toISOString().substring(0, 10);
-    return date.toDate().toISOString().substring(0, 10);
   }
 
   updateChip(filter: any): void {
