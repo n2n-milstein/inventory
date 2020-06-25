@@ -19,6 +19,7 @@
       :status-filter="statusFilter"
       :class-filter="classFilter"
       :donor-filter="donorFilter"
+      :inventory="archive"
       @date="datesFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"

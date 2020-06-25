@@ -75,7 +75,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { FClass } from "@/data/furniture/Physical";
-import { Status } from "@/data/Furniture";
+import { Furniture, Status } from "@/data/Furniture";
 
 @Component({})
 export default class FurnitureTableFilters extends Vue {
@@ -91,6 +91,9 @@ export default class FurnitureTableFilters extends Vue {
   @Prop({})
   readonly donorFilter!: string[];
 
+  @Prop({})
+  readonly inventory!: Furniture[];
+
   readonly classCheckboxes = Object.keys(FClass);
 
   readonly statusCheckboxes = Object.values(Status)
@@ -99,7 +102,9 @@ export default class FurnitureTableFilters extends Vue {
       return { text: value, value: index };
     });
 
-  readonly donorOptions = ["Jo", "Smith", "John Smith"];
+  get donorOptions(): any {
+    return this.inventory.map((x) => x.donor.name);
+  }
 
   filterChips = [] as string[];
 
