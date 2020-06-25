@@ -4,6 +4,7 @@
       :value="selected"
       @input="setSelected({ list: $event })"
       :search="search"
+      :custom-filter="searchFilter"
       :headers="headers"
       :items="items"
       :options.sync="PAGINATION"
@@ -89,5 +90,20 @@ export default class Inventory extends Vue {
     this.setCurrent({ item });
     this.$emit("item-click");
   }
+
+  /**
+   * Simple search filter that only works on columns without custom filter
+   * functions defined in headers.
+   * TODO: make a better search method
+   */
+  /* eslint-disable */
+  searchFilter(value: any, search: string, item: any): boolean {
+    return (
+      value != null &&
+      search != null &&
+      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  }
+  /* eslint-enable */
 }
 </script>
