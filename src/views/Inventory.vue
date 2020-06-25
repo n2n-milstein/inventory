@@ -167,7 +167,7 @@ export default class Inventory extends Vue {
       {
         text: "Class",
         value: "physical.class",
-        filter: (value: any): boolean => {
+        filter: (value: string): boolean => {
           return this.classFilter.includes(value);
         },
       },
@@ -175,15 +175,16 @@ export default class Inventory extends Vue {
         text: "Date Added",
         value: "timing.dateAdded",
         filter: (value: any): boolean => {
+          const formatted = Timing.formatDate(value);
           if (this.datesFilter.length === 0) return true;
-          return this.datesFilter.includes(Timing.formatDate(value));
+          return this.datesFilter.includes(formatted);
         },
       },
       { text: "Address", value: "donor.address" },
       {
         text: "Status",
         value: "status",
-        filter: (value: any): boolean => {
+        filter: (value: number): boolean => {
           return this.statusFilter.includes(value);
         },
       },

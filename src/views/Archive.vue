@@ -114,7 +114,7 @@ export default class Inventory extends Vue {
       {
         text: "Class",
         value: "physical.class",
-        filter: (value: any): boolean => {
+        filter: (value: string): boolean => {
           return this.classFilter.includes(value);
         },
       },
@@ -130,7 +130,7 @@ export default class Inventory extends Vue {
       {
         text: "Status",
         value: "status",
-        filter: (value: any): boolean => {
+        filter: (value: number): boolean => {
           return this.statusFilter.includes(value);
         },
       },
