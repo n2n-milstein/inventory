@@ -127,6 +127,7 @@ export default class Inventory extends Vue {
         },
       },
       { text: "Address", value: "donor.address" },
+      { text: "Donor", value: "donor.name" },
       {
         text: "Status",
         value: "status",
