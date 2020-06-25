@@ -2,7 +2,7 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Archive" />
 
-    <v-row class="px-4 mb-4">
+    <div class="mb-4 d-inline-flex" align="center">
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
@@ -12,10 +12,20 @@
         @unarchive="unarchiveItems()"
         @delete="deleteItems()"
       />
-    </v-row>
+    </div>
+
+    <table-filters
+      :dates-filter="datesFilter"
+      :status-filter="statusFilter"
+      :class-filter="classFilter"
+      @date="datesFilter = $event"
+      @status="statusFilter = $event"
+      @class="classFilter = $event"
+    />
 
     <furniture-table
       namespace="archive"
+      :headers="headers"
       :search="search"
       :items="archive"
       :downloading="downloading"
@@ -33,13 +43,16 @@ import "firebase/firestore";
 import "firebase/functions";
 import "firebase/storage";
 // data
-import { Furniture } from "@/data/Furniture";
+import { Furniture, Status } from "@/data/Furniture";
+import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
+import { FClass } from "@/data/furniture/Physical";
 import collections from "@/network/collections";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
-import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
+import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 
 const NAMESPACE = "archive";
 
@@ -48,6 +61,7 @@ const NAMESPACE = "archive";
     FurnitureTable,
     FurnitureTableHeader,
     ViewActionGroup,
+    TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
     archive: "getItems",
@@ -80,6 +94,45 @@ export default class Inventory extends Vue {
         icon: "delete",
         desc: "Delete selected items",
         emit: "delete",
+      },
+    ];
+  }
+
+  /** Filters */
+  datesFilter = [] as string[];
+
+  classFilter = Object.keys(FClass);
+
+  statusFilter = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((text, index) => {
+      return index;
+    });
+
+  get headers(): any {
+    return [
+      {
+        text: "Class",
+        value: "physical.class",
+        filter: (value: string): boolean => {
+          return this.classFilter.includes(value);
+        },
+      },
+      {
+        text: "Date Added",
+        value: "timing.dateAdded",
+        filter: (value: any): boolean => {
+          if (this.datesFilter.length === 0) return true;
+          return this.datesFilter.includes(Timing.formatDate(value));
+        },
+      },
+      { text: "Address", value: "donor.address" },
+      {
+        text: "Status",
+        value: "status",
+        filter: (value: number): boolean => {
+          return this.statusFilter.includes(value);
+        },
       },
     ];
   }

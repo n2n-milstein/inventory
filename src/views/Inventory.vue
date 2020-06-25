@@ -2,7 +2,7 @@
   <v-col cols="12">
     <furniture-table-header v-model="search" title="Inventory" />
 
-    <v-row class="px-4 mb-4">
+    <div class="mb-4 d-inline-flex" align="center">
       <v-btn
         :disabled="selected.length > 0"
         :icon="selected.length > 0"
@@ -22,10 +22,20 @@
         @download="getSpreadsheet"
         @archive="archiveItems()"
       />
-    </v-row>
+    </div>
+
+    <table-filters
+      :dates-filter="datesFilter"
+      :status-filter="statusFilter"
+      :class-filter="classFilter"
+      @date="datesFilter = $event"
+      @status="statusFilter = $event"
+      @class="classFilter = $event"
+    />
 
     <furniture-table
       namespace="inventory"
+      :headers="headers"
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
@@ -62,14 +72,17 @@ import "firebase/functions";
 import "firebase/storage";
 // network, data
 import collections from "@/network/collections";
-import { Furniture } from "@/data/Furniture";
+import { Furniture, Status } from "@/data/Furniture";
+import { FClass } from "@/data/furniture/Physical";
+import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
-import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
+import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 // store
 import { action } from "@/store/collection/types";
 
@@ -82,6 +95,7 @@ const NAMESPACE = "inventory";
     ViewActionGroup,
     FurnitureCardDialog,
     UnsavedDialog,
+    TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
     inventory: "getItems",
@@ -136,6 +150,47 @@ export default class Inventory extends Vue {
 
   /** Actions and search */
   search = "";
+
+  /** start filters */
+  datesFilter = [] as string[];
+
+  classFilter = Object.keys(FClass);
+
+  statusFilter = Object.values(Status)
+    .filter((v) => typeof (v as any) !== "number")
+    .map((text, index) => {
+      return index;
+    });
+
+  get headers(): any {
+    return [
+      {
+        text: "Class",
+        value: "physical.class",
+        filter: (value: string): boolean => {
+          return this.classFilter.includes(value);
+        },
+      },
+      {
+        text: "Date Added",
+        value: "timing.dateAdded",
+        filter: (value: any): boolean => {
+          const formatted = Timing.formatDate(value);
+          if (this.datesFilter.length === 0) return true;
+          return this.datesFilter.includes(formatted);
+        },
+      },
+      { text: "Address", value: "donor.address" },
+      {
+        text: "Status",
+        value: "status",
+        filter: (value: number): boolean => {
+          return this.statusFilter.includes(value);
+        },
+      },
+    ];
+  }
+  /** end filters */
 
   downloading = false;
 
