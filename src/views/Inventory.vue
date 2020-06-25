@@ -185,7 +185,14 @@ export default class Inventory extends Vue {
         },
       },
       { text: "Address", value: "donor.address" },
-      { text: "Donor", value: "donor.name" },
+      {
+        text: "Donor",
+        value: "donor.name",
+        filter: (value: any): boolean => {
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
+        },
+      },
       {
         text: "Status",
         value: "status",

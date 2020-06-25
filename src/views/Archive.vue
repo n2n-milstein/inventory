@@ -18,9 +18,11 @@
       :dates-filter="datesFilter"
       :status-filter="statusFilter"
       :class-filter="classFilter"
+      :donor-filter="donorFilter"
       @date="datesFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
+      @donor="donorFilter = $event"
     />
 
     <furniture-table
@@ -101,6 +103,8 @@ export default class Inventory extends Vue {
   /** Filters */
   datesFilter = [] as string[];
 
+  donorFilter = [] as string[];
+
   classFilter = Object.keys(FClass);
 
   statusFilter = Object.values(Status)
@@ -127,7 +131,14 @@ export default class Inventory extends Vue {
         },
       },
       { text: "Address", value: "donor.address" },
-      { text: "Donor", value: "donor.name" },
+      {
+        text: "Donor",
+        value: "donor.name",
+        filter: (value: any): boolean => {
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
+        },
+      },
       {
         text: "Status",
         value: "status",

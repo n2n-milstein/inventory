@@ -99,7 +99,7 @@ export default class FurnitureTableFilters extends Vue {
       return { text: value, value: index };
     });
 
-  readonly donorOptions = ["Jo", "Smith"];
+  readonly donorOptions = ["Jo", "Smith", "John Smith"];
 
   filterChips = [] as string[];
 
