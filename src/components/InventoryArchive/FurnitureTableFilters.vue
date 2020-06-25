@@ -16,9 +16,8 @@
     </div>
 
     <v-expand-transition>
-      <v-container v-show="showFilter" class="grey lighten-4 px-8">
+      <v-container v-show="showFilter" class="grey lighten-4 px-10 py-6">
         <v-row>
-          <v-spacer class="d-none d-lg-flex" />
           <v-col>
             <h4>Furniture Class</h4>
             <v-checkbox
@@ -46,6 +45,17 @@
             </v-checkbox>
           </v-col>
           <v-col>
+            <h4>Donor Name</h4>
+            <v-autocomplete
+              @change="update('Donor', $event)"
+              :value="donorFilter"
+              :items="donorOptions"
+              chips
+              multiple
+            >
+            </v-autocomplete>
+          </v-col>
+          <v-col>
             <h4>Date Added</h4>
             <v-date-picker
               @input="update('Date', $event)"
@@ -55,7 +65,6 @@
             >
             </v-date-picker>
           </v-col>
-          <v-spacer class="d-none d-lg-flex" />
         </v-row>
       </v-container>
     </v-expand-transition>
@@ -79,6 +88,9 @@ export default class FurnitureTableFilters extends Vue {
   @Prop({})
   readonly classFilter!: string[];
 
+  @Prop({})
+  readonly donorFilter!: string[];
+
   readonly classCheckboxes = Object.keys(FClass);
 
   readonly statusCheckboxes = Object.values(Status)
@@ -86,6 +98,8 @@ export default class FurnitureTableFilters extends Vue {
     .map((value, index) => {
       return { text: value, value: index };
     });
+
+  readonly donorOptions = ["Jo", "Smith"];
 
   filterChips = [] as string[];
 
@@ -102,6 +116,9 @@ export default class FurnitureTableFilters extends Vue {
       case "Status":
         this.$emit("status", value);
         break;
+      case "Donor":
+        this.$emit("donor", value);
+        break;
       default:
       // do something
     }
@@ -114,14 +131,14 @@ export default class FurnitureTableFilters extends Vue {
         (filter === "Class" && value.length !== this.classCheckboxes.length) ||
         (filter === "Status" &&
           value.length !== this.statusCheckboxes.length) ||
-        (filter === "Date" && value.length !== 0)
+        ((filter === "Date" || filter === "Donor") && value.length !== 0)
       ) {
         this.filterChips.push(filter);
       }
     } else if (
       (filter === "Class" && value.length === this.classCheckboxes.length) ||
       (filter === "Status" && value.length === this.statusCheckboxes.length) ||
-      (filter === "Date" && value.length === 0)
+      ((filter === "Date" || filter === "Donor") && value.length === 0)
     ) {
       this.filterChips.splice(
         this.filterChips.findIndex((x) => x === filter),
@@ -139,8 +156,10 @@ export default class FurnitureTableFilters extends Vue {
         "status",
         this.statusCheckboxes.map((x) => x.value),
       );
-    } else {
+    } else if (filter === "Date") {
       this.$emit("date", []);
+    } else if (filter === "Donor") {
+      this.$emit("donor", []);
     }
   }
 }

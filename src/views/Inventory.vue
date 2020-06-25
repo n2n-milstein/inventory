@@ -28,9 +28,11 @@
       :dates-filter="datesFilter"
       :status-filter="statusFilter"
       :class-filter="classFilter"
+      :donor-filter="donorFilter"
       @date="datesFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
+      @donor="donorFilter = $event"
     />
 
     <furniture-table
@@ -161,6 +163,8 @@ export default class Inventory extends Vue {
     .map((text, index) => {
       return index;
     });
+
+  donorFilter = [] as string[];
 
   get headers(): any {
     return [
