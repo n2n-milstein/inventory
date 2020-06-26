@@ -32,6 +32,7 @@ export default class Timing {
     this.urgent = urgent;
     this.pickupBy = pickupBy;
     this.dateOffered = dateOffered;
+    // TODO: just set this to `new Date()` - user shouldn't control this metadata
     this.dateAdded = dateAdded;
     if (confirmedPickupDate) this.confirmedPickupDate = confirmedPickupDate;
     if (dateCollected) this.dateCollected = dateCollected;
