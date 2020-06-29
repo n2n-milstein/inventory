@@ -19,7 +19,6 @@
             v-bind="data.attrs"
             :input-value="data.selected"
             close
-            @click="data.select"
             @click:close="remove(data.item)"
           >
             {{ data.item.text }}

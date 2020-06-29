@@ -222,7 +222,7 @@ export default class Inventory extends Vue {
 
   removeFromSearch(value: any): void {
     this.searchFilter.splice(
-      this.searchFilter.findIndex((x) => x === value),
+      this.searchFilter.findIndex((x) => x === value.text),
       1,
     );
   }
