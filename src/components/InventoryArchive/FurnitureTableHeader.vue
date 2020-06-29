@@ -5,15 +5,16 @@
     </h2>
     <v-spacer />
     <v-col cols="6">
-      <v-text-field
-        :value="value"
-        @input="updateSearch($event)"
-        append-icon="search"
+      <v-autocomplete
+        @change="update($event)"
+        :value="searchFilter"
+        :items="searchOptions"
+        chips
+        multiple
+        prepend-icon="mdi-magnify"
         label="Search"
-        single-line
-        clearable
-        hide-details
-      />
+      >
+      </v-autocomplete>
     </v-col>
   </v-row>
 </template>
@@ -21,6 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import { Furniture } from "@/data/Furniture";
 
 @Component
 export default class FurnitureTableHeader extends Vue {
@@ -28,10 +30,17 @@ export default class FurnitureTableHeader extends Vue {
   readonly title!: string;
 
   @Prop({})
-  readonly value!: string;
+  readonly searchFilter!: string[];
 
-  updateSearch(value: string): void {
-    this.$emit("input", value);
+  @Prop({})
+  readonly inventory!: Furniture[];
+
+  get searchOptions(): any {
+    return this.inventory.map((x) => x.donor.name);
+  }
+
+  update(value: string[]): void {
+    this.$emit("search", value);
   }
 }
 </script>

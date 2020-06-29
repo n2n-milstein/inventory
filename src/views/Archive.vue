@@ -1,6 +1,11 @@
 <template>
   <v-col cols="12">
-    <furniture-table-header v-model="search" title="Archive" />
+    <furniture-table-header
+      title="Archive"
+      :search-filter="searchFilter"
+      @search="searchFilter = $event"
+      :inventory="archive"
+    />
 
     <div class="mb-4 d-inline-flex" align="center">
       <view-action-group
@@ -109,9 +114,7 @@ export default class Inventory extends Vue {
       return index;
     });
 
-  donorFilter = [] as string[];
-
-  addressFilter = [] as string[];
+  searchFilter = [] as string[];
 
   get headers(): any {
     return [
@@ -135,16 +138,16 @@ export default class Inventory extends Vue {
         text: "Address",
         value: "donor.address",
         filter: (value: any): boolean => {
-          if (this.addressFilter.length === 0) return true;
-          return this.addressFilter.includes(value);
+          if (this.searchFilter.length === 0) return true;
+          return this.searchFilter.includes(value);
         },
       },
       {
         text: "Donor",
         value: "donor.name",
         filter: (value: any): boolean => {
-          if (this.donorFilter.length === 0) return true;
-          return this.donorFilter.includes(value);
+          if (this.searchFilter.length === 0) return true;
+          return this.searchFilter.includes(value);
         },
       },
       {
