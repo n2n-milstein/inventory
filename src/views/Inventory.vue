@@ -1,7 +1,5 @@
 <template>
-  <v-col cols="12">
-    <furniture-table-header v-model="search" title="Inventory" />
-
+  <v-col class="mt-4" cols="12">
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn
         :disabled="selected.length > 0"
