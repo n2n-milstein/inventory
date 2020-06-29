@@ -162,6 +162,10 @@ export default class Inventory extends Vue {
       return index;
     });
 
+  donorFilter = [] as string[];
+
+  addressFilter = [] as string[];
+
   get headers(): any {
     return [
       {
@@ -180,7 +184,22 @@ export default class Inventory extends Vue {
           return this.datesFilter.includes(formatted);
         },
       },
-      { text: "Address", value: "donor.address" },
+      {
+        text: "Address",
+        value: "donor.address",
+        filter: (value: any): boolean => {
+          if (this.addressFilter.length === 0) return true;
+          return this.addressFilter.includes(value);
+        },
+      },
+      {
+        text: "Donor",
+        value: "donor.name",
+        filter: (value: any): boolean => {
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
+        },
+      },
       {
         text: "Status",
         value: "status",
@@ -190,6 +209,7 @@ export default class Inventory extends Vue {
       },
     ];
   }
+
   /** end filters */
 
   downloading = false;
