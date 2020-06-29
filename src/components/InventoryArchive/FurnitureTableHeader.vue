@@ -14,6 +14,17 @@
         prepend-icon="mdi-magnify"
         label="Search"
       >
+        <template v-slot:selection="data">
+          <v-chip
+            v-bind="data.attrs"
+            :input-value="data.selected"
+            close
+            @click="data.select"
+            @click:close="remove(data.item)"
+          >
+            {{ data.item.text }}
+          </v-chip>
+        </template>
       </v-autocomplete>
     </v-col>
   </v-row>
@@ -36,11 +47,17 @@ export default class FurnitureTableHeader extends Vue {
   readonly inventory!: Furniture[];
 
   get searchOptions(): any {
-    return this.inventory.map((x) => x.donor.name);
+    return this.inventory.map((x) => {
+      return { text: x.donor.name, type: "donor" };
+    });
   }
 
   update(value: string[]): void {
     this.$emit("search", value);
+  }
+
+  remove(value: any): void {
+    this.$emit("remove", value);
   }
 }
 </script>

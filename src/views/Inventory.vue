@@ -4,6 +4,7 @@
       title="Inventory"
       :search-filter="searchFilter"
       @search="searchFilter = $event"
+      @remove="removeFromSearch($event)"
       :inventory="inventory"
     />
 
@@ -167,7 +168,13 @@ export default class Inventory extends Vue {
       return index;
     });
 
-  searchFilter = [] as string[];
+  searchFilter = [] as any[];
+
+  get donorFilter(): any {
+    return this.searchFilter;
+  }
+
+  addressFilter = [] as string[];
 
   get headers(): any {
     return [
@@ -191,16 +198,16 @@ export default class Inventory extends Vue {
         text: "Address",
         value: "donor.address",
         filter: (value: any): boolean => {
-          if (this.searchFilter.length === 0) return true;
-          return this.searchFilter.includes(value);
+          if (this.addressFilter.length === 0) return true;
+          return this.addressFilter.includes(value);
         },
       },
       {
         text: "Donor",
         value: "donor.name",
         filter: (value: any): boolean => {
-          if (this.searchFilter.length === 0) return true;
-          return this.searchFilter.includes(value);
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
         },
       },
       {
@@ -211,6 +218,13 @@ export default class Inventory extends Vue {
         },
       },
     ];
+  }
+
+  removeFromSearch(value: any): void {
+    this.searchFilter.splice(
+      this.searchFilter.findIndex((x) => x === value),
+      1,
+    );
   }
 
   /** end filters */
