@@ -135,7 +135,7 @@ export default class Inventory extends Vue {
   }
 
   menuLoading = false;
-  
+
   /** Filters */
   datesFilter = [] as string[];
 
