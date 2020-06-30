@@ -14,6 +14,7 @@
         :is-add="isAdd"
         :menu-actions="menuActions"
         :menu-loading="menuLoading"
+        :loading="updatesLoading"
         @edit="toggleEdit()"
         @close="closeDialog()"
         @save="saveChanges()"
@@ -54,7 +55,7 @@ import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
     clearUpdates(dispatch) {
       return dispatch(`${this.namespace}/clearUpdates`);
     },
-    commitUpdates(dispatch) {
+    async commitUpdates(dispatch) {
       return dispatch(`${this.namespace}/commitUpdates`);
     },
   }),
@@ -84,7 +85,9 @@ export default class FurnitureCardDialog extends Vue {
 
   readonly clearUpdates!: () => void;
 
-  readonly commitUpdates!: () => void;
+  readonly commitUpdates!: () => Promise<void>;
+
+  updatesLoading = false;
 
   unsavedDialog = false;
 
@@ -94,6 +97,9 @@ export default class FurnitureCardDialog extends Vue {
    * Exits dialog and clears the current item
    */
   closeDialog(forceClose = false): void {
+    if (this.updatesLoading) {
+      return;
+    }
     if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
       this.isEdit = false;
@@ -117,12 +123,14 @@ export default class FurnitureCardDialog extends Vue {
   /**
    * Commits updates to Firestore
    */
-  saveChanges(): void {
+  async saveChanges(): Promise<void> {
     if (this.isAdd) {
       this.$emit("add");
     } else {
-      this.commitUpdates();
+      this.updatesLoading = true;
+      await this.commitUpdates();
       this.isEdit = false;
+      this.updatesLoading = false;
     }
   }
 }

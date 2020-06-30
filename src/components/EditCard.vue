@@ -1,5 +1,14 @@
 <template>
   <v-card>
+    <v-overlay absolute :value="loading" align="center" opacity="0.25">
+      <v-progress-circular
+        class="mr-3"
+        indeterminate
+        size="32"
+      ></v-progress-circular>
+      Saving edits...
+    </v-overlay>
+
     <v-card-title
       class="headline ease-transition pb-4"
       :class="{
@@ -282,6 +291,9 @@ export default class EditCard extends Vue {
 
   @Prop({ default: false })
   readonly menuLoading!: boolean;
+
+  @Prop({ default: false })
+  readonly loading!: boolean;
 
   /**
    * Sets the offset when user scrolls
