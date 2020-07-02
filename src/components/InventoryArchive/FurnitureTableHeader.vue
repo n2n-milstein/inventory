@@ -45,16 +45,29 @@ export default class FurnitureTableHeader extends Vue {
   @Prop({})
   readonly inventory!: Furniture[];
 
+  // get searchOptions(): any {
+  //   return this.inventory
+  //     .map((x) => {
+  //       return x.donor.name;
+  //     })
+  //     .concat(
+  //       this.inventory.map((x) => {
+  //         return x.donor.address;
+  //       }),
+  //     );
+  // }
+
   get searchOptions(): any {
-    return this.inventory
-      .map((x) => {
+    return [
+      { header: "Donor" },
+      ...this.inventory.map((x) => {
         return x.donor.name;
-      })
-      .concat(
-        this.inventory.map((x) => {
-          return x.donor.address;
-        }),
-      );
+      }),
+      { header: "Address" },
+      ...this.inventory.map((x) => {
+        return x.donor.address;
+      }),
+    ];
   }
 
   update(value: string[]): void {
