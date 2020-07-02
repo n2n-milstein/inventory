@@ -112,8 +112,6 @@ export default class Inventory extends Vue {
     const arr = search.split('|');
     let i;
     for (i = 0; i < arr.length; i++) {
-      console.log(value.toString());
-      console.log(arr[i]);
       if (value.toString().indexOf(arr[i]) !== -1) {
         return true;
       }
