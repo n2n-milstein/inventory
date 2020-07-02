@@ -42,7 +42,7 @@
     <furniture-table
       namespace="inventory"
       :headers="headers"
-      :search="search"
+      :search="searchFilter"
       :items="inventory"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
@@ -154,10 +154,8 @@ export default class Inventory extends Vue {
 
   unsavedDialog = false;
 
-  /** Actions and search */
-  search = "";
-
   /** start filters */
+
   datesFilter = [] as string[];
 
   classFilter = Object.keys(FClass);
@@ -169,12 +167,6 @@ export default class Inventory extends Vue {
     });
 
   searchFilter = [] as any[];
-
-  get donorFilter(): any {
-    return this.searchFilter;
-  }
-
-  addressFilter = [] as string[];
 
   get headers(): any {
     return [
@@ -197,18 +189,10 @@ export default class Inventory extends Vue {
       {
         text: "Address",
         value: "donor.address",
-        filter: (value: any): boolean => {
-          if (this.addressFilter.length === 0) return true;
-          return this.addressFilter.includes(value);
-        },
       },
       {
         text: "Donor",
         value: "donor.name",
-        filter: (value: any): boolean => {
-          if (this.donorFilter.length === 0) return true;
-          return this.donorFilter.includes(value);
-        },
       },
       {
         text: "Status",
@@ -222,7 +206,7 @@ export default class Inventory extends Vue {
 
   removeFromSearch(value: any): void {
     this.searchFilter.splice(
-      this.searchFilter.findIndex((x) => x === value.text),
+      this.searchFilter.findIndex((x) => x === value),
       1,
     );
   }

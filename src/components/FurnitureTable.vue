@@ -3,7 +3,7 @@
     <v-data-table
       :value="selected"
       @input="setSelected({ list: $event })"
-      :search="search"
+      :search="searchString"
       :custom-filter="searchFilter"
       :headers="headers"
       :items="items"
@@ -68,7 +68,7 @@ export default class Inventory extends Vue {
   readonly items!: Furniture[];
 
   @Prop({ default: "" })
-  readonly search!: string;
+  readonly search!: string[];
 
   @Prop({})
   readonly headers!: any[];
@@ -82,6 +82,17 @@ export default class Inventory extends Vue {
   readonly STATUS = Status;
 
   readonly PAGINATION = { itemsPerPage: -1 };
+
+  get searchString(): any {
+    if (this.search.length === 0) {
+      return "";
+    }
+    return this.search.reduce((acc, val) => `${acc}|${val}`);
+  }
+
+  get arr(): any {
+    return this.searchString.split("|");
+  }
 
   /**
    * Activates dialog that displays the item information
@@ -98,11 +109,16 @@ export default class Inventory extends Vue {
    */
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
-    return (
-      value != null &&
-      search != null &&
-      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
+    const arr = search.split('|');
+    let i;
+    for (i = 0; i < arr.length; i++) {
+      console.log(value.toString());
+      console.log(arr[i]);
+      if (value.toString().indexOf(arr[i]) !== -1) {
+        return true;
+      }
+    }
+    return false;
   }
   /* eslint-enable */
 }

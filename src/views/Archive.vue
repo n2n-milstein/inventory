@@ -32,7 +32,7 @@
     <furniture-table
       namespace="archive"
       :headers="headers"
-      :search="search"
+      :search="searchFilter"
       :items="archive"
       :downloading="downloading"
       :collection="COLLECTION"
@@ -117,12 +117,6 @@ export default class Inventory extends Vue {
 
   searchFilter = [] as any[];
 
-  get donorFilter(): any {
-    return this.searchFilter;
-  }
-
-  addressFilter = [] as string[];
-
   get headers(): any {
     return [
       {
@@ -144,18 +138,10 @@ export default class Inventory extends Vue {
       {
         text: "Address",
         value: "donor.address",
-        filter: (value: any): boolean => {
-          if (this.addressFilter.length === 0) return true;
-          return this.addressFilter.includes(value);
-        },
       },
       {
         text: "Donor",
         value: "donor.name",
-        filter: (value: any): boolean => {
-          if (this.donorFilter.length === 0) return true;
-          return this.donorFilter.includes(value);
-        },
       },
       {
         text: "Status",
@@ -169,7 +155,7 @@ export default class Inventory extends Vue {
 
   removeFromSearch(value: any): void {
     this.searchFilter.splice(
-      this.searchFilter.findIndex((x) => x === value.text),
+      this.searchFilter.findIndex((x) => x === value),
       1,
     );
   }
@@ -179,8 +165,6 @@ export default class Inventory extends Vue {
   selected!: Furniture[];
 
   downloading = false;
-
-  search = "";
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in

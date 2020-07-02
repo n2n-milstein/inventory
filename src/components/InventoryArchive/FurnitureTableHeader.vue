@@ -21,7 +21,7 @@
             close
             @click:close="remove(data.item)"
           >
-            {{ data.item.text }}
+            {{ data.item }}
           </v-chip>
         </template>
       </v-autocomplete>
@@ -46,9 +46,15 @@ export default class FurnitureTableHeader extends Vue {
   readonly inventory!: Furniture[];
 
   get searchOptions(): any {
-    return this.inventory.map((x) => {
-      return { text: x.donor.name, type: "donor" };
-    });
+    return this.inventory
+      .map((x) => {
+        return x.donor.name;
+      })
+      .concat(
+        this.inventory.map((x) => {
+          return x.donor.address;
+        }),
+      );
   }
 
   update(value: string[]): void {
