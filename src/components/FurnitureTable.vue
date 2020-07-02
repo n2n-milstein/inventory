@@ -98,11 +98,17 @@ export default class Inventory extends Vue {
    */
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
-    return (
-      value != null &&
-      search != null &&
-      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
+    const arr = search.split(" ");
+    const valString = item.donor.address + item.donor.name;
+    let i;
+    for (i = 0; i < arr.length; i++) {
+      console.log(arr[i].toLowerCase());
+      console.log(valString.toString().toLowerCase());
+      if (valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1) {
+        return false;
+      }
+    }
+    return true;
   }
   /* eslint-enable */
 }
