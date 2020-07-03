@@ -130,4 +130,13 @@ export class Furniture {
     this.comments = comments;
     this.staffNotes = staffNotes;
   }
+
+  /**
+   * name
+   */
+  public generateRandom(): Furniture {
+    this.id = "";
+    this.donor = new DonorInfo().generateRandom();
+    return this;
+  }
 }
