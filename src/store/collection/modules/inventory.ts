@@ -5,14 +5,22 @@ import { Furniture } from "@/data/Furniture";
 import { CollectionState, mutation } from "../types";
 
 export const actions: ActionTree<CollectionState, RootState> = {
-  archiveItems({ commit, state }): void {
+  async archiveCurrent({ commit, state }): Promise<void> {
+    try {
+      await archiveItem(state.current!.id);
+      commit(mutation.CLEAR_CURRENT);
+    } catch (e) {
+      console.error("archiveCurrent error:", e);
+    }
+  },
+  archiveSelected({ commit, state }): void {
     try {
       state.selected.forEach(async (item: Furniture) => {
         await archiveItem(item.id);
       });
       commit(mutation.CLEAR_SELECTED);
     } catch (e) {
-      console.log("archiveItems error: ", e);
+      console.error("archiveSelected error:", e);
     }
   },
   async commitItem({ commit, state }): Promise<void> {
@@ -22,7 +30,7 @@ export const actions: ActionTree<CollectionState, RootState> = {
       await addItem(state.current!);
       commit(mutation.CLEAR_UPDATES);
     } catch (e) {
-      console.log("addItem error: ", e);
+      console.error("addItem error:", e);
     }
   },
 };

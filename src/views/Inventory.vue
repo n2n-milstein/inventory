@@ -17,10 +17,10 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="actions"
+        :actions="inventoryActions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
-        @archive="archiveItems()"
+        @archive="archiveSelected()"
       />
     </div>
 
@@ -40,24 +40,17 @@
       :items="inventory"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
-      @item-click="editCard = true"
     />
 
     <furniture-card-dialog
       namespace="inventory"
       :dialog="editCard"
-      :is-edit="isEdit"
       :is-add="isAdd"
-      @edit="toggleEdit()"
-      @close="closeDialog()"
-      @save="saveUpdates()"
+      :menu-actions="menuActions"
+      :menu-loading="menuLoading"
       @add="commitAddItem()"
-    />
-
-    <unsaved-dialog
-      :dialog="unsavedDialog"
-      @cancel="unsavedDialog = false"
-      @discard="closeDialog(true)"
+      @archive="commitArchive()"
+      @export="commitExport()"
     />
   </v-col>
 </template>
@@ -66,10 +59,6 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
 // network, data
 import collections from "@/network/collections";
 import { Furniture, Status } from "@/data/Furniture";
@@ -81,7 +70,6 @@ import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
-import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 // store
 import { action } from "@/store/collection/types";
@@ -94,22 +82,21 @@ const NAMESPACE = "inventory";
     FurnitureTableHeader,
     ViewActionGroup,
     FurnitureCardDialog,
-    UnsavedDialog,
     TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
     inventory: "getItems",
     current: "getCurrent",
     selected: "getSelected",
-    updatesLength: "getUpdatesLength",
   }),
   methods: mapActions(NAMESPACE, [
     action.BIND_ITEMS,
     action.SET_CURRENT,
-    action.CLEAR_UPDATES,
     action.CLEAR_CURRENT,
-    action.COMMIT_UPDATES,
-    "archiveItems",
+    action.EXPORT_SELECTED,
+    action.EXPORT_CURRENT,
+    "archiveSelected",
+    "archiveCurrent",
     "commitItem",
   ]),
 })
@@ -117,36 +104,28 @@ export default class Inventory extends Vue {
   readonly COLLECTION = collections.INVENTORY;
 
   /** Vuex map helper properties */
-  readonly bindItems!: () => Promise<void>;
+  readonly current!: Furniture;
 
-  readonly setCurrent!: ({ item }: { item: Furniture }) => void;
+  readonly [action.BIND_ITEMS]!: () => Promise<void>;
 
-  readonly selected!: Furniture[];
+  readonly [action.SET_CURRENT]!: ({ item }: { item: Furniture }) => void;
 
-  /* eslint-disable object-curly-newline */
-  readonly commitUpdates!: ({
-    collection,
-  }: {
-    collection: collections;
-  }) => void;
-  /* eslint-enable object-curly-newline */
+  readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
 
-  readonly clearCurrent!: () => void;
+  readonly [action.CLEAR_CURRENT]!: () => void;
 
-  readonly clearUpdates!: () => void;
-
-  readonly updatesLength!: number;
+  readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
 
   readonly commitItem!: () => Promise<void>;
 
-  /** Furniture card dialog */
-  isEdit = false;
+  readonly archiveCurrent!: () => Promise<void>;
 
+  /** Furniture card dialog */
   isAdd = false;
 
-  editCard = false;
-
-  unsavedDialog = false;
+  get editCard(): boolean {
+    return !!this.current;
+  }
 
   /** Actions and search */
   search = "";
@@ -194,7 +173,7 @@ export default class Inventory extends Vue {
 
   downloading = false;
 
-  get actions(): ViewAction[] {
+  get inventoryActions(): ViewAction[] {
     return [
       { icon: "archive", desc: "Archive selected items", emit: "archive" },
       {
@@ -211,6 +190,17 @@ export default class Inventory extends Vue {
     ];
   }
 
+  menuLoading = false;
+
+  readonly menuActions: ViewAction[] = [
+    { icon: "archive", desc: "Archive", emit: "archive" },
+    {
+      icon: "cloud_download",
+      desc: "Export",
+      emit: "export",
+    },
+  ];
+
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
    * store to Firebase.
@@ -219,63 +209,10 @@ export default class Inventory extends Vue {
     this.bindItems();
   }
 
-  getSpreadsheet(): void {
-    // TODO: maybe abstract this to the firestore-service
+  async getSpreadsheet(): Promise<void> {
     this.downloading = true;
-    const getInventoryXLSX = firebase
-      .functions()
-      .httpsCallable("getInventoryXLSX");
-    const idArray = this.selected.map((value) => value.id);
-    // Uncomment if running `npm run shell` for backend functions:
-    // firebase.functions().useFunctionsEmulator("http://localhost:5001");
-    getInventoryXLSX({ id: idArray, category: "furniture" })
-      .then((res) => {
-        const storage = firebase.storage();
-        const gsref = storage.refFromURL(`gs:/${res.data}`);
-        gsref.getDownloadURL().then((url) => {
-          window.open(url);
-        });
-        this.downloading = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(this.selected.length); // workaround not using this
-        this.downloading = false;
-      });
-  }
-
-  /**
-   * Toggles edit state `isEdit` and clears update if setting `isEdit`
-   * to false
-   */
-  toggleEdit(): void {
-    if (this.isEdit) {
-      this.clearUpdates();
-    }
-    this.isEdit = !this.isEdit;
-  }
-
-  /**
-   * Exits dialog and clears the current item
-   */
-  closeDialog(forceClose = false): void {
-    if (this.updatesLength === 0 || forceClose) {
-      this.unsavedDialog = false;
-      this.editCard = false;
-      this.isEdit = false;
-      this.isAdd = false;
-      this.clearUpdates();
-    } else {
-      this.unsavedDialog = true;
-    }
-  }
-
-  /**
-   * Commits updates to Firestore
-   */
-  saveUpdates(): void {
-    this.commitUpdates({ collection: collections.INVENTORY });
-    this.isEdit = false;
+    await this.exportSelected();
+    this.downloading = false;
   }
 
   /**
@@ -283,9 +220,7 @@ export default class Inventory extends Vue {
    */
   addItem(): void {
     this.setCurrent({ item: new Furniture() });
-    this.isEdit = true;
     this.isAdd = true;
-    this.editCard = true;
   }
 
   /**
@@ -293,7 +228,21 @@ export default class Inventory extends Vue {
    */
   async commitAddItem(): Promise<void> {
     await this.commitItem();
-    this.closeDialog();
+    this.isAdd = false;
+    this.clearCurrent();
+  }
+
+  async commitArchive(): Promise<void> {
+    this.menuLoading = true;
+    await this.archiveCurrent();
+    this.menuLoading = false;
+    this.clearCurrent();
+  }
+
+  async commitExport(): Promise<void> {
+    this.menuLoading = true;
+    await this.exportCurrent();
+    this.menuLoading = false;
   }
 }
 </script>

@@ -5,24 +5,40 @@ import { unarchiveItem, deleteItem } from "@/network/archive-service";
 import { CollectionState, mutation } from "../types";
 
 export const actions: ActionTree<CollectionState, RootState> = {
-  unarchiveItems({ commit, state }): void {
+  async unarchiveCurrent({ commit, state }): Promise<void> {
+    try {
+      await unarchiveItem(state.current!.id);
+      commit(mutation.CLEAR_CURRENT);
+    } catch (e) {
+      console.error("unarchiveCurrent error:", e);
+    }
+  },
+  unarchiveSelected({ commit, state }): void {
     try {
       state.selected.forEach(async (item: Furniture) => {
         await unarchiveItem(item.id);
       });
       commit(mutation.CLEAR_SELECTED);
     } catch (e) {
-      console.log("archiveItems error: ", e);
+      console.error("unarchiveSelected error:", e);
     }
   },
-  deleteItems({ commit, state }): void {
+  async deleteCurrent({ commit, state }): Promise<void> {
+    try {
+      await deleteItem(state.current!.id);
+      commit(mutation.CLEAR_CURRENT);
+    } catch (e) {
+      console.error("deleteCurrent error:", e);
+    }
+  },
+  deleteSelected({ commit, state }): void {
     try {
       state.selected.forEach(async (item: Furniture) => {
         await deleteItem(item.id);
       });
       commit(mutation.CLEAR_SELECTED);
     } catch (e) {
-      console.log("deleteItems error: ", e);
+      console.error("deleteSelected error:", e);
     }
   },
 };

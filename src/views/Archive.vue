@@ -6,11 +6,11 @@
       <view-action-group
         class="ml-3"
         disabled-message="Select items to use actions"
-        :actions="actions"
+        :actions="archiveActions"
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
-        @unarchive="unarchiveItems()"
-        @delete="deleteItems()"
+        @unarchive="unarchiveSelected()"
+        @delete="deleteSelected()"
       />
     </div>
 
@@ -31,6 +31,16 @@
       :downloading="downloading"
       :collection="COLLECTION"
     />
+
+    <furniture-card-dialog
+      namespace="archive"
+      :dialog="editCard"
+      :menu-actions="menuActions"
+      :menu-loading="menuLoading"
+      @add="commitAddItem()"
+      @unarchive="commitUnarchive()"
+      @export="commitExport()"
+    />
   </v-col>
 </template>
 
@@ -38,20 +48,18 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
-import * as firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
 // data
 import { Furniture, Status } from "@/data/Furniture";
 import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 import { FClass } from "@/data/furniture/Physical";
 import collections from "@/network/collections";
+import { action } from "@/store/collection/types";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
+import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 
 const NAMESPACE = "archive";
@@ -61,6 +69,7 @@ const NAMESPACE = "archive";
     FurnitureTable,
     FurnitureTableHeader,
     ViewActionGroup,
+    FurnitureCardDialog,
     TableFilters,
   },
   computed: mapGetters(NAMESPACE, {
@@ -69,15 +78,42 @@ const NAMESPACE = "archive";
     selected: "getSelected",
   }),
   methods: mapActions(NAMESPACE, [
-    "bindItems",
-    "unarchiveItems",
-    "deleteItems",
+    action.BIND_ITEMS,
+    action.CLEAR_CURRENT,
+    action.EXPORT_SELECTED,
+    action.EXPORT_CURRENT,
+    "unarchiveSelected",
+    "unarchiveCurrent",
+    "deleteSelected",
   ]),
 })
 export default class Inventory extends Vue {
   readonly COLLECTION = collections.ARCHIVE;
 
-  get actions(): ViewAction[] {
+  readonly current!: Furniture;
+
+  readonly [action.BIND_ITEMS]!: () => Promise<void>;
+
+  readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
+
+  readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
+
+  readonly [action.CLEAR_CURRENT]!: () => void;
+
+  readonly unarchiveCurrent!: () => Promise<void>;
+
+  /** Furniture card dialog */
+  isEdit = false;
+
+  get editCard(): boolean {
+    return !!this.current;
+  }
+
+  downloading = false;
+
+  search = "";
+
+  get archiveActions(): ViewAction[] {
     return [
       {
         icon: "unarchive",
@@ -97,6 +133,8 @@ export default class Inventory extends Vue {
       },
     ];
   }
+
+  menuLoading = false;
 
   /** Filters */
   datesFilter = [] as string[];
@@ -137,13 +175,14 @@ export default class Inventory extends Vue {
     ];
   }
 
-  bindItems!: () => Promise<void>;
-
-  selected!: Furniture[];
-
-  downloading = false;
-
-  search = "";
+  readonly menuActions: ViewAction[] = [
+    { icon: "unarchive", desc: "Unarchive", emit: "unarchive" },
+    {
+      icon: "cloud_download",
+      desc: "Export",
+      emit: "export",
+    },
+  ];
 
   /**
    * Called when component is mounted (lifecycle hook); binds inventory in
@@ -153,28 +192,23 @@ export default class Inventory extends Vue {
     this.bindItems();
   }
 
-  getSpreadsheet(): void {
+  async getSpreadsheet(): Promise<void> {
     this.downloading = true;
-    const getInventoryXLSX = firebase
-      .functions()
-      .httpsCallable("getInventoryXLSX");
-    const idArray = this.selected.map((value) => value.id);
-    // Uncomment if running `npm run shell` for backend functions:
-    // firebase.functions().useFunctionsEmulator("http://localhost:5001");
-    getInventoryXLSX({ id: idArray, category: "archive" })
-      .then((res) => {
-        const storage = firebase.storage();
-        const gsref = storage.refFromURL(`gs:/${res.data}`);
-        gsref.getDownloadURL().then((url) => {
-          window.open(url);
-        });
-        this.downloading = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(this.selected.length); // workaround not using this
-        this.downloading = false;
-      });
+    await this.exportSelected();
+    this.downloading = false;
+  }
+
+  async commitUnarchive(): Promise<void> {
+    this.menuLoading = true;
+    await this.unarchiveCurrent();
+    this.menuLoading = false;
+    this.clearCurrent();
+  }
+
+  async commitExport(): Promise<void> {
+    this.menuLoading = true;
+    await this.exportCurrent();
+    this.menuLoading = false;
   }
 }
 </script>
