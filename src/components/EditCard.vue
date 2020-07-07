@@ -1,5 +1,14 @@
 <template>
   <v-card>
+    <v-overlay absolute :value="loading" align="center" opacity="0.25">
+      <v-progress-circular
+        class="mr-3"
+        indeterminate
+        size="32"
+      ></v-progress-circular>
+      Saving edits...
+    </v-overlay>
+
     <v-card-title
       class="headline ease-transition pb-4"
       :class="{
@@ -17,6 +26,9 @@
         v-if="!isEdit"
         @close="$emit('close')"
         @edit="$emit('edit')"
+        @export="$emit('export')"
+        @archive="$emit('archive')"
+        @unarchive="$emit('unarchive')"
       />
     </v-card-title>
 
@@ -34,6 +46,7 @@
               <h2>Donor Info</h2>
 
               <!-- TODO: make these just normal text when in readonly -->
+              <!-- :value="donor ? donor.name : ''" -->
               <v-text-field
                 :value="donor.name"
                 @input="updateDonor('name', $event)"
@@ -90,7 +103,7 @@
 
               <v-text-field
                 v-if="!isEdit"
-                :value="statusOptions[status].text"
+                :value="statusOptions[status] ? statusOptions[status].text : ''"
                 label="Furniture Status"
                 readonly
                 :prepend-icon="statusIcons[status]"
@@ -273,6 +286,15 @@ export default class EditCard extends Vue {
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
+  @Prop({ default: [] })
+  readonly menuActions!: ViewAction[];
+
+  @Prop({ default: false })
+  readonly menuLoading!: boolean;
+
+  @Prop({ default: false })
+  readonly loading!: boolean;
+
   /**
    * Sets the offset when user scrolls
    */
@@ -294,23 +316,19 @@ export default class EditCard extends Vue {
     (v: any): boolean | string => /.+@.+/.test(v) || "E-mail must be valid",
   ];
 
-  readonly ACTIONS: ViewAction[] = [
-    { icon: "edit", desc: "Edit Item", emit: "edit" },
-    {
-      icon: "more_vert",
-      desc: "More Actions",
-      emit: "menu",
-      menu: [
-        { icon: "archive", desc: "Archive", emit: "archive" },
-        {
-          icon: "cloud_download",
-          desc: "Export",
-          emit: "export",
-        },
-      ],
-    },
-    { icon: "close", desc: "Close", emit: "close" },
-  ];
+  get ACTIONS(): ViewAction[] {
+    return [
+      { icon: "edit", desc: "Edit Item", emit: "edit" },
+      {
+        icon: "more_vert",
+        desc: "More Actions",
+        emit: "menu",
+        menu: this.menuActions,
+        loading: (): boolean => this.menuLoading,
+      },
+      { icon: "close", desc: "Close", emit: "close" },
+    ];
+  }
 
   /* Getters and setters for form fields */
 
@@ -319,7 +337,7 @@ export default class EditCard extends Vue {
   }
 
   get donor(): Donor {
-    return this.current.donor;
+    return this.current.donor || new Donor();
   }
 
   updateDonor(key: string, value: string): void {
@@ -353,7 +371,7 @@ export default class EditCard extends Vue {
   ];
 
   get fclass(): FClass {
-    return this.current.physical.class;
+    return this.current.physical ? this.current.physical.class : FClass.Bed;
   }
 
   set fclass(value: FClass) {
@@ -367,7 +385,7 @@ export default class EditCard extends Vue {
   readonly classOptions = Object.keys(FClass);
 
   get physical(): Physical {
-    return this.current.physical;
+    return this.current.physical || new Physical();
   }
 
   set physical(value: Physical) {
@@ -376,7 +394,7 @@ export default class EditCard extends Vue {
   }
 
   get timing(): Timing {
-    return this.current.timing;
+    return this.current.timing || new Timing();
   }
 
   set timing(value: Timing) {
@@ -396,7 +414,7 @@ export default class EditCard extends Vue {
   }
 
   get attributes(): Attributes {
-    return this.current.attributes;
+    return this.current.attributes || new Attributes();
   }
 
   set attributes(value: Attributes) {

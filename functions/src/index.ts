@@ -108,9 +108,9 @@ function renameSubheaders(mainHeaders: string[], subheaders: string[]): any {
   return newHeaders;
 }
 
-async function getData(id: string[], category: string): Promise<string> {
+async function getData(id: string[], collection: string): Promise<string> {
   const inventory: any = [];
-  const furniture = admin.firestore().collection(category);
+  const furniture = admin.firestore().collection(collection);
   const wb = XLSX.utils.book_new();
 
   // converting each inventory entry to single-layer JSON object
@@ -178,14 +178,14 @@ async function getData(id: string[], category: string): Promise<string> {
   const date = `${today.getFullYear()}-${
     today.getMonth() + 1
   }-${today.getDate()}`;
-  const fileName = category.concat(`${date}.xlsx`);
+  const fileName = collection.concat(`${date}.xlsx`);
   const file = bucket.file(fileName);
   await file.save(buffer);
   return `/n2n-inventory/${fileName}`;
 }
 
 exports.getInventoryXLSX = functions.https.onCall(
-  (data: { id: string[]; category: string }) => {
-    return getData(data.id, data.category);
+  (data: { id: string[]; collection: string }) => {
+    return getData(data.id, data.collection);
   },
 );

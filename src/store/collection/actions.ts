@@ -1,7 +1,6 @@
 import { firestoreAction } from "vuexfire";
-import db from "@/network/db";
+import { db } from "@/network/firebase";
 import FirestoreService from "@/network/firestore-service";
-import collections from "@/network/collections";
 import { Furniture } from "@/data/Furniture";
 import { ActionTree } from "vuex";
 import { CollectionState, mutation, action } from "./types";
@@ -15,6 +14,14 @@ const actions: ActionTree<CollectionState, RootState> = {
     commit(mutation.CLEAR_UPDATES);
     commit(mutation.CLEAR_CURRENT);
   },
+  async [action.EXPORT_CURRENT]({ state }): Promise<void> {
+    try {
+      const service = new FirestoreService(state.collection!);
+      await service.exportItems([state.current!.id]);
+    } catch (e) {
+      console.error("exportCurrent error:", e);
+    }
+  },
   [action.UPDATE_CURRENT](
     { commit },
     { updates }: { updates: Partial<Furniture> },
@@ -24,18 +31,15 @@ const actions: ActionTree<CollectionState, RootState> = {
   [action.CLEAR_UPDATES]({ commit }): void {
     commit(mutation.CLEAR_UPDATES);
   },
-  async [action.COMMIT_UPDATES](
-    { commit, state },
-    { collection }: { collection: collections },
-  ): Promise<void> {
+  async [action.COMMIT_UPDATES]({ commit, state }): Promise<void> {
     try {
-      const service = new FirestoreService(collection);
+      const service = new FirestoreService(state.collection!);
       commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
       commit(mutation.CLEAN_CURRENT);
       await service.updateItem(state.current!.id, state.currentUpdates);
       commit(mutation.CLEAR_UPDATES);
     } catch (e) {
-      console.log("commitUpdates error: ", e);
+      console.error("commitUpdates error:", e);
     }
   },
   [action.SET_SELECTED]({ commit }, { list }: { list: Furniture[] }): void {
@@ -46,6 +50,14 @@ const actions: ActionTree<CollectionState, RootState> = {
   },
   [action.ADD_SELECTED]({ commit }, { item }: { item: Furniture }): void {
     commit(mutation.ADD_SELECTED, { item });
+  },
+  async [action.EXPORT_SELECTED]({ state }): Promise<void> {
+    try {
+      const service = new FirestoreService(state.collection!);
+      await service.exportItems(state.selected.map((item) => item.id));
+    } catch (e) {
+      console.error("exportSelected error:", e);
+    }
   },
   [action.BIND_ITEMS]: firestoreAction<CollectionState, RootState>(
     ({ bindFirestoreRef, state }) => {

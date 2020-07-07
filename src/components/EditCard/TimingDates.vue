@@ -49,7 +49,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import Timing, { Timestamp } from "@/data/furniture/Timing";
+import Timing from "@/data/furniture/Timing";
 import DatePickerMenu from "./DatePickerMenu.vue";
 import ConditionalDate from "./ConditionalDate.vue";
 
@@ -65,18 +65,8 @@ export default class TimingDates extends Vue {
     this.$emit("input", { ...this.value, ...updates });
   }
 
-  /**
-   * TODO: move this to external file
-   * Formats date to a string
-   */
-  static formatDate(date?: Date | Timestamp): string {
-    if (!date) return "";
-    if (date instanceof Date) return date.toISOString().substring(0, 10);
-    return date.toDate().toISOString().substring(0, 10);
-  }
-
   get dateOffered(): string {
-    return TimingDates.formatDate(this.value.dateOffered);
+    return Timing.formatDate(this.value.dateOffered);
   }
 
   set dateOffered(value: string) {
@@ -84,7 +74,7 @@ export default class TimingDates extends Vue {
   }
 
   get pickupBy(): string {
-    return TimingDates.formatDate(this.value.pickupBy);
+    return Timing.formatDate(this.value.pickupBy);
   }
 
   set pickupBy(value: string) {
@@ -100,7 +90,7 @@ export default class TimingDates extends Vue {
   }
 
   get confirmedPickupDate(): string {
-    return TimingDates.formatDate(this.value.confirmedPickupDate);
+    return Timing.formatDate(this.value.confirmedPickupDate);
   }
 
   set confirmedPickupDate(value: string) {
@@ -112,7 +102,7 @@ export default class TimingDates extends Vue {
   }
 
   get dateCollected(): string {
-    return TimingDates.formatDate(this.value.dateCollected);
+    return Timing.formatDate(this.value.dateCollected);
   }
 
   set dateCollected(value: string) {
@@ -120,7 +110,7 @@ export default class TimingDates extends Vue {
   }
 
   get dateDelivered(): string {
-    return TimingDates.formatDate(this.value.dateDelivered);
+    return Timing.formatDate(this.value.dateDelivered);
   }
 
   set dateDelivered(value: string) {

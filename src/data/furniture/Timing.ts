@@ -38,4 +38,10 @@ export default class Timing {
     if (dateCollected) this.dateCollected = dateCollected;
     if (dateDelivered) this.dateDelivered = dateDelivered;
   }
+
+  static formatDate(date?: Date | Timestamp): string {
+    if (!date) return "";
+    if (date instanceof Date) return date.toISOString().substring(0, 10);
+    return date.toDate().toISOString().substring(0, 10);
+  }
 }

@@ -4,7 +4,8 @@
       :value="selected"
       @input="setSelected({ list: $event })"
       :search="search"
-      :headers="HEADERS"
+      :custom-filter="searchFilter"
+      :headers="headers"
       :items="items"
       :options.sync="PAGINATION"
       show-select
@@ -69,6 +70,9 @@ export default class Inventory extends Vue {
   @Prop({ default: "" })
   readonly search!: string;
 
+  @Prop({})
+  readonly headers!: any[];
+
   setCurrent!: ({ item }: { item: Furniture }) => void;
 
   clearUpdates!: () => void;
@@ -79,13 +83,6 @@ export default class Inventory extends Vue {
 
   readonly PAGINATION = { itemsPerPage: -1 };
 
-  readonly HEADERS = [
-    { text: "Class", value: "physical.class" },
-    { text: "Date Added", value: "timing.dateAdded" },
-    { text: "Address", value: "donor.address" },
-    { text: "Status", value: "status" },
-  ];
-
   /**
    * Activates dialog that displays the item information
    */
@@ -93,5 +90,20 @@ export default class Inventory extends Vue {
     this.setCurrent({ item });
     this.$emit("item-click");
   }
+
+  /**
+   * Simple search filter that only works on columns without custom filter
+   * functions defined in headers.
+   * TODO: make a better search method
+   */
+  /* eslint-disable */
+  searchFilter(value: any, search: string, item: any): boolean {
+    return (
+      value != null &&
+      search != null &&
+      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  }
+  /* eslint-enable */
 }
 </script>
