@@ -19,7 +19,7 @@
       }"
       primary-title
     >
-      <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
+      <span>{{ isEdit ? (isAdd ? "Add" : "Edit") : "View" }} Furniture</span>
       <v-spacer />
       <view-action-group
         :actions="ACTIONS"
