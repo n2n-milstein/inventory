@@ -1,5 +1,6 @@
 import { Timestamp } from "./furniture/Timing";
 import { Furniture } from "./Furniture";
+import Client from "./Client";
 
 export enum RunStatus {
   Planning,
@@ -8,45 +9,22 @@ export enum RunStatus {
   Complete,
 }
 
-export default class Run {
+export default interface Run {
   // metadata
-  public id: string;
-
-  public dateCreated: Date | Timestamp;
-
-  public lastUpdated: Date | Timestamp;
+  id: string;
+  dateCreated: Date | Timestamp;
+  lastUpdated: Date | Timestamp;
 
   // data
-  public date: Date | Timestamp;
+  date: Date | Timestamp;
+  // TODO: make this a list of volunteers NOT volunteer IDs
+  volunteers: string[];
 
-  public volunteers: string[]; // list of volunteer IDs
+  pickups: Furniture[]; // list of furniture
+  // TODO: think of better way of mapping client --> dropoff
+  // dropoff and client order matters
+  dropoffs: Furniture[];
+  clients: Client[];
 
-  public pickups: Furniture[]; // list of furniture
-
-  // list of client ID, furniture ID pairs
-  // public dropoffs: { client: string; furniture: Furniture }[];
-  public dropoffs: Furniture[];
-
-  public status: RunStatus;
-
-  public constructor(
-    id = "",
-    date = new Date(),
-    volunteers = [] as string[],
-    pickups = [] as Furniture[],
-    dropoffs = [],
-    status = RunStatus.Planning,
-  ) {
-    // metadata
-    this.id = id;
-    this.dateCreated = new Date();
-    this.lastUpdated = new Date();
-
-    // data
-    this.date = date;
-    this.volunteers = volunteers;
-    this.pickups = pickups;
-    this.dropoffs = dropoffs;
-    this.status = status;
-  }
+  status: RunStatus;
 }
