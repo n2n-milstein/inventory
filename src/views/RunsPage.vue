@@ -1,6 +1,11 @@
 <template>
   <v-col cols="12">
-    <furniture-table-header v-model="search" title="Runs" />
+    <furniture-table-header
+      v-model="search"
+      title="Runs"
+      subtitle="Click on “View Details” to make edits to a run"
+      class="px-3 mb-3"
+    />
     <run-card
       title="Date"
       :volunteers="testRun.volunteers"
@@ -13,16 +18,15 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
 // components
-import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
 import RunCard from "@/components/RunCard.vue";
 import { FClass, Material } from "@/data/furniture/Physical";
 
 @Component({ components: { FurnitureTableHeader, RunCard } })
 export default class RunsPage extends Vue {
+  search = "";
+
   readonly testRun = {
     volunteers: [
       { type: "Driver", name: "Johann Smith", phone: "(123) 124-2145" },
