@@ -1,27 +1,48 @@
-export interface Client {
-  phoneNumber: string;
-  address: string;
-  zone: string;
-  dateConfirmed?: Date;
-  dateDelivered?: Date;
+import { Area } from "./Area";
 
-  requests: {
-    beds: number;
-    sofa: number;
-    diningSet: number; // number of chairs needed
-    otherTables: number;
-    dresser: number;
-    crib: number;
+export default interface Client {
+  // metadata
+  dateAdded: Date; // timestamp column
+  lastUpdated: Date;
+
+  // agency data
+  dateOfReferral: Date;
+  referringAgency: string;
+  agencyContactName: string;
+  agencyContactEmail: string;
+  agencyContactPhone: string;
+
+  // client data
+  clientName: string;
+  clientPhoneNumber: string;
+  clientAddress: string;
+  clientArea: Area;
+  clientAreaOther: string;
+
+  // request data
+  comments: string;
+  staffNotes: string;
+
+  requestedFurniture: {
+    queenOrFullBed: boolean;
+    twinBed: boolean;
+    couch: boolean;
+    livingRoomChair: boolean;
+    tableAndChairs: boolean;
+    otherTables: boolean;
+    dresser: boolean;
+    crib: boolean;
+    other: boolean;
   };
-  conditions: {
+
+  reasonForNeed: {
     leavingHomelessness: boolean;
-    recentPrison: boolean;
+    recentReleasedPrison: boolean;
     pregnantMember: boolean;
-    under18Children: boolean;
-    disability: boolean;
-    veteran: boolean;
-    elderly: boolean;
+    childrenUnder18: boolean;
+    hasDisability: boolean;
+    isVeteran: boolean;
+    isElderly: boolean;
     domesticViolence: boolean;
   };
-  comments: string;
 }
