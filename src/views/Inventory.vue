@@ -15,7 +15,7 @@
         rounded
         @click="addItem()"
       >
-        <v-icon>add</v-icon>
+        <v-icon left>add</v-icon>
         {{ selected.length > 0 ? "" : "Add" }}
       </v-btn>
       <view-action-group
@@ -55,6 +55,7 @@
       @add="commitAddItem()"
       @archive="commitArchive()"
       @export="commitExport()"
+      @close="isAdd = false"
     />
   </v-col>
 </template>
