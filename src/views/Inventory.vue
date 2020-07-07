@@ -1,6 +1,10 @@
 <template>
   <v-col cols="12">
-    <furniture-table-header v-model="search" title="Inventory" />
+    <furniture-table-header
+      v-model="search"
+      title="Inventory"
+      class="px-4 mb-3"
+    />
 
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn

@@ -1,7 +1,5 @@
 <template>
-  <!-- TODO: remove the spacing, let the parent component decide -->
-  <!-- <v-row class="mb-3 px-4" align="baseline"> -->
-  <v-row align="center">
+  <v-row :align="subtitle ? 'center' : 'baseline'">
     <header class="title">
       {{ title }}
       <h3 class="subtitle-2 font-weight-regular" v-if="subtitle">

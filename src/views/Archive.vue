@@ -1,6 +1,10 @@
 <template>
   <v-col cols="12">
-    <furniture-table-header v-model="search" title="Archive" />
+    <furniture-table-header
+      v-model="search"
+      title="Archive"
+      class="px-4 mb-3"
+    />
 
     <div class="mb-4 d-inline-flex" align="center">
       <view-action-group

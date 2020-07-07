@@ -4,7 +4,7 @@
       v-model="search"
       title="Runs"
       subtitle="Click on “View Details” to make edits to a run"
-      class="px-3 mb-3"
+      class="px-4 mb-3"
     />
     <run-card
       title="Date"
