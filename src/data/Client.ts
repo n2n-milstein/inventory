@@ -14,7 +14,7 @@ export default interface Client {
 
   // client data
   clientName: string;
-  clientPhoneNumber: string;
+  clientPhone: string;
   clientAddress: string;
   clientArea: Area;
   clientAreaOther: string;
