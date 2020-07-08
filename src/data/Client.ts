@@ -2,6 +2,7 @@ import { Area } from "./Area";
 
 export default interface Client {
   // metadata
+  id: string;
   dateAdded: Date; // timestamp column
   lastUpdated: Date;
 

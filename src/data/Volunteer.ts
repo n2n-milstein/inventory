@@ -1,4 +1,5 @@
 export default interface Volunteer {
+  id: string;
   name: string;
   phone: string;
   email: string;
