@@ -1,6 +1,7 @@
 import { Timestamp } from "./furniture/Timing";
 import { Furniture } from "./Furniture";
 import Client from "./Client";
+import Volunteer from "./Volunteer";
 
 export enum RunStatus {
   Planning,
@@ -18,7 +19,7 @@ export default interface Run {
   // data
   date: Date | Timestamp;
   // TODO: make this a list of volunteers NOT volunteer IDs
-  volunteers: string[];
+  volunteers: Volunteer[];
 
   pickups: Furniture[]; // list of furniture
   // TODO: think of better way of mapping client --> dropoff
