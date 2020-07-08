@@ -6,12 +6,7 @@
       subtitle="Click on “View Details” to make edits to a run"
       class="px-4 mb-3"
     />
-    <run-card
-      title="Date"
-      :volunteers="testRun.volunteers"
-      :pick-ups="testRun.pickUps"
-      :drop-offs="testRun.dropOffs"
-    />
+    <run-preview-card :run="testRun" />
   </v-col>
 </template>
 
@@ -20,77 +15,59 @@ import Vue from "vue";
 import Component from "vue-class-component";
 // components
 import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
-import RunCard from "@/components/RunCard.vue";
-import { FClass, Material } from "@/data/furniture/Physical";
+import RunPreviewCard from "@/components/RunPreviewCard.vue";
+// import { FClass, Material } from "@/data/furniture/Physical";
+import Run, { RunStatus } from "../data/Run";
+import Client from "../data/Client";
+import { Furniture } from "../data/Furniture";
+import { VolunteerRole } from "../data/Volunteer";
+import Donor from "../data/furniture/Donor";
+import Physical, { FClass } from "../data/furniture/Physical";
 
-@Component({ components: { FurnitureTableHeader, RunCard } })
+@Component({ components: { FurnitureTableHeader, RunPreviewCard } })
 export default class RunsPage extends Vue {
   search = "";
 
-  readonly testRun = {
+  readonly testRun: Run = {
+    id: "testRun",
+    dateCreated: new Date(),
+    lastUpdated: new Date(),
+    date: new Date(),
     volunteers: [
-      { type: "Driver", name: "Johann Smith", phone: "(123) 124-2145" },
-      { type: "Mover", name: "Johann Smith", phone: "(123) 124-2145" },
-    ],
-    pickUps: [
       {
-        address: "124 Cornell St Ithaca, NY 14853",
-        donor: { type: "Donor", name: "Johann Smith", phone: "(123) 124-2145" },
-        items: [],
+        id: "vol1",
+        name: "John Johnson",
+        phone: "123-555-5555",
+        role: VolunteerRole.Driver,
+        email: "john@jj.com",
+        address: "1 Test Rd Ithaca, NY 14850",
+        runs: [] as string[],
       },
     ],
-    dropOffs: [
+    pickups: [
       {
-        address: "124 Cornell St Ithaca, NY 14853",
-        donor: {
-          type: "Recipient",
-          name: "Johann Smith",
-          phone: "(123) 124-2145",
-        },
-        items: [
-          {
-            class: FClass.Chair,
-            size: 5,
-            material: Material.Wood,
-            set: false,
-            hasFrame: false,
-            hasBoxSpring: false,
-            numChairs: 0,
-            heavy: false,
-          },
-        ],
+        ...new Furniture("pic1"),
+        donor: new Donor(
+          "Bill Smith",
+          "111-222-3333",
+          "bill@gmail.com",
+          "123 Test St Ithaca, NY",
+        ),
       },
       {
-        address: "124 Cornell St Ithaca, NY 14853",
-        donor: {
-          type: "Recipient",
-          name: "Johann Smith",
-          phone: "(123) 124-2145",
-        },
-        items: [
-          {
-            class: FClass.Bed,
-            size: 5,
-            material: Material.Wood,
-            set: false,
-            hasFrame: false,
-            hasBoxSpring: false,
-            numChairs: 0,
-            heavy: false,
-          },
-          {
-            class: FClass.Chair,
-            size: 5,
-            material: Material.Wood,
-            set: false,
-            hasFrame: false,
-            hasBoxSpring: false,
-            numChairs: 0,
-            heavy: false,
-          },
-        ],
+        ...new Furniture("pic2"),
+        donor: new Donor(
+          "Bill Smith",
+          "111-222-3333",
+          "bill@gmail.com",
+          "123 Test St Ithaca, NY",
+        ),
+        physical: new Physical(0, FClass.Bed),
       },
     ],
+    dropoffs: [] as Furniture[],
+    clients: [] as Client[],
+    status: RunStatus.Planning,
   };
 }
 </script>
