@@ -24,13 +24,15 @@
     </div>
 
     <table-filters
-      :dates-filter="datesFilter"
+      :start-date-filter="datesFilter[0]"
+      :end-date-filter="datesFilter[1]"
       :status-filter="statusFilter"
       :class-filter="classFilter"
       :donor-filter="donorFilter"
       :address-filter="addressFilter"
       :inventory="inventory"
-      @date="datesFilter = $event"
+      @startdate="datesFilter[0] = $event"
+      @enddate="datesFilter[1] = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
       @donor="donorFilter = $event"
@@ -155,7 +157,7 @@ export default class Inventory extends Vue {
   search = "";
 
   /** start filters */
-  datesFilter = [] as string[];
+  datesFilter = [new Date().toISOString().substr(0, 10), ""];
 
   classFilter = Object.keys(FClass);
 

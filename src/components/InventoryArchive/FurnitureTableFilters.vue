@@ -67,7 +67,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="startDate"
+                    :value="startDateFilter"
                     label="Start Date"
                     prepend-icon="event"
                     readonly
@@ -76,8 +76,8 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="startDate"
-                  @input="startOpen = false"
+                  :value="startDateFilter"
+                  @input="update('StartDate', $event)"
                 ></v-date-picker>
               </v-menu>
             </v-row>
@@ -89,7 +89,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="endDate"
+                    :value="endDateFilter"
                     label="End Date"
                     prepend-icon="event"
                     readonly
@@ -98,8 +98,8 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="endDate"
-                  @input="endOpen = false"
+                  :value="endDateFilter"
+                  @input="update('EndDate', $event)"
                 ></v-date-picker>
               </v-menu>
             </v-row>
@@ -119,7 +119,10 @@ import { Furniture, Status } from "@/data/Furniture";
 @Component({})
 export default class FurnitureTableFilters extends Vue {
   @Prop({})
-  readonly datesFilter!: string[];
+  readonly startDateFilter!: string;
+
+  @Prop({})
+  readonly endDateFilter!: string;
 
   @Prop({})
   readonly statusFilter!: string[];
@@ -149,18 +152,28 @@ export default class FurnitureTableFilters extends Vue {
 
   showFilter = false;
 
-  startDate = "";
-
   startOpen = false;
-
-  endDate = "";
 
   endOpen = false;
 
+  today = new Date().toISOString().substr(0, 10);
+
+  static filterType(f: string): string {
+    if (f === "StartDate" || f === "EndDate") {
+      return "Date";
+    }
+    return f;
+  }
+
   update(filter: string, value: string[]): void {
     switch (filter) {
-      case "Date":
-        this.$emit("date", value);
+      case "StartDate":
+        this.startOpen = false;
+        this.$emit("startdate", value);
+        break;
+      case "EndDate":
+        this.endOpen = false;
+        this.$emit("enddate", value);
         break;
       case "Class":
         this.$emit("class", value);
@@ -177,23 +190,29 @@ export default class FurnitureTableFilters extends Vue {
     this.updateChip(filter, value);
   }
 
-  updateChip(filter: string, value: string[]): void {
-    if (!this.filterChips.includes(filter)) {
+  updateChip(filter: string, value: any): void {
+    const adjustedFilter = FurnitureTableFilters.filterType(filter);
+    if (!this.filterChips.includes(adjustedFilter)) {
       if (
         (filter === "Class" && value.length !== this.classCheckboxes.length) ||
         (filter === "Status" &&
           value.length !== this.statusCheckboxes.length) ||
-        ((filter === "Date" || filter === "Donor") && value.length !== 0)
+        (filter === "Donor" && value.length !== 0) ||
+        (filter === "StartDate" && value !== this.today) ||
+        (filter === "EndDate" && value !== "")
       ) {
-        this.filterChips.push(filter);
+        this.filterChips.push(adjustedFilter);
       }
     } else if (
       (filter === "Class" && value.length === this.classCheckboxes.length) ||
       (filter === "Status" && value.length === this.statusCheckboxes.length) ||
-      ((filter === "Date" || filter === "Donor") && value.length === 0)
+      (filter === "Donor" && value.length === 0) ||
+      (filter === "StartDate" &&
+        value === this.today &&
+        this.endDateFilter === "")
     ) {
       this.filterChips.splice(
-        this.filterChips.findIndex((x) => x === filter),
+        this.filterChips.findIndex((x) => x === adjustedFilter),
         1,
       );
     }
@@ -209,7 +228,8 @@ export default class FurnitureTableFilters extends Vue {
         this.statusCheckboxes.map((x) => x.value),
       );
     } else if (filter === "Date") {
-      this.$emit("date", []);
+      this.$emit("startdate", this.today);
+      this.$emit("enddate", "");
     } else if (filter === "Donor") {
       this.$emit("donor", []);
     }
