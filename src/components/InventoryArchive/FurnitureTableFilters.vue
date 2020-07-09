@@ -58,14 +58,51 @@
             </v-row>
           </v-col>
           <v-col>
-            <h4>Date Added</h4>
-            <v-date-picker
-              @input="update('Date', $event)"
-              :value="datesFilter"
-              multiple
-              class="elevation-0 mt-5"
-            >
-            </v-date-picker>
+            <h4>Date Added Range</h4>
+            <v-row>
+              <v-menu
+                v-model="startOpen"
+                :close-on-content-click="false"
+                transition="scale-transition"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="startDate"
+                    label="Start Date"
+                    prepend-icon="event"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="startDate"
+                  @input="startOpen = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-row>
+            <v-row>
+              <v-menu
+                v-model="endOpen"
+                :close-on-content-click="false"
+                transition="scale-transition"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="endDate"
+                    label="End Date"
+                    prepend-icon="event"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="endDate"
+                  @input="endOpen = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
@@ -111,6 +148,14 @@ export default class FurnitureTableFilters extends Vue {
   filterChips = [] as string[];
 
   showFilter = false;
+
+  startDate = "";
+
+  startOpen = false;
+
+  endDate = "";
+
+  endOpen = false;
 
   update(filter: string, value: string[]): void {
     switch (filter) {
