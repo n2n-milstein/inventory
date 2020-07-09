@@ -1,5 +1,6 @@
 <template>
   <v-col class="mt-4" cols="12">
+    <div>{{ [startDateFilter, endDateFilter] }}</div>
     <furniture-table-header v-model="search" title="Inventory" />
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn
@@ -24,15 +25,14 @@
     </div>
 
     <table-filters
-      :start-date-filter="datesFilter[0]"
-      :end-date-filter="datesFilter[1]"
+      :start-date-filter="startDateFilter"
+      :end-date-filter="endDateFilter"
       :status-filter="statusFilter"
       :class-filter="classFilter"
       :donor-filter="donorFilter"
-      :address-filter="addressFilter"
       :inventory="inventory"
-      @startdate="datesFilter[0] = $event"
-      @enddate="datesFilter[1] = $event"
+      @startdate="startDateFilter = $event"
+      @enddate="endDateFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
       @donor="donorFilter = $event"
@@ -157,7 +157,9 @@ export default class Inventory extends Vue {
   search = "";
 
   /** start filters */
-  datesFilter = [new Date().toISOString().substr(0, 10), ""];
+  startDateFilter = "";
+
+  endDateFilter = new Date().toISOString().substr(0, 10);
 
   classFilter = Object.keys(FClass);
 
@@ -182,9 +184,13 @@ export default class Inventory extends Vue {
         text: "Date Added",
         value: "timing.dateAdded",
         filter: (value: any): boolean => {
-          const formatted = Timing.formatDate(value);
-          if (this.datesFilter.length === 0) return true;
-          return this.datesFilter.includes(formatted);
+          const valDate = new Date(Timing.formatDate(value));
+          const endDate = new Date(this.endDateFilter);
+          if (this.startDateFilter === "") {
+            return valDate <= endDate;
+          }
+          const startDate = new Date(this.startDateFilter);
+          return Timing.inRange(valDate, startDate, endDate);
         },
       },
       {
@@ -212,6 +218,7 @@ export default class Inventory extends Vue {
       },
     ];
   }
+
   /** end filters */
 
   downloading = false;

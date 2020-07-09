@@ -103,8 +103,6 @@ export default class Inventory extends Vue {
     const valString = item.donor.address + item.donor.name + item.physical.class + Timing.formatDate(item.timing.dateAdded) + Status[item.status];
     let i;
     for (i = 0; i < arr.length; i++) {
-      console.log(arr[i].toLowerCase());
-      console.log(valString.toString().toLowerCase());
       if (valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1) {
         return false;
       }

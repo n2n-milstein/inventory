@@ -228,8 +228,8 @@ export default class FurnitureTableFilters extends Vue {
         this.statusCheckboxes.map((x) => x.value),
       );
     } else if (filter === "Date") {
-      this.$emit("startdate", this.today);
-      this.$emit("enddate", "");
+      this.$emit("startdate", "");
+      this.$emit("enddate", this.today);
     } else if (filter === "Donor") {
       this.$emit("donor", []);
     }
