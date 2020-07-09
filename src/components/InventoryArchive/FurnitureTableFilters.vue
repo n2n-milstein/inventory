@@ -56,17 +56,6 @@
               >
               </v-autocomplete>
             </v-row>
-            <v-row>
-              <h4>Address</h4>
-              <v-autocomplete
-                @change="update('Address', $event)"
-                :value="addressFilter"
-                :items="addressOptions"
-                chips
-                multiple
-              >
-              </v-autocomplete>
-            </v-row>
           </v-col>
           <v-col>
             <h4>Date Added</h4>
@@ -105,9 +94,6 @@ export default class FurnitureTableFilters extends Vue {
   readonly donorFilter!: string[];
 
   @Prop({})
-  readonly addressFilter!: string[];
-
-  @Prop({})
   readonly inventory!: Furniture[];
 
   readonly classCheckboxes = Object.keys(FClass);
@@ -120,10 +106,6 @@ export default class FurnitureTableFilters extends Vue {
 
   get donorOptions(): any {
     return this.inventory.map((x) => x.donor.name);
-  }
-
-  get addressOptions(): any {
-    return this.inventory.map((x) => x.donor.address);
   }
 
   filterChips = [] as string[];
@@ -144,9 +126,6 @@ export default class FurnitureTableFilters extends Vue {
       case "Donor":
         this.$emit("donor", value);
         break;
-      case "Address":
-        this.$emit("address", value);
-        break;
       default:
       // do something
     }
@@ -159,16 +138,14 @@ export default class FurnitureTableFilters extends Vue {
         (filter === "Class" && value.length !== this.classCheckboxes.length) ||
         (filter === "Status" &&
           value.length !== this.statusCheckboxes.length) ||
-        ((filter === "Date" || filter === "Donor" || filter === "Address") &&
-          value.length !== 0)
+        ((filter === "Date" || filter === "Donor") && value.length !== 0)
       ) {
         this.filterChips.push(filter);
       }
     } else if (
       (filter === "Class" && value.length === this.classCheckboxes.length) ||
       (filter === "Status" && value.length === this.statusCheckboxes.length) ||
-      ((filter === "Date" || filter === "Donor" || filter === "Address") &&
-        value.length === 0)
+      ((filter === "Date" || filter === "Donor") && value.length === 0)
     ) {
       this.filterChips.splice(
         this.filterChips.findIndex((x) => x === filter),
@@ -190,8 +167,6 @@ export default class FurnitureTableFilters extends Vue {
       this.$emit("date", []);
     } else if (filter === "Donor") {
       this.$emit("donor", []);
-    } else if (filter === "Address") {
-      this.$emit("address", []);
     }
   }
 }

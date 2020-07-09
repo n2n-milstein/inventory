@@ -34,7 +34,6 @@
       @status="statusFilter = $event"
       @class="classFilter = $event"
       @donor="donorFilter = $event"
-      @address="addressFilter = $event"
     />
 
     <furniture-table
@@ -167,8 +166,6 @@ export default class Inventory extends Vue {
     });
 
   donorFilter = [] as string[];
-
-  addressFilter = [] as string[];
 
   get headers(): any {
     return [

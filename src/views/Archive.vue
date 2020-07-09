@@ -24,7 +24,6 @@
       @status="statusFilter = $event"
       @class="classFilter = $event"
       @donor="donorFilter = $event"
-      @address="addressFilter = $event"
     />
 
     <furniture-table
@@ -106,8 +105,6 @@ export default class Inventory extends Vue {
   datesFilter = [] as string[];
 
   donorFilter = [] as string[];
-
-  addressFilter = [] as string[];
 
   classFilter = Object.keys(FClass);
 
