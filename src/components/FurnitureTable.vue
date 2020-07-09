@@ -100,7 +100,7 @@ export default class Inventory extends Vue {
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
     const arr = search.split(" ");
-    const valString = item.donor.address + item.donor.name + item.physical.class + Timing.formatDate(item.timing.dateAdded) + item.status;
+    const valString = item.donor.address + item.donor.name + item.physical.class + Timing.formatDate(item.timing.dateAdded) + Status[item.status];
     let i;
     for (i = 0; i < arr.length; i++) {
       console.log(arr[i].toLowerCase());
