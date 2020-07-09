@@ -9,7 +9,11 @@
       </h2>
       <!-- TODO: probably make this into a component -->
       <v-list>
-        <v-list-item v-for="vol in run.volunteers" :key="vol.id">
+        <v-list-item
+          v-for="vol in run.volunteers"
+          :key="vol.id"
+          @click="() => {}"
+        >
           <v-list-item-icon>
             <v-icon>person</v-icon>
           </v-list-item-icon>
@@ -28,8 +32,8 @@
         {{ run.pickups.length === 1 ? "Pickup" : "Pickups" }}
       </h2>
       <!-- TODO: probably make this into a component -->
-      <v-list three-line>
-        <v-list-item v-for="pic in run.pickups" :key="pic.id">
+      <v-list>
+        <v-list-item v-for="pic in run.pickups" :key="pic.id" @click="() => {}">
           <v-list-item-icon>
             <v-icon v-if="pic.physical.class === 'Chair'">event_seat</v-icon>
             <v-icon v-if="pic.physical.class === 'Bed'">mdi-bed</v-icon>
@@ -42,18 +46,48 @@
           <v-list-item-content>
             <v-list-item-title>{{ pic.donor.address }}</v-list-item-title>
             <v-list-item-subtitle>
-              <p>
-                {{ pic.donor.name }} ({{ pic.donor.phone }})<br />
-                {{ pic.physical.class }}
-              </p>
+              {{ pic.donor.name }} ({{ pic.donor.phone }})<br />
+              {{ pic.physical.class }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <!-- dropoffs -->
       <h2 class="subtitle-1">
         {{ `${run.dropoffs.length} ` }}
         {{ run.dropoffs.length === 1 ? "Dropoff" : "Dropoffs" }}
       </h2>
+      <v-list>
+        <v-list-item
+          v-for="(drop, index) in run.dropoffs"
+          :key="drop.id"
+          @click="() => {}"
+        >
+          <v-list-item-icon>
+            <v-icon v-if="drop.physical.class === 'Chair'">event_seat</v-icon>
+            <v-icon v-if="drop.physical.class === 'Bed'">mdi-bed</v-icon>
+            <v-icon v-if="drop.physical.class === 'Couch'">weekend</v-icon>
+            <v-icon v-if="drop.physical.class === 'Table'">
+              mdi-table-furniture
+            </v-icon>
+            <v-icon v-if="drop.physical.class === 'Dresser'"
+              >mdi-dresser</v-icon
+            >
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ run.clients[index].clientAddress }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{ run.clients[index].clientName }} ({{
+                run.clients[index].clientPhone
+              }})<br />
+              {{ drop.physical.class }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-card-text>
   </v-card>
 </template>
