@@ -1,6 +1,5 @@
 <template>
   <v-col class="mt-4" cols="12">
-    <div>{{ [startDateFilter, endDateFilter] }}</div>
     <furniture-table-header v-model="search" title="Inventory" />
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn
