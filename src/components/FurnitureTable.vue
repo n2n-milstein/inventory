@@ -31,6 +31,7 @@ import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
+import Timing from "@/data/furniture/Timing";
 
 @Component({
   components: {},
@@ -98,11 +99,17 @@ export default class Inventory extends Vue {
    */
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
-    return (
-      value != null &&
-      search != null &&
-      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
+    const arr = search.split(" ");
+    const valString = item.donor.address + item.donor.name + item.physical.class + Timing.formatDate(item.timing.dateAdded) + item.status;
+    let i;
+    for (i = 0; i < arr.length; i++) {
+      console.log(arr[i].toLowerCase());
+      console.log(valString.toString().toLowerCase());
+      if (valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1) {
+        return false;
+      }
+    }
+    return true;
   }
   /* eslint-enable */
 }
