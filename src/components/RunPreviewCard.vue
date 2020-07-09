@@ -1,9 +1,13 @@
 <template>
   <v-card>
-    <v-card-title>{{ run.date.toDateString() }}</v-card-title>
+    <v-card-title class="text-h5">
+      {{ run.date.toDateString() }}
+      <v-spacer />
+      <view-action-group :actions="ACTIONS" />
+    </v-card-title>
     <v-card-text>
       <!-- Volunteers -->
-      <h2 class="subtitle-1">
+      <h2 class="text-subtitle-1">
         {{ `${run.volunteers.length} ` }}
         {{ run.volunteers.length === 1 ? "Volunteer" : "Volunteers" }}
       </h2>
@@ -89,6 +93,10 @@
         </v-list-item>
       </v-list>
     </v-card-text>
+    <v-card-actions class="pr-5 pb-5">
+      <v-spacer />
+      <v-btn depressed color="primary" class="px-4">View Details</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -97,10 +105,21 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import EditCard from "@/components/EditCard.vue";
 import Run from "@/data/Run";
+import ViewActionGroup from "@/components/ViewActionGroup.vue";
+import ViewAction from "../data/ViewAction";
 
-@Component({ components: { EditCard } })
+@Component({ components: { EditCard, ViewActionGroup } })
 export default class RunPreviewCard extends Vue {
   @Prop({})
   readonly run!: Run;
+
+  readonly ACTIONS: ViewAction[] = [
+    {
+      icon: "more_vert",
+      desc: "Run Actions",
+      emit: "menu",
+      menu: [],
+    },
+  ];
 }
 </script>
