@@ -18,7 +18,7 @@ import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHe
 import RunPreviewCard from "@/components/RunPreviewCard.vue";
 // import { FClass, Material } from "@/data/furniture/Physical";
 import Run, { RunStatus } from "../data/Run";
-import Client from "../data/Client";
+import { generateClient } from "../data/Client";
 import { Furniture } from "../data/Furniture";
 import { VolunteerRole } from "../data/Volunteer";
 import Donor from "../data/furniture/Donor";
@@ -65,8 +65,28 @@ export default class RunsPage extends Vue {
         physical: new Physical(0, FClass.Bed),
       },
     ],
-    dropoffs: [] as Furniture[],
-    clients: [] as Client[],
+    dropoffs: [
+      {
+        ...new Furniture("pic1"),
+        donor: new Donor(
+          "Bill Smith",
+          "111-222-3333",
+          "bill@gmail.com",
+          "123 Test St Ithaca, NY",
+        ),
+      },
+      {
+        ...new Furniture("pic2"),
+        donor: new Donor(
+          "Bill Smith",
+          "111-222-3333",
+          "bill@gmail.com",
+          "123 Test St Ithaca, NY",
+        ),
+        physical: new Physical(0, FClass.Bed),
+      },
+    ],
+    clients: [generateClient(), generateClient()],
     status: RunStatus.Planning,
   };
 }
