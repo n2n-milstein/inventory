@@ -14,13 +14,14 @@
     </div>
 
     <table-filters
-      :dates-filter="datesFilter"
+      :start-date-filter="startDateFilter"
+      :end-date-filter="endDateFilter"
       :status-filter="statusFilter"
       :class-filter="classFilter"
       :donor-filter="donorFilter"
-      :address-filter="addressFilter"
       :inventory="archive"
-      @date="datesFilter = $event"
+      @startdate="startDateFilter = $event"
+      @enddate="endDateFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
       @donor="donorFilter = $event"
@@ -102,7 +103,9 @@ export default class Inventory extends Vue {
   }
 
   /** Filters */
-  datesFilter = [] as string[];
+  startDateFilter = "";
+
+  endDateFilter = new Date().toISOString().substr(0, 10);
 
   donorFilter = [] as string[];
 
@@ -127,8 +130,13 @@ export default class Inventory extends Vue {
         text: "Date Added",
         value: "timing.dateAdded",
         filter: (value: any): boolean => {
-          if (this.datesFilter.length === 0) return true;
-          return this.datesFilter.includes(Timing.formatDate(value));
+          const valDate = new Date(Timing.formatDate(value));
+          const endDate = new Date(this.endDateFilter);
+          if (this.startDateFilter === "") {
+            return valDate <= endDate;
+          }
+          const startDate = new Date(this.startDateFilter);
+          return Timing.inRange(valDate, startDate, endDate);
         },
       },
       {
