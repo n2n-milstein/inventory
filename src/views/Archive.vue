@@ -127,16 +127,10 @@ export default class Inventory extends Vue {
         },
       },
       {
-        text: "Date Added",
-        value: "timing.dateAdded",
-        filter: (value: any): boolean => {
-          const valDate = new Date(Timing.formatDate(value));
-          const endDate = new Date(this.endDateFilter);
-          if (this.startDateFilter === "") {
-            return valDate <= endDate;
-          }
-          const startDate = new Date(this.startDateFilter);
-          return Timing.inRange(valDate, startDate, endDate);
+        text: "Status",
+        value: "status",
+        filter: (value: number): boolean => {
+          return this.statusFilter.includes(value);
         },
       },
       {
@@ -156,10 +150,16 @@ export default class Inventory extends Vue {
         },
       },
       {
-        text: "Status",
-        value: "status",
-        filter: (value: number): boolean => {
-          return this.statusFilter.includes(value);
+        text: "Date Added",
+        value: "timing.dateAdded",
+        filter: (value: any): boolean => {
+          const valDate = new Date(Timing.formatDate(value));
+          const endDate = new Date(this.endDateFilter);
+          if (this.startDateFilter === "") {
+            return valDate <= endDate;
+          }
+          const startDate = new Date(this.startDateFilter);
+          return Timing.inRange(valDate, startDate, endDate);
         },
       },
     ];
