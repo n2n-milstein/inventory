@@ -46,6 +46,19 @@
           </v-col>
           <v-col class="pr-9">
             <v-row>
+              <h4>Address Zone</h4>
+              <v-autocomplete
+                @change="update('Zone', $event)"
+                :value="zoneFilter"
+                :items="zoneOptions"
+                chips
+                multiple
+              >
+              </v-autocomplete>
+            </v-row>
+          </v-col>
+          <v-col class="pr-9">
+            <v-row>
               <h4>Donor Name</h4>
               <v-autocomplete
                 @change="update('Donor', $event)"
@@ -136,6 +149,9 @@ export default class FurnitureTableFilters extends Vue {
   readonly donorFilter!: string[];
 
   @Prop({})
+  readonly zoneFilter!: string[];
+
+  @Prop({})
   readonly inventory!: Furniture[];
 
   readonly classCheckboxes = Object.keys(FClass);
@@ -148,6 +164,10 @@ export default class FurnitureTableFilters extends Vue {
 
   get donorOptions(): any {
     return this.inventory.map((x) => x.donor.name);
+  }
+
+  get zoneOptions(): any {
+    return this.inventory.map((x) => x.donor.zone);
   }
 
   filterChips = [] as string[];
@@ -186,6 +206,9 @@ export default class FurnitureTableFilters extends Vue {
       case "Donor":
         this.$emit("donor", value);
         break;
+      case "Zone":
+        this.$emit("zone", value);
+        break;
       default:
       // do something
     }
@@ -200,6 +223,7 @@ export default class FurnitureTableFilters extends Vue {
         (filter === "Status" &&
           value.length !== this.statusCheckboxes.length) ||
         (filter === "Donor" && value.length !== 0) ||
+        (filter === "Zone" && value.length !== 0) ||
         (filter === "StartDate" && value !== this.today) ||
         (filter === "EndDate" && value !== "")
       ) {
@@ -209,6 +233,7 @@ export default class FurnitureTableFilters extends Vue {
       (filter === "Class" && value.length === this.classCheckboxes.length) ||
       (filter === "Status" && value.length === this.statusCheckboxes.length) ||
       (filter === "Donor" && value.length === 0) ||
+      (filter === "Zone" && value.length === 0) ||
       (filter === "StartDate" &&
         value === this.today &&
         this.endDateFilter === "")
@@ -234,6 +259,8 @@ export default class FurnitureTableFilters extends Vue {
       this.$emit("enddate", this.today);
     } else if (filter === "Donor") {
       this.$emit("donor", []);
+    } else if (filter === "Zone") {
+      this.$emit("zone", []);
     }
   }
 }
