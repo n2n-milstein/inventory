@@ -186,6 +186,7 @@ export default class Inventory extends Vue {
           return this.statusFilter.includes(value);
         },
       },
+      { text: "Zone", value: "donor.zone" },
       {
         text: "Address",
         value: "donor.address",
