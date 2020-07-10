@@ -18,7 +18,7 @@
     <v-expand-transition>
       <v-container v-show="showFilter" class="grey lighten-4 px-10 py-6">
         <v-row>
-          <v-col>
+          <v-col class="pr-9">
             <h4>Furniture Class</h4>
             <v-checkbox
               @change="update('Class', $event)"
@@ -31,7 +31,7 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col>
+          <v-col class="pr-9">
             <h4>Status</h4>
             <v-checkbox
               @change="update('Status', $event)"
@@ -44,8 +44,8 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col>
-            <v-row class="mb-16">
+          <v-col class="pr-9">
+            <v-row>
               <h4>Donor Name</h4>
               <v-autocomplete
                 @change="update('Donor', $event)"
@@ -59,6 +59,7 @@
           </v-col>
           <v-col>
             <h4>Date Added Range</h4>
+            <v-spacer></v-spacer>
             <v-row>
               <v-menu
                 v-model="startOpen"
@@ -81,6 +82,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-row>
+            <v-spacer></v-spacer>
             <v-row>
               <v-menu
                 v-model="endOpen"
