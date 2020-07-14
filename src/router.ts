@@ -51,9 +51,15 @@ const router = new Router({
           component: () => import("./views/Archive.vue"),
         },
         {
+          path: "/runs/:id",
+          name: "run-detail",
+          component: () => import("./views/RunDetail.vue"),
+          props: true,
+        },
+        {
           path: "/runs",
           name: "runs",
-          component: () => import("./views/RunsPage.vue"),
+          component: () => import("./views/RunPreview.vue"),
         },
         {
           path: "/about",
@@ -91,6 +97,11 @@ const router = new Router({
           component: () => import("./views/Admin.vue"),
         },
       ],
+    },
+    {
+      path: "*",
+      redirect: "/",
+      // TODO: implement 404 page
     },
   ],
 });
