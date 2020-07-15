@@ -77,7 +77,7 @@ import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
 // store
-import { action } from "@/store/collection/types";
+import { action } from "@/store/modules/collection/types";
 
 const NAMESPACE = "inventory";
 

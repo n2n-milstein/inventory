@@ -58,7 +58,7 @@ import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 import { FClass } from "@/data/furniture/Physical";
 import collections from "@/network/collections";
-import { action } from "@/store/collection/types";
+import { action } from "@/store/modules/collection/types";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
 import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";

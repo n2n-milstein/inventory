@@ -4,7 +4,7 @@ import FirestoreService from "@/network/firestore-service";
 import { Furniture } from "@/data/Furniture";
 import { ActionTree } from "vuex";
 import { CollectionState, mutation, action } from "./types";
-import { RootState } from "../types";
+import { RootState } from "../../types";
 
 const actions: ActionTree<CollectionState, RootState> = {
   [action.SET_CURRENT]({ commit }, { item }: { item: Furniture }): void {
