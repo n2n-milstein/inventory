@@ -8,7 +8,7 @@
       @click:outside="closeDialog()"
       @keydown.escape="closeDialog()"
     >
-      <edit-card
+      <furniture-edit-card
         :namespace="namespace"
         :is-edit="isEdit"
         :is-add="isAdd"
@@ -38,11 +38,11 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import { mapActions, mapState } from "vuex";
 import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
-import EditCard from "@/components/EditCard.vue";
+import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { EditCard, UnsavedDialog },
+  components: { FurnitureEditCard, UnsavedDialog },
   computed: mapState({
     updatesLength(state, getters) {
       return getters[`${this.namespace}/getUpdatesLength`];

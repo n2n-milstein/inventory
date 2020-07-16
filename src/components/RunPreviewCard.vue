@@ -107,12 +107,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import EditCard from "@/components/EditCard.vue";
+import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
 import Run from "@/data/Run";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import ViewAction from "../data/ViewAction";
 
-@Component({ components: { EditCard, ViewActionGroup } })
+@Component({ components: { FurnitureEditCard, ViewActionGroup } })
 export default class RunPreviewCard extends Vue {
   @Prop({})
   readonly run!: Run;
