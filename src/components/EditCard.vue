@@ -232,7 +232,7 @@ import ViewAction from "@/data/ViewAction";
 // components
 import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./EditCard/ConditionalDate.vue";
-import DatePickerMenu from "./EditCard/DatePickerMenu.vue";
+import DatePickerMenu from "./DatePickerMenu.vue";
 import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
 import TimingDates from "./EditCard/TimingDates.vue";
 import ViewActionGroup from "./ViewActionGroup.vue";

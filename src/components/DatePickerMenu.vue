@@ -11,6 +11,7 @@
         :value="formattedValue"
         :label="label"
         :class="spacing"
+        :prepend-icon="icon"
         readonly
         hide-details
         v-on="on"
@@ -32,6 +33,9 @@ import { Prop, Component } from "vue-property-decorator";
 export default class DatePickerMenu extends Vue {
   @Prop()
   readonly value!: string;
+
+  @Prop({ default: "" })
+  readonly icon!: string;
 
   @Prop({ default: "Default label" })
   readonly label!: string;

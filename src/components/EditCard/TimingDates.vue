@@ -50,7 +50,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import Timing from "@/data/furniture/Timing";
-import DatePickerMenu from "./DatePickerMenu.vue";
+import DatePickerMenu from "../DatePickerMenu.vue";
 import ConditionalDate from "./ConditionalDate.vue";
 
 @Component({ components: { DatePickerMenu, ConditionalDate } })
