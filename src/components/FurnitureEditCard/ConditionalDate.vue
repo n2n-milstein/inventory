@@ -20,7 +20,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
-import DatePickerMenu from "./DatePickerMenu.vue";
+import DatePickerMenu from "../DatePickerMenu.vue";
 
 @Component({ components: { DatePickerMenu } })
 export default class ConditionalDate extends Vue {

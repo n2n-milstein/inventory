@@ -19,12 +19,19 @@
     </div>
 
     <table-filters
-      :dates-filter="datesFilter"
+      :start-date-filter="startDateFilter"
+      :end-date-filter="endDateFilter"
       :status-filter="statusFilter"
       :class-filter="classFilter"
-      @date="datesFilter = $event"
+      :donor-filter="donorFilter"
+      :zone-filter="zoneFilter"
+      :inventory="archive"
+      @startdate="startDateFilter = $event"
+      @enddate="endDateFilter = $event"
       @status="statusFilter = $event"
       @class="classFilter = $event"
+      @donor="donorFilter = $event"
+      @zone="zoneFilter = $event"
     />
 
     <furniture-table
@@ -141,7 +148,13 @@ export default class Inventory extends Vue {
   menuLoading = false;
 
   /** Filters */
-  datesFilter = [] as string[];
+  startDateFilter = "";
+
+  endDateFilter = new Date().toISOString().substr(0, 10);
+
+  donorFilter = [] as string[];
+
+  zoneFilter = [] as string[];
 
   classFilter = Object.keys(FClass);
 
@@ -161,19 +174,47 @@ export default class Inventory extends Vue {
         },
       },
       {
-        text: "Date Added",
-        value: "timing.dateAdded",
-        filter: (value: any): boolean => {
-          if (this.datesFilter.length === 0) return true;
-          return this.datesFilter.includes(Timing.formatDate(value));
-        },
-      },
-      { text: "Address", value: "donor.address" },
-      {
         text: "Status",
         value: "status",
         filter: (value: number): boolean => {
           return this.statusFilter.includes(value);
+        },
+      },
+      {
+        text: "Zone",
+        value: "donor.zone",
+        filter: (value: any): boolean => {
+          if (this.zoneFilter.length === 0) return true;
+          return this.zoneFilter.includes(value);
+        },
+      },
+      {
+        text: "Address",
+        value: "donor.address",
+        // filter: (value: any): boolean => {
+        //   if (this.addressFilter.length === 0) return true;
+        //   return this.addressFilter.includes(value);
+        // },
+      },
+      {
+        text: "Donor",
+        value: "donor.name",
+        filter: (value: any): boolean => {
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
+        },
+      },
+      {
+        text: "Date Added",
+        value: "timing.dateAdded",
+        filter: (value: any): boolean => {
+          const valDate = new Date(Timing.formatDate(value));
+          const endDate = new Date(this.endDateFilter);
+          if (this.startDateFilter === "") {
+            return valDate <= endDate;
+          }
+          const startDate = new Date(this.startDateFilter);
+          return Timing.inRange(valDate, startDate, endDate);
         },
       },
     ];

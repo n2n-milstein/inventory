@@ -44,4 +44,8 @@ export default class Timing {
     if (date instanceof Date) return date.toISOString().substring(0, 10);
     return date.toDate().toISOString().substring(0, 10);
   }
+
+  static inRange(date: Date, start: Date, end: Date): boolean {
+    return start <= date && date <= end;
+  }
 }
