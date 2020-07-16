@@ -18,7 +18,8 @@
     <v-expand-transition>
       <v-container v-show="showFilter" class="grey lighten-4 px-6">
         <v-row>
-          <v-col class="pa-9">
+          <v-spacer class="d-none d-lg-flex" />
+          <v-col class="pa-9 pr-0">
             <h4>Furniture Class</h4>
             <v-checkbox
               @change="update('Class', $event)"
@@ -31,7 +32,7 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col class="pa-9">
+          <v-col class="pa-9 pr-0">
             <h4>Status</h4>
             <v-checkbox
               @change="update('Status', $event)"
@@ -44,79 +45,46 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col class="pa-9">
-            <v-row class="mb-4">
-              <h4>Address Zone</h4>
-              <v-autocomplete
-                @change="update('Zone', $event)"
-                :value="zoneFilter"
-                :items="zoneOptions"
-                chips
-                multiple
-              >
-              </v-autocomplete>
-            </v-row>
-            <v-row>
-              <h4>Donor Name</h4>
-              <v-autocomplete
-                @change="update('Donor', $event)"
-                :value="donorFilter"
-                :items="donorOptions"
-                chips
-                multiple
-              >
-              </v-autocomplete>
-            </v-row>
+          <v-col class="pa-9 pl-0">
+            <h4>Address Zone</h4>
+            <v-autocomplete
+              class="pt-0 mt-0"
+              @change="update('Zone', $event)"
+              :value="zoneFilter"
+              :items="zoneOptions"
+              chips
+              multiple
+              hide-details
+            />
+            <h4 class="mt-5">Donor Name</h4>
+            <v-autocomplete
+              class="pt-0 mt-0"
+              @change="update('Donor', $event)"
+              :value="donorFilter"
+              :items="donorOptions"
+              chips
+              multiple
+              hide-details
+            />
           </v-col>
           <v-col class="pa-9">
             <h4>Date Added Range</h4>
-            <v-spacer></v-spacer>
-            <v-row>
-              <v-menu
-                v-model="startOpen"
-                :close-on-content-click="false"
-                transition="scale-transition"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="startDateFilter"
-                    label="Start Date"
-                    prepend-icon="event"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  :value="startDateFilter"
-                  @input="update('StartDate', $event)"
-                ></v-date-picker>
-              </v-menu>
-            </v-row>
-            <v-spacer></v-spacer>
-            <v-row>
-              <v-menu
-                v-model="endOpen"
-                :close-on-content-click="false"
-                transition="scale-transition"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="endDateFilter"
-                    label="End Date"
-                    prepend-icon="event"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  :value="endDateFilter"
-                  @input="update('EndDate', $event)"
-                ></v-date-picker>
-              </v-menu>
-            </v-row>
+            <date-picker-menu
+              :value="startDateFilter"
+              @input="update('StartDate', $event)"
+              label="Start Date"
+              icon="today"
+            />
+            <div class="mt-5">
+              <date-picker-menu
+                :value="endDateFilter"
+                @input="update('EndDate', $event)"
+                label="End Date"
+                icon="event"
+              />
+            </div>
           </v-col>
+          <v-spacer class="d-none d-lg-flex" />
         </v-row>
       </v-container>
     </v-expand-transition>
@@ -128,8 +96,9 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { FClass } from "@/data/furniture/Physical";
 import { Furniture, Status } from "@/data/Furniture";
+import DatePickerMenu from "@/components/DatePickerMenu.vue";
 
-@Component({})
+@Component({ components: { DatePickerMenu } })
 export default class FurnitureTableFilters extends Vue {
   @Prop({})
   readonly startDateFilter!: string;
