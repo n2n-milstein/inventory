@@ -19,6 +19,9 @@ export default class FirestoreService {
    * @param item - item to add to collection in Firestore
    */
   addItem = (item: Furniture): Promise<void> => {
+    // TODO: eventually make this into a Firebase function
+    // onCreate ==> set ID, dateAdded + other metadata
+    // this will allow us to avoid using deepCopy and creating a ref
     const data = deepCopy(item) as Furniture;
     const ref = db.collection(this.collection).doc();
     data.id = ref.id;
@@ -27,6 +30,7 @@ export default class FirestoreService {
   };
 
   /**
+   * TODO: rewrite to do batch update
    * Updates an item in Firestore with specified properties of the `Furniture`
    * class.
    * @param id - id of the item to update
@@ -37,6 +41,7 @@ export default class FirestoreService {
   };
 
   /**
+   * TODO: rewrite to check for runs that refer to furniture item
    * Deletes an item in Firestore with specified `id`.
    * @param id - id of the item to delete
    */

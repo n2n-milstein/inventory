@@ -2,7 +2,7 @@
 import { Furniture } from "@/data/Furniture";
 import { GetterTree } from "vuex";
 import { CollectionState, getter } from "./types";
-import { RootState } from "../types";
+import { RootState } from "../../types";
 
 const getters: GetterTree<CollectionState, RootState> = {
   [getter.GET_ITEMS]: (state): Furniture[] => state.items,

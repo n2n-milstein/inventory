@@ -2,7 +2,7 @@ import { ActionTree } from "vuex";
 import { RootState } from "@/store/types";
 import { Furniture } from "@/data/Furniture";
 import { unarchiveItem, deleteItem } from "@/network/archive-service";
-import { CollectionState, mutation } from "../types";
+import { CollectionState, mutation } from "./collection/types";
 
 export const actions: ActionTree<CollectionState, RootState> = {
   async unarchiveCurrent({ commit, state }): Promise<void> {

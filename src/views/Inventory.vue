@@ -1,6 +1,11 @@
 <template>
-  <v-col class="mt-4" cols="12">
-    <furniture-table-header v-model="search" title="Inventory" />
+  <v-col cols="12">
+    <furniture-table-header
+      v-model="search"
+      title="Inventory"
+      class="px-4 mb-3"
+    />
+
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn
         :disabled="selected.length > 0"
@@ -10,7 +15,7 @@
         rounded
         @click="addItem()"
       >
-        <v-icon>add</v-icon>
+        <v-icon left>add</v-icon>
         {{ selected.length > 0 ? "" : "Add" }}
       </v-btn>
       <view-action-group
@@ -57,6 +62,7 @@
       @add="commitAddItem()"
       @archive="commitArchive()"
       @export="commitExport()"
+      @close="isAdd = false"
     />
   </v-col>
 </template>
@@ -73,12 +79,12 @@ import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
-import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
-import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
+import TableFilters from "@/components/FurnitureTableFilters.vue";
 // store
-import { action } from "@/store/collection/types";
+import { action } from "@/store/modules/collection/types";
 
 const NAMESPACE = "inventory";
 

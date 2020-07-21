@@ -2,7 +2,7 @@ import { ActionTree } from "vuex";
 import { RootState } from "@/store/types";
 import { archiveItem, addItem } from "@/network/inventory-service";
 import { Furniture } from "@/data/Furniture";
-import { CollectionState, mutation } from "../types";
+import { CollectionState, mutation } from "./collection/types";
 
 export const actions: ActionTree<CollectionState, RootState> = {
   async archiveCurrent({ commit, state }): Promise<void> {

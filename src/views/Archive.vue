@@ -1,6 +1,11 @@
 <template>
-  <v-col class="mt-4" cols="12">
-    <furniture-table-header v-model="search" title="Archive" />
+  <v-col cols="12">
+    <furniture-table-header
+      v-model="search"
+      title="Archive"
+      class="px-4 mb-3"
+    />
+
     <div class="mb-4 d-inline-flex" align="center">
       <view-action-group
         class="ml-3"
@@ -60,13 +65,13 @@ import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
 import { FClass } from "@/data/furniture/Physical";
 import collections from "@/network/collections";
-import { action } from "@/store/collection/types";
+import { action } from "@/store/modules/collection/types";
 // components
 import FurnitureTable from "@/components/FurnitureTable.vue";
-import FurnitureTableHeader from "@/components/InventoryArchive/FurnitureTableHeader.vue";
+import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
-import TableFilters from "@/components/InventoryArchive/FurnitureTableFilters.vue";
+import TableFilters from "@/components/FurnitureTableFilters.vue";
 
 const NAMESPACE = "archive";
 

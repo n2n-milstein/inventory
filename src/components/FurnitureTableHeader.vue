@@ -1,8 +1,11 @@
 <template>
-  <v-row class="mb-3 px-4" align="baseline">
-    <h2 class="title">
+  <v-row :align="subtitle ? 'center' : 'baseline'">
+    <header class="title">
       {{ title }}
-    </h2>
+      <h3 class="subtitle-2 font-weight-regular" v-if="subtitle">
+        {{ subtitle }}
+      </h3>
+    </header>
     <v-spacer />
     <v-col cols="6">
       <v-text-field
@@ -26,6 +29,9 @@ import { Component, Prop } from "vue-property-decorator";
 export default class FurnitureTableHeader extends Vue {
   @Prop({ default: "Default title" })
   readonly title!: string;
+
+  @Prop({ default: "" })
+  readonly subtitle!: string;
 
   @Prop({})
   readonly value!: string;

@@ -7,6 +7,7 @@ enum collections {
   PENDING = "pending",
   REJECTED = "rejected",
   ARCHIVE = "archive",
+  RUNS = "runs",
 }
 
 export default collections;

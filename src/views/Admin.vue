@@ -17,10 +17,10 @@
               Show Edit Dialog
             </v-btn>
           </template>
-          <edit-card />
+          <furniture-edit-card />
         </v-dialog>
         <v-switch v-model="showEditCard" label="Show Edit Card" />
-        <edit-card v-if="showEditCard" />
+        <furniture-edit-card v-if="showEditCard" />
       </v-col>
     </v-row>
 
@@ -50,12 +50,12 @@ import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import Component from "vue-class-component";
 import AdminDialog from "@/components/AdminDialog.vue";
-import EditCard from "@/components/EditCard.vue";
+import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
 import { Furniture } from "@/data/Furniture";
 import { updateItem } from "@/network/inventory-service";
 
 @Component({
-  components: { AdminDialog, EditCard },
+  components: { AdminDialog, FurnitureEditCard },
   computed: mapGetters("inventory", {
     inventory: "getInventory",
     getItem: "getItem",

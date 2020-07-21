@@ -8,7 +8,7 @@
       @click:outside="closeDialog()"
       @keydown.escape="closeDialog()"
     >
-      <edit-card
+      <furniture-edit-card
         :namespace="namespace"
         :is-edit="isEdit"
         :is-add="isAdd"
@@ -34,15 +34,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import { mapActions, mapState } from "vuex";
 import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
-import EditCard from "@/components/EditCard.vue";
+import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { EditCard, UnsavedDialog },
+  components: { FurnitureEditCard, UnsavedDialog },
   computed: mapState({
     updatesLength(state, getters) {
       return getters[`${this.namespace}/getUpdatesLength`];
@@ -94,6 +94,14 @@ export default class FurnitureCardDialog extends Vue {
   isEdit = false;
 
   /**
+   * Watch for change in dialog; if it opens, set isEdit to isAdd
+   */
+  @Watch("dialog")
+  onDialogChanged(val: boolean): void {
+    if (val) this.isEdit = this.isAdd;
+  }
+
+  /**
    * Exits dialog and clears the current item
    */
   closeDialog(forceClose = false): void {
@@ -103,6 +111,7 @@ export default class FurnitureCardDialog extends Vue {
     if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
       this.isEdit = false;
+      this.$emit("close"); // used to set isAdd to false
       this.clearCurrent();
     } else {
       this.unsavedDialog = true;

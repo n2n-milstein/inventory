@@ -19,7 +19,7 @@
       }"
       primary-title
     >
-      <span>{{ isEdit ? "Edit" : "View" }} Furniture</span>
+      <span>{{ isEdit ? (isAdd ? "Add" : "Edit") : "View" }} Furniture</span>
       <v-spacer />
       <view-action-group
         :actions="ACTIONS"
@@ -230,11 +230,11 @@ import Donor from "@/data/furniture/Donor";
 import Attributes from "@/data/furniture/Attributes";
 import ViewAction from "@/data/ViewAction";
 // components
-import PhysicalAttributes from "./EditCard/PhysicalAttributes.vue";
-import ConditionalDate from "./EditCard/ConditionalDate.vue";
+import PhysicalAttributes from "./FurnitureEditCard/PhysicalAttributes.vue";
+import ConditionalDate from "./FurnitureEditCard/ConditionalDate.vue";
 import DatePickerMenu from "./DatePickerMenu.vue";
-import AttributeQuestions from "./EditCard/AttributeQuestions.vue";
-import TimingDates from "./EditCard/TimingDates.vue";
+import AttributeQuestions from "./FurnitureEditCard/AttributeQuestions.vue";
+import TimingDates from "./FurnitureEditCard/TimingDates.vue";
 import ViewActionGroup from "./ViewActionGroup.vue";
 
 @Component({
@@ -263,7 +263,7 @@ import ViewActionGroup from "./ViewActionGroup.vue";
     },
   }),
 })
-export default class EditCard extends Vue {
+export default class FurnitureEditCard extends Vue {
   /* Properties for Vuex mapGetters and mapActions */
 
   updates!: Partial<Furniture>;
