@@ -15,6 +15,26 @@ export default class FirestoreService {
   }
 
   /**
+   * Gets the Furniture item with given id.
+   * @param id - id of the item to get
+   */
+  getItem = (id: string): Promise<Furniture> => {
+    return db
+      .collection(this.collection)
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          return doc.data() as Furniture;
+        }
+        throw new Error("No such document.");
+      })
+      .catch((err) => {
+        throw new Error(`Error getting doc: ${err}`);
+      });
+  };
+
+  /**
    * Adds an item to Firestore, setting its `id` and `dateAdded`.
    * @param item - item to add to collection in Firestore
    */
@@ -36,8 +56,27 @@ export default class FirestoreService {
    * @param id - id of the item to update
    * @param updates - Partial type of furniture of the updates
    */
-  updateItem = (id: string, updates: Partial<Furniture>): Promise<void> => {
-    return db.collection(this.collection).doc(id).update(updates);
+  updateItem = async (
+    id: string,
+    updates: Partial<Furniture>,
+  ): Promise<void> => {
+    const itemRef = db.collection(this.collection).doc(id);
+    try {
+      await db.runTransaction(async (t) => {
+        // get every run that contains the furniture item
+        // subgroup query
+
+        // write to individual furniture
+        t.update(itemRef, updates);
+
+        // write to each item in run
+      });
+      console.log("Transaction success!");
+    } catch (e) {
+      console.log("Transaction failure:", e);
+    }
+
+    // return db.collection(this.collection).doc(id).update(updates);
   };
 
   /**
