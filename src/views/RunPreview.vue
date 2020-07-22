@@ -64,7 +64,8 @@ export default class RunPreview extends Vue {
 
   readonly runs: Run[] = [
     {
-      id: "testRun",
+      // this is the ID of a run in db, but the other info is not real
+      id: "uje7h3LkQefkF0fuGVs7",
       dateCreated: new Date(),
       lastUpdated: new Date(),
       date: new Date(),
