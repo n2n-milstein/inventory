@@ -8,6 +8,7 @@ enum collections {
   REJECTED = "rejected",
   ARCHIVE = "archive",
   RUNS = "runs",
+  CLIENTS = "clients",
 }
 
 export default collections;

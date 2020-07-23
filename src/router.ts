@@ -51,6 +51,11 @@ const router = new Router({
           component: () => import("./views/Archive.vue"),
         },
         {
+          path: "/clients",
+          name: "clients",
+          component: () => import("./views/Clients.vue"),
+        },
+        {
           path: "/runs/:id",
           name: "run-detail",
           component: () => import("./views/RunDetail.vue"),

@@ -129,6 +129,7 @@ export default class Navigation extends Vue {
     // { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
     { icon: "archive", text: "Archive", route: "archive" },
+    { icon: "mdi-account", text: "Clients", route: "clients" },
     { icon: "mdi-truck-fast", text: "Runs", route: "runs" },
     // { icon: "check_circle", text: "Approval", route: "approval" },
     // {
