@@ -45,6 +45,7 @@ export default class FirestoreService {
     const data = deepCopy(item) as Furniture;
     const ref = db.collection(this.collection).doc();
     data.id = ref.id;
+    console.log("addItem id:", data.id);
     data.timing.dateAdded = new Date();
     return ref.set(data);
   };
@@ -60,16 +61,45 @@ export default class FirestoreService {
     id: string,
     updates: Partial<Furniture>,
   ): Promise<void> => {
+    if (Object.keys(updates).length === 0) {
+      throw new Error("Updates are empty.");
+    }
+
     const itemRef = db.collection(this.collection).doc(id);
     try {
       await db.runTransaction(async (t) => {
+        // get individual item
+        const itemDoc = await t.get(itemRef);
+
+        // make sure it exists
+        if (!itemDoc.exists) {
+          throw new Error("Document doesn't exist");
+        }
+
         // get every run that contains the furniture item
-        // subgroup query
+        const runQuerySnapshot = await db
+          .collection(collections.RUNS)
+          .where(`pickups.${id}.id`, "==", id)
+          .get();
+
+        runQuerySnapshot.forEach((doc) => {
+          console.log(doc.id, "=>", doc.data());
+          const nestedUpdatesKey = `pickups.${id}`;
+          let nestedUpdates = {};
+          Object.keys(updates).forEach((key) => {
+            nestedUpdates = {
+              ...nestedUpdates,
+              [`${nestedUpdatesKey}.${key}`]: (updates as any)[key],
+            };
+          });
+          console.log("nestedUpdates", nestedUpdates);
+          const docRef = db.collection(collections.RUNS).doc(doc.id);
+          t.update(docRef, nestedUpdates);
+        });
 
         // write to individual furniture
+        console.log("updateItem (updates):", updates);
         t.update(itemRef, updates);
-
-        // write to each item in run
       });
       console.log("Transaction success!");
     } catch (e) {
