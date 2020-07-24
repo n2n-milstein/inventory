@@ -13,6 +13,7 @@ export enum RunStatus {
 export default interface Run {
   // metadata
   id: string;
+  // TODO: rename to dateAdded?
   dateCreated: Date | Timestamp;
   lastUpdated: Date | Timestamp;
 
@@ -21,11 +22,12 @@ export default interface Run {
   // TODO: make this a list of volunteers NOT volunteer IDs
   volunteers: Volunteer[];
 
-  pickups: Furniture[]; // list of furniture
+  pickups: { [id: string]: Furniture }; // list of furniture
+  // pickups: Furniture[]; // list of furniture
   // TODO: think of better way of mapping client --> dropoff
   // dropoff and client order matters
-  dropoffs: Furniture[];
-  clients: Client[];
+  dropoffs: { [id: string]: Furniture };
+  clients: { [id: string]: Client }; // id should be the furniture ID
 
   status: RunStatus;
 }

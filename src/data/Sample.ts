@@ -164,7 +164,7 @@ export const Approvals: Furniture[] = [
 
 export const Inventory: Furniture[] = [];
 
-export const run: Run = {
+export const SampleRun: Run = {
   id: "testRun",
   dateCreated: new Date(),
   lastUpdated: new Date(),
@@ -180,8 +180,8 @@ export const run: Run = {
       runs: [] as string[],
     },
   ],
-  pickups: [
-    {
+  pickups: {
+    "3QzT3qNRNN6u0tMuIcEu": {
       status: 1,
       physical: {
         hasFrame: false,
@@ -272,7 +272,7 @@ export const run: Run = {
       staffNotes: "",
       id: "3QzT3qNRNN6u0tMuIcEu",
     },
-    {
+    h58u1dTR48DpZjsP1Bgz: {
       attributes: {
         finishIntact: true,
         partsIntact: true,
@@ -311,31 +311,8 @@ export const run: Run = {
       staffNotes: "I'm listening to Worlds.",
       status: 4,
     },
-  ],
-  dropoffs: [
-    // {
-    //   ...new Furniture("pic1"),
-    //   donor: new Donor(
-    //     "Bill Smith",
-    //     "111-222-3333",
-    //     "bill@gmail.com",
-    //     "123 Test St Ithaca, NY",
-    //   ),
-    // },
-    // {
-    //   ...new Furniture("pic2"),
-    //   donor: new Donor(
-    //     "Bill Smith",
-    //     "111-222-3333",
-    //     "bill@gmail.com",
-    //     "123 Test St Ithaca, NY",
-    //   ),
-    //   physical: new Physical(0, FClass.Bed),
-    // },
-  ],
-  clients: [
-    // generateClient(),
-    // generateClient(),
-  ],
+  },
+  dropoffs: {},
+  clients: {},
   status: RunStatus.Planning,
 };

@@ -65,7 +65,7 @@ export default class RunPreview extends Vue {
   readonly runs: Run[] = [
     {
       // this is the ID of a run in db, but the other info is not real
-      id: "uje7h3LkQefkF0fuGVs7",
+      id: "8H7X31vL7SYe4M4PCStv",
       dateCreated: new Date(),
       lastUpdated: new Date(),
       date: new Date(),
@@ -80,8 +80,8 @@ export default class RunPreview extends Vue {
           runs: [] as string[],
         },
       ],
-      pickups: [
-        {
+      pickups: {
+        pic1: {
           ...new Furniture("pic1"),
           donor: new Donor(
             "Bill Smith",
@@ -90,7 +90,7 @@ export default class RunPreview extends Vue {
             "123 Test St Ithaca, NY",
           ),
         },
-        {
+        pic2: {
           ...new Furniture("pic2"),
           donor: new Donor(
             "Bill Smith",
@@ -100,9 +100,9 @@ export default class RunPreview extends Vue {
           ),
           physical: new Physical(0, FClass.Bed),
         },
-      ],
-      dropoffs: [
-        {
+      },
+      dropoffs: {
+        pic1: {
           ...new Furniture("pic1"),
           donor: new Donor(
             "Bill Smith",
@@ -111,7 +111,7 @@ export default class RunPreview extends Vue {
             "123 Test St Ithaca, NY",
           ),
         },
-        {
+        pic2: {
           ...new Furniture("pic2"),
           donor: new Donor(
             "Bill Smith",
@@ -121,8 +121,8 @@ export default class RunPreview extends Vue {
           ),
           physical: new Physical(0, FClass.Bed),
         },
-      ],
-      clients: [generateClient(), generateClient()],
+      },
+      clients: { pic1: generateClient(), pic2: generateClient() },
       status: RunStatus.Planning,
     },
   ];
