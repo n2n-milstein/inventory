@@ -51,6 +51,7 @@ export default class FirestoreService {
   };
 
   /**
+   * TODO: eventually make this into a Firebase function
    * Updates an item in Firestore with specified properties of the `Furniture`
    * class. Checks and updates copies of the item in Runs.
    * @param id - id of the item to update
