@@ -51,9 +51,8 @@ export default class FirestoreService {
   };
 
   /**
-   * TODO: rewrite to do batch update
    * Updates an item in Firestore with specified properties of the `Furniture`
-   * class.
+   * class. Checks and updates copies of the item in Runs.
    * @param id - id of the item to update
    * @param updates - Partial type of furniture of the updates
    */
@@ -61,29 +60,36 @@ export default class FirestoreService {
     id: string,
     updates: Partial<Furniture>,
   ): Promise<void> => {
+    // return if no updates
     if (Object.keys(updates).length === 0) {
       throw new Error("Updates are empty.");
     }
 
+    // setup queries for individual item and runs containing item
     const itemRef = db.collection(this.collection).doc(id);
-    try {
-      await db.runTransaction(async (t) => {
-        // get individual item
-        const itemDoc = await t.get(itemRef);
+    const runQuery = db
+      .collection(collections.RUNS)
+      .where(`pickups.${id}.id`, "==", id);
 
-        // make sure it exists
+    try {
+      // run transaction
+      await db.runTransaction(async (transaction) => {
+        // get individual item
+        const itemDoc = await transaction.get(itemRef);
+
+        // make sure item exists
         if (!itemDoc.exists) {
           throw new Error("Document doesn't exist");
         }
 
         // get every run that contains the furniture item
-        const runQuerySnapshot = await db
-          .collection(collections.RUNS)
-          .where(`pickups.${id}.id`, "==", id)
-          .get();
+        const runQuerySnapshot = await runQuery.get();
 
+        // for each run, generate nested updates (e.g., pickups.id.<field>),
+        // and update the run
         runQuerySnapshot.forEach((doc) => {
-          console.log(doc.id, "=>", doc.data());
+          console.log("run:", doc.id, "=>", doc.data());
+
           const nestedUpdatesKey = `pickups.${id}`;
           let nestedUpdates = {};
           Object.keys(updates).forEach((key) => {
@@ -92,30 +98,45 @@ export default class FirestoreService {
               [`${nestedUpdatesKey}.${key}`]: (updates as any)[key],
             };
           });
+
           console.log("nestedUpdates", nestedUpdates);
+
+          // get the run document reference and call transaction update
           const docRef = db.collection(collections.RUNS).doc(doc.id);
-          t.update(docRef, nestedUpdates);
+          transaction.update(docRef, nestedUpdates);
         });
 
         // write to individual furniture
         console.log("updateItem (updates):", updates);
-        t.update(itemRef, updates);
+        transaction.update(itemRef, updates);
       });
       console.log("Transaction success!");
     } catch (e) {
       console.log("Transaction failure:", e);
     }
-
-    // return db.collection(this.collection).doc(id).update(updates);
   };
 
   /**
-   * TODO: rewrite to check for runs that refer to furniture item
-   * Deletes an item in Firestore with specified `id`.
+   * Deletes an item in Firestore with specified `id`. Throws an Error if
+   * the item is part of a run.
    * @param id - id of the item to delete
    */
-  deleteItem = (id: string): Promise<void> => {
-    return db.collection(this.collection).doc(id).delete();
+  deleteItem = async (id: string): Promise<void> => {
+    const runQuerySnapshot = await db
+      .collection(collections.RUNS)
+      .where(`pickups.${id}.id`, "==", id)
+      .get();
+
+    if (runQuerySnapshot.size > 0)
+      throw new Error("Item is part of a run. Failed to delete item.");
+
+    return db
+      .collection(this.collection)
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Successfully deleted item.");
+      });
   };
 
   exportItems = (ids: string[]): Promise<void> => {
