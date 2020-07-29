@@ -32,8 +32,8 @@
 
       <!-- Pickups -->
       <h2 class="subtitle-1">
-        {{ `${run.pickups.length} ` }}
-        {{ run.pickups.length === 1 ? "Pickup" : "Pickups" }}
+        {{ `${Object.keys(run.pickups).length} ` }}
+        {{ Object.keys(run.pickups).length === 1 ? "Pickup" : "Pickups" }}
       </h2>
       <!-- TODO: probably make this into a component -->
       <v-list>
@@ -59,8 +59,8 @@
 
       <!-- dropoffs -->
       <h2 class="subtitle-1">
-        {{ `${run.dropoffs.length} ` }}
-        {{ run.dropoffs.length === 1 ? "Dropoff" : "Dropoffs" }}
+        {{ `${Object.keys(run.dropoffs).length} ` }}
+        {{ Object.keys(run.dropoffs).length === 1 ? "Dropoff" : "Dropoffs" }}
       </h2>
       <v-list>
         <v-list-item
