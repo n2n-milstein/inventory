@@ -3,8 +3,28 @@ import collections from "./collections";
 import { deepCopy } from "./converters";
 import { db } from "./firebase";
 
-export default class RunService {
+export class RunService {
   collection = collections.RUNS;
+
+  /**
+   * Gets the item with given id.
+   * @param id - id of the item to get
+   */
+  getItem = (id: string): Promise<Run> => {
+    return db
+      .collection(this.collection)
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          return doc.data() as Run;
+        }
+        throw new Error("No such document.");
+      })
+      .catch((err) => {
+        throw new Error(`Error getting doc: ${err}`);
+      });
+  };
 
   /**
    * Adds an item to Firestore, setting its `id` and other metadata.
@@ -40,3 +60,5 @@ export default class RunService {
     return db.collection(this.collection).doc(id).delete();
   };
 }
+
+export const { getItem, addItem, updateItem, deleteItem } = new RunService();

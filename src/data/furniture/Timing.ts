@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 
 export type Timestamp = firebase.firestore.Timestamp;
+export const { Timestamp } = firebase.firestore;
 
 /**
  * Dates and timing information associated with a furniture item

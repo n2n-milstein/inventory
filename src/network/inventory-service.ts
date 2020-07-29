@@ -25,6 +25,7 @@ class InventoryService extends FirestoreService {
 }
 
 export const {
+  getItem,
   addItem,
   updateItem,
   deleteItem,
