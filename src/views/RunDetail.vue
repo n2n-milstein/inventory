@@ -16,10 +16,7 @@
     <v-card class="mb-4">
       <v-card-title>General Notes</v-card-title>
       <v-card-text>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book.
+        {{ run.notes }}
       </v-card-text>
     </v-card>
 
@@ -30,11 +27,7 @@
           <div v-if="run.volunteers.length === 0">
             No volunteers available.
           </div>
-          <v-list-item
-            v-for="vol in run.volunteers"
-            :key="vol.id"
-            @click="() => {}"
-          >
+          <v-list-item v-for="vol in run.volunteers" :key="vol.id">
             <v-list-item-icon>
               <v-icon>{{
                 vol.role === "Driver" ? "drive_eta" : "person"
@@ -73,9 +66,9 @@
               <v-icon v-if="pic.physical.class === 'Table'">
                 mdi-table-furniture
               </v-icon>
-              <v-icon v-if="pic.physical.class === 'Dresser'"
-                >mdi-dresser</v-icon
-              >
+              <v-icon v-if="pic.physical.class === 'Dresser'">
+                mdi-dresser
+              </v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>{{ pic.donor.address }}</v-list-item-title>
@@ -154,10 +147,10 @@ export default class RunDetail extends Vue {
   run: Run = {} as Run;
 
   readonly runMenuActions: ViewAction[] = [
-    { icon: "archive", desc: "Archive selected items", emit: "archive" },
+    { icon: "archive", desc: "Archive run", emit: "archive" },
     {
       icon: "cloud_download",
-      desc: "Export selected items to spreadsheet",
+      desc: "Export run",
       emit: "download",
     },
   ];
