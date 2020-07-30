@@ -8,7 +8,7 @@
 
     <div class="mb-4 d-inline-flex" align="center">
       <v-btn
-        :disabled="selected.length > 0"
+        :disabled="false"
         :icon="selected.length > 0"
         :outlined="selected.length > 0"
         color="primary"
@@ -87,7 +87,7 @@ import TableFilters from "@/components/FurnitureTableFilters.vue";
 import { action } from "@/store/modules/collection/types";
 import Client, { generateClient } from "../data/Client";
 
-const NAMESPACE = "inventory";
+const NAMESPACE = "clients";
 
 @Component({
   components: {

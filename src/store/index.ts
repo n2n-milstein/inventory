@@ -6,6 +6,7 @@ import { RootState } from "./types";
 import createCollectionModule from "./modules/collection";
 import { actions as inventoryActions } from "./modules/inventory";
 import { actions as archiveActions } from "./modules/archive";
+import { clients } from "./modules/clients";
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ const store: StoreOptions<RootState> = {
     inventory: createCollectionModule(collections.INVENTORY, inventoryActions),
     archive: createCollectionModule(collections.ARCHIVE, archiveActions),
     "run-preview": createCollectionModule(collections.RUNS),
+    clients,
   },
   strict: process.env.NODE_ENV !== "production",
 };

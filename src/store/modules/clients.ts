@@ -5,7 +5,7 @@ import collections from "@/network/collections";
 import { db } from "@/network/firebase";
 import { Module } from "vuex";
 import { firestoreAction } from "vuexfire";
-import FirestoreService from "@/network/firestore-service";
+import ClientService from "@/network/client-service";
 import { RootState } from "@/store/types";
 import { CollectionState, getter, mutation, action } from "./collection/types";
 
@@ -42,14 +42,6 @@ export const clients: Module<CollectionState, RootState> = {
       commit(mutation.CLEAR_UPDATES);
       commit(mutation.CLEAR_CURRENT);
     },
-    async [action.EXPORT_CURRENT]({ state }): Promise<void> {
-      try {
-        const service = new FirestoreService(state.collection!);
-        await service.exportItems([state.current!.id]);
-      } catch (e) {
-        console.error("exportCurrent error:", e);
-      }
-    },
     [action.UPDATE_CURRENT](
       { commit },
       { updates }: { updates: Partial<Client> },
@@ -61,7 +53,7 @@ export const clients: Module<CollectionState, RootState> = {
     },
     async [action.COMMIT_UPDATES]({ commit, state }): Promise<void> {
       try {
-        const service = new FirestoreService(state.collection!);
+        const service = new ClientService();
         commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
         commit(mutation.CLEAN_CURRENT);
         await service.updateItem(state.current!.id, state.currentUpdates);
@@ -79,16 +71,6 @@ export const clients: Module<CollectionState, RootState> = {
     [action.ADD_SELECTED]({ commit }, { item }: { item: Client }): void {
       commit(mutation.ADD_SELECTED, { item });
     },
-    async [action.EXPORT_SELECTED]({ state }): Promise<void> {
-      try {
-        const service = new FirestoreService(state.collection!);
-        await service.exportItems(
-          state.selected.map((item: { id: any }) => item.id),
-        );
-      } catch (e) {
-        console.error("exportSelected error:", e);
-      }
-    },
     [action.BIND_ITEMS]: firestoreAction<CollectionState, RootState>(
       ({ bindFirestoreRef, state }) => {
         return bindFirestoreRef("items", db.collection(state.collection!));
@@ -97,6 +79,16 @@ export const clients: Module<CollectionState, RootState> = {
     [action.UNBIND_ITEMS]: firestoreAction(({ unbindFirestoreRef }) => {
       unbindFirestoreRef("items");
     }),
+    async commitItem({ commit, state }): Promise<void> {
+      try {
+        commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
+        commit(mutation.CLEAN_CURRENT);
+        await new ClientService().addItem(state.current!);
+        commit(mutation.CLEAR_UPDATES);
+      } catch (e) {
+        console.error("addItem error:", e);
+      }
+    },
   },
   mutations: {
     [mutation.CLEAR_INVENTORY](s: CollectionState): void {

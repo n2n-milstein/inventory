@@ -3,7 +3,7 @@ import collections from "./collections";
 import { deepCopy } from "./converters";
 import { db } from "./firebase";
 
-export default class RunService {
+export default class ClientService {
   collection = collections.CLIENTS;
 
   /**
