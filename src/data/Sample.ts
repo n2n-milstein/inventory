@@ -315,4 +315,5 @@ export const SampleRun: Run = {
   dropoffs: {},
   clients: {},
   status: RunStatus.Planning,
+  notes: "Hello, these are some sample notes.",
 };

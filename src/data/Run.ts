@@ -30,4 +30,6 @@ export default interface Run {
   clients: { [id: string]: Client }; // id should be the furniture ID
 
   status: RunStatus;
+
+  notes: string;
 }
