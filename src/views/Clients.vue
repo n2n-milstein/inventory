@@ -73,7 +73,7 @@ import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
 // network, data
 import collections from "@/network/collections";
-import { Furniture, Status } from "@/data/Furniture";
+import { Status } from "@/data/Furniture";
 import { FClass } from "@/data/furniture/Physical";
 import Timing from "@/data/furniture/Timing";
 import ViewAction from "@/data/ViewAction";
@@ -85,6 +85,7 @@ import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import TableFilters from "@/components/FurnitureTableFilters.vue";
 // store
 import { action } from "@/store/modules/collection/types";
+import Client, { generateClient } from "../data/Client";
 
 const NAMESPACE = "inventory";
 
@@ -112,15 +113,15 @@ const NAMESPACE = "inventory";
     "commitItem",
   ]),
 })
-export default class Inventory extends Vue {
-  readonly COLLECTION = collections.INVENTORY;
+export default class Clients extends Vue {
+  readonly COLLECTION = collections.CLIENTS;
 
   /** Vuex map helper properties */
-  readonly current!: Furniture;
+  readonly current!: Client;
 
   readonly [action.BIND_ITEMS]!: () => Promise<void>;
 
-  readonly [action.SET_CURRENT]!: ({ item }: { item: Furniture }) => void;
+  readonly [action.SET_CURRENT]!: ({ item }: { item: Client }) => void;
 
   readonly [action.EXPORT_SELECTED]!: () => Promise<void>;
 
@@ -265,8 +266,9 @@ export default class Inventory extends Vue {
    * Shows dialog to add item
    */
   addItem(): void {
-    this.setCurrent({ item: new Furniture() });
-    this.isAdd = true;
+    this.setCurrent({ item: generateClient() });
+    // this.isAdd = true;
+    this.commitAddItem();
   }
 
   /**
@@ -274,7 +276,7 @@ export default class Inventory extends Vue {
    */
   async commitAddItem(): Promise<void> {
     await this.commitItem();
-    this.isAdd = false;
+    // this.isAdd = false;
     this.clearCurrent();
   }
 
