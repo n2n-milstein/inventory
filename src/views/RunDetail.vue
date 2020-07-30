@@ -1,10 +1,8 @@
 <template>
   <v-col cols="12">
     <h2>Testing</h2>
-    <!-- <v-btn @click="pushSample()">Push sample data</v-btn> -->
     <div class="mb-4 d-flex" align="center">
       <h2>Run ID: {{ id }}</h2>
-      <!-- <pre>{{ run }}</pre> -->
       <v-spacer />
       <view-action-group
         class="ml-3"
@@ -57,7 +55,7 @@
           <v-list-item
             v-for="pic in run.pickups"
             :key="pic.id"
-            @click="() => {}"
+            @click="showFurniture(pic)"
           >
             <v-list-item-icon>
               <v-icon v-if="pic.physical.class === 'Chair'">event_seat</v-icon>
@@ -127,6 +125,8 @@
     <v-btn :block="$vuetify.breakpoint.xsOnly" color="success">
       Mark as complete
     </v-btn>
+
+    <furniture-card-dialog :dialog="furnitureDialog" namespace="run-detail" />
   </v-col>
 </template>
 
@@ -134,17 +134,32 @@
 import Vue from "vue";
 import { Prop, Component } from "vue-property-decorator";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
-import Run from "../data/Run";
-import { getItem, addItem } from "../network/run-service";
-import { SampleRun } from "../data/Sample";
-import ViewAction from "../data/ViewAction";
+import Run from "@/data/Run";
+import { getItem, addItem } from "@/network/run-service";
+import { SampleRun } from "@/data/Sample";
+import ViewAction from "@/data/ViewAction";
+import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
+import { mapActions, mapGetters } from "vuex";
+import { Furniture } from "../data/Furniture";
 
-@Component({ components: { ViewActionGroup } })
+@Component({
+  components: { ViewActionGroup, FurnitureCardDialog },
+  computed: mapGetters("run-detail", { furniture: "getCurrent" }),
+  methods: mapActions("run-detail", ["setFurniture"]),
+})
 export default class RunDetail extends Vue {
   @Prop({ default: "default" })
   readonly id!: string;
 
+  readonly setFurniture!: ({ item }: { item: Furniture }) => void;
+
+  readonly furniture!: Furniture;
+
   run: Run = {} as Run;
+
+  get furnitureDialog(): boolean {
+    return !!this.furniture;
+  }
 
   readonly runMenuActions: ViewAction[] = [
     { icon: "archive", desc: "Archive run", emit: "archive" },
@@ -175,6 +190,10 @@ export default class RunDetail extends Vue {
   pushSample(): void {
     console.log(this.id);
     addItem(SampleRun);
+  }
+
+  showFurniture(item: Furniture): void {
+    this.setFurniture({ item });
   }
 }
 </script>
