@@ -1,12 +1,11 @@
-import { Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 
 export interface CollectionState {
   collection: collections | null;
-  items: Furniture[];
-  current: Furniture | null;
-  selected: Furniture[];
-  currentUpdates: Partial<Furniture>;
+  items: any[];
+  current: any | null;
+  selected: any[];
+  currentUpdates: Partial<any>;
 }
 
 export enum getter {
