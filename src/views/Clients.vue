@@ -23,46 +23,15 @@
         disabled-message="Select items to use actions"
         :actions="inventoryActions"
         :disabled="selected.length < 1"
-        @download="getSpreadsheet"
-        @archive="archiveSelected()"
       />
     </div>
 
-    <table-filters
-      :start-date-filter="startDateFilter"
-      :end-date-filter="endDateFilter"
-      :status-filter="statusFilter"
-      :class-filter="classFilter"
-      :donor-filter="donorFilter"
-      :zone-filter="zoneFilter"
-      :inventory="inventory"
-      @startdate="startDateFilter = $event"
-      @enddate="endDateFilter = $event"
-      @status="statusFilter = $event"
-      @class="classFilter = $event"
-      @donor="donorFilter = $event"
-      @zone="zoneFilter = $event"
-    />
-
-    <furniture-table
-      namespace="inventory"
+    <client-table
+      namespace="clients"
       :headers="headers"
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
-      @download="getSpreadsheet()"
-    />
-
-    <furniture-card-dialog
-      namespace="inventory"
-      :dialog="editCard"
-      :is-add="isAdd"
-      :menu-actions="menuActions"
-      :menu-loading="menuLoading"
-      @add="commitAddItem()"
-      @archive="commitArchive()"
-      @export="commitExport()"
-      @close="isAdd = false"
     />
   </v-col>
 </template>
@@ -73,12 +42,8 @@ import { mapActions, mapGetters } from "vuex";
 import Component from "vue-class-component";
 // network, data
 import collections from "@/network/collections";
-import { Status } from "@/data/Furniture";
-import { FClass } from "@/data/furniture/Physical";
-import Timing from "@/data/furniture/Timing";
-import ViewAction from "@/data/ViewAction";
 // components
-import FurnitureTable from "@/components/FurnitureTable.vue";
+import ClientTable from "@/components/ClientTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
@@ -91,7 +56,7 @@ const NAMESPACE = "clients";
 
 @Component({
   components: {
-    FurnitureTable,
+    ClientTable,
     FurnitureTableHeader,
     ViewActionGroup,
     FurnitureCardDialog,
@@ -144,107 +109,43 @@ export default class Clients extends Vue {
   search = "";
 
   /** start filters */
-  startDateFilter = "";
 
-  endDateFilter = new Date().toISOString().substr(0, 10);
-
-  classFilter = Object.keys(FClass);
-
-  statusFilter = Object.values(Status)
-    .filter((v) => typeof (v as any) !== "number")
-    .map((text, index) => {
-      return index;
-    });
-
-  donorFilter = [] as string[];
-
-  zoneFilter = [] as string[];
-
-  get headers(): any {
-    return [
-      {
-        text: "Class",
-        value: "physical.class",
-        filter: (value: string): boolean => {
-          return this.classFilter.includes(value);
-        },
-      },
-      {
-        text: "Status",
-        value: "status",
-        filter: (value: number): boolean => {
-          return this.statusFilter.includes(value);
-        },
-      },
-      {
-        text: "Zone",
-        value: "donor.zone",
-        filter: (value: any): boolean => {
-          if (this.zoneFilter.length === 0) return true;
-          return this.zoneFilter.includes(value);
-        },
-      },
-      {
-        text: "Address",
-        value: "donor.address",
-        // filter: (value: any): boolean => {
-        //   if (this.addressFilter.length === 0) return true;
-        //   return this.addressFilter.includes(value);
-        // },
-      },
-      {
-        text: "Donor",
-        value: "donor.name",
-        filter: (value: any): boolean => {
-          if (this.donorFilter.length === 0) return true;
-          return this.donorFilter.includes(value);
-        },
-      },
-      {
-        text: "Date Added",
-        value: "timing.dateAdded",
-        filter: (value: any): boolean => {
-          const valDate = new Date(Timing.formatDate(value));
-          const endDate = new Date(this.endDateFilter);
-          if (this.startDateFilter === "") {
-            return valDate <= endDate;
-          }
-          const startDate = new Date(this.startDateFilter);
-          return Timing.inRange(valDate, startDate, endDate);
-        },
-      },
-    ];
-  }
+  headers = [
+    {
+      text: "Client",
+      value: "clientName",
+    },
+    {
+      text: "Address",
+      value: "clientAddress",
+    },
+    {
+      text: "Zone",
+      value: "clientArea",
+    },
+    {
+      text: "Furniture",
+      value: "requestedFurniture",
+    },
+    {
+      text: "Need",
+      value: "reasonForNeed",
+    },
+    {
+      text: "Date Added",
+      value: "dateAdded",
+    },
+  ];
 
   /** end filters */
 
   downloading = false;
 
-  get inventoryActions(): ViewAction[] {
-    return [
-      { icon: "archive", desc: "Archive selected items", emit: "archive" },
-      {
-        icon: "cloud_download",
-        desc: "Export selected items to spreadsheet",
-        emit: "download",
-        loading: (): boolean => this.downloading,
-      },
-      {
-        icon: "playlist_add",
-        desc: "Add selected items to run",
-        emit: "list-add",
-      },
-    ];
-  }
-
-  menuLoading = false;
-
-  readonly menuActions: ViewAction[] = [
-    { icon: "archive", desc: "Archive", emit: "archive" },
+  inventoryActions = [
     {
-      icon: "cloud_download",
-      desc: "Export",
-      emit: "export",
+      icon: "playlist_add",
+      desc: "Add selected items to run",
+      emit: "list-add",
     },
   ];
 
@@ -254,12 +155,6 @@ export default class Clients extends Vue {
    */
   mounted(): void {
     this.bindItems();
-  }
-
-  async getSpreadsheet(): Promise<void> {
-    this.downloading = true;
-    await this.exportSelected();
-    this.downloading = false;
   }
 
   /**
@@ -278,19 +173,6 @@ export default class Clients extends Vue {
     await this.commitItem();
     // this.isAdd = false;
     this.clearCurrent();
-  }
-
-  async commitArchive(): Promise<void> {
-    this.menuLoading = true;
-    await this.archiveCurrent();
-    this.menuLoading = false;
-    this.clearCurrent();
-  }
-
-  async commitExport(): Promise<void> {
-    this.menuLoading = true;
-    await this.exportCurrent();
-    this.menuLoading = false;
   }
 }
 </script>
