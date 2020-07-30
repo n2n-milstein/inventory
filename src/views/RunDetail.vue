@@ -126,7 +126,11 @@
       Mark as complete
     </v-btn>
 
-    <furniture-card-dialog :dialog="furnitureDialog" namespace="run-detail" />
+    <furniture-card-dialog
+      :readonly="true"
+      :dialog="furnitureDialog"
+      namespace="run-detail"
+    />
   </v-col>
 </template>
 

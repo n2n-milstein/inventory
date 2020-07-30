@@ -278,6 +278,9 @@ export default class FurnitureEditCard extends Vue {
   readonly namespace!: string;
 
   @Prop({ default: false })
+  readonly readonly!: boolean;
+
+  @Prop({ default: false })
   readonly isEdit!: boolean;
 
   @Prop({ default: false })
@@ -317,6 +320,10 @@ export default class FurnitureEditCard extends Vue {
   ];
 
   get ACTIONS(): ViewAction[] {
+    if (this.readonly) {
+      return [{ icon: "close", desc: "Close", emit: "close" }];
+    }
+
     return [
       { icon: "edit", desc: "Edit Item", emit: "edit" },
       {
