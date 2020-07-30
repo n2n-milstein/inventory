@@ -24,28 +24,31 @@ export default interface Client {
   comments: string;
   staffNotes: string;
 
-  requestedFurniture: {
-    queenOrFullBed: boolean;
-    twinBed: boolean;
-    couch: boolean;
-    livingRoomChair: boolean;
-    tableAndChairs: boolean;
-    otherTables: boolean;
-    dresser: boolean;
-    crib: boolean;
-    other: boolean;
-  };
+  requestedFurniture: RequestedFurniture;
+  reasonForNeed: NeedReason;
+}
 
-  reasonForNeed: {
-    leavingHomelessness: boolean;
-    recentReleasedPrison: boolean;
-    pregnantMember: boolean;
-    childrenUnder18: boolean;
-    hasDisability: boolean;
-    isVeteran: boolean;
-    isElderly: boolean;
-    domesticViolence: boolean;
-  };
+interface RequestedFurniture {
+  queenOrFullBed: boolean;
+  twinBed: boolean;
+  couch: boolean;
+  livingRoomChair: boolean;
+  tableAndChairs: boolean;
+  otherTables: boolean;
+  dresser: boolean;
+  crib: boolean;
+  other: boolean;
+}
+
+interface NeedReason {
+  leavingHomelessness: boolean;
+  recentReleasedPrison: boolean;
+  pregnantMember: boolean;
+  childrenUnder18: boolean;
+  hasDisability: boolean;
+  isVeteran: boolean;
+  isElderly: boolean;
+  domesticViolence: boolean;
 }
 
 function randomPhone(): string {
@@ -109,4 +112,68 @@ export function generateClient(): Client {
       domesticViolence: randomBoolean(),
     },
   };
+}
+
+export function furnitureRequested(req: RequestedFurniture): string {
+  let string = "";
+  if (req.queenOrFullBed) {
+    string += "Full Bed, ";
+  }
+  if (req.twinBed) {
+    string += "Twin Bed, ";
+  }
+  if (req.couch) {
+    string += "Couch, ";
+  }
+  if (req.livingRoomChair) {
+    string += "Living Room Chair, ";
+  }
+  if (req.tableAndChairs) {
+    string += "Table and Chairs, ";
+  }
+  if (req.dresser) {
+    string += "Dresser, ";
+  }
+  if (req.crib) {
+    string += "Crib, ";
+  }
+  if (req.other) {
+    string += "Other, ";
+  }
+  if (string !== "") {
+    string = string.substr(0, string.length - 2);
+  }
+  return string;
+}
+
+export function needReason(need: NeedReason): string {
+  let string = "";
+  if (need.leavingHomelessness) {
+    string += "Leaving Homeless, ";
+  }
+  if (need.recentReleasedPrison) {
+    string += "Recently Released from Prison, ";
+  }
+  if (need.pregnantMember) {
+    string += "Pregnant Member, ";
+  }
+  if (need.childrenUnder18) {
+    string += "Children U18, ";
+  }
+  if (need.hasDisability) {
+    string += "Disability, ";
+  }
+  if (need.isVeteran) {
+    string += "Veteran, ";
+  }
+  if (need.isElderly) {
+    string += "Elderly, ";
+  }
+  if (need.domesticViolence) {
+    string += "Domestic Violence, ";
+  }
+  if (string !== "") {
+    string = string.substr(0, string.length - 2);
+  }
+  return string;
 }

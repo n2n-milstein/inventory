@@ -18,6 +18,12 @@
       <template v-slot:item.clientArea="{ item }">
         {{ AREA[item.clientArea] }}
       </template>
+      <template v-slot:item.requestedFurniture="{ item }">
+        {{ REQUESTED(item.requestedFurniture) }}
+      </template>
+      <template v-slot:item.reasonForNeed="{ item }">
+        {{ NEED(item.reasonForNeed) }}
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -26,7 +32,7 @@
 import Vue from "vue";
 import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
-import Client from "@/data/Client";
+import Client, { furnitureRequested, needReason } from "@/data/Client";
 import collections from "@/network/collections";
 import { Area } from "@/data/Area";
 
@@ -78,6 +84,10 @@ export default class TableItems extends Vue {
   selected!: Client[];
 
   readonly AREA = Area;
+
+  readonly REQUESTED = furnitureRequested;
+
+  readonly NEED = needReason;
 
   readonly PAGINATION = { itemsPerPage: -1 };
 
