@@ -12,7 +12,11 @@
     </div>
 
     <v-card class="mb-4">
-      <v-card-title>General Notes</v-card-title>
+      <v-card-title align="center">
+        General Notes
+        <v-spacer />
+        <v-btn icon small><v-icon>edit</v-icon></v-btn>
+      </v-card-title>
       <v-card-text>
         {{ run.notes }}
       </v-card-text>
@@ -199,5 +203,9 @@ export default class RunDetail extends Vue {
   showFurniture(item: Furniture): void {
     this.setFurniture({ item });
   }
+
+  // markRunComplete(): void {
+  //   this.
+  // }
 }
 </script>
