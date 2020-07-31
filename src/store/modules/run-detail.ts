@@ -4,7 +4,12 @@ import { getItem } from "@/network/run-service";
 
 export const runDetailModule = {
   namespaced: true,
-  state: () => ({ run: null, furniture: null, furnitureUpdates: null }),
+  state: () => ({
+    run: null,
+    runUpdates: null,
+    furniture: null,
+    furnitureUpdates: null,
+  }),
   getters: {
     getRun: (state: any): Run => state.run,
     getCurrent: (state: any): Furniture => state.furniture,
@@ -16,6 +21,15 @@ export const runDetailModule = {
   mutations: {
     SET_RUN(state: any, { run }: { run: Run }): void {
       state.run = run;
+    },
+    UPDATE_RUN(state: any): void {
+      state.run = state.run ? { ...state.run, ...state.runUpdates } : null;
+    },
+    ADD_RUN_UPDATES(state: any, { updates }: { updates: Partial<Run> }): void {
+      state.runUpdates = { ...state.runUpdates, ...updates };
+    },
+    CLEAR_RUN_UPDATES(state: any): void {
+      state.runUpdates = null;
     },
     SET_FURNITURE(state: any, { item }: { item: Furniture }): void {
       state.furniture = item;
