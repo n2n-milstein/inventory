@@ -1,7 +1,7 @@
 // TODO: delete this file
 
 import Run, { RunStatus } from "@/data/Run";
-import { Timestamp } from "@/data/furniture/Timing";
+import Timing, { Timestamp } from "@/data/furniture/Timing";
 import { Material, FClass } from "@/data/furniture/Physical";
 import { VolunteerRole } from "@/data/Volunteer";
 
@@ -196,9 +196,9 @@ export const SampleRun: Run = {
       },
       timing: {
         urgent: false,
-        pickupBy: new Timestamp(1563681600, 0),
-        dateOffered: new Timestamp(1561953600, 0),
-        dateAdded: new Timestamp(1579733112, 913000000),
+        pickupBy: Timing.toDate(new Timestamp(1563681600, 0)),
+        dateOffered: Timing.toDate(new Timestamp(1561953600, 0)),
+        dateAdded: Timing.toDate(new Timestamp(1579733112, 913000000)),
       },
       donor: {
         address: "125 Ithaca St Ithaca, NY 14853",
@@ -302,9 +302,9 @@ export const SampleRun: Run = {
       images: [],
       timing: {
         urgent: false,
-        dateAdded: new Timestamp(1591768730, 31000000),
-        dateOffered: new Timestamp(1591768637, 702000000),
-        pickupBy: new Timestamp(1593216000, 0),
+        dateAdded: Timing.toDate(new Timestamp(1591768730, 31000000)),
+        dateOffered: Timing.toDate(new Timestamp(1591768637, 702000000)),
+        pickupBy: Timing.toDate(new Timestamp(1593216000, 0)),
       },
       comments: "",
       id: "h58u1dTR48DpZjsP1Bgz",
