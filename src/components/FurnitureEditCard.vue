@@ -289,7 +289,7 @@ export default class FurnitureEditCard extends Vue {
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
-  @Prop({ default: [] })
+  @Prop({})
   readonly menuActions!: ViewAction[];
 
   @Prop({ default: false })
