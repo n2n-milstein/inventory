@@ -132,8 +132,8 @@ export default class Clients extends Vue {
       value: "reasonForNeed",
     },
     {
-      text: "Date Added",
-      value: "dateAdded",
+      text: "Date Requested",
+      value: "dateOfReferral",
     },
   ];
 

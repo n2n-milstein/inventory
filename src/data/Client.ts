@@ -1,3 +1,4 @@
+import Timing, { Timestamp } from "@/data/furniture/Timing";
 import { Area } from "./Area";
 
 export default interface Client {
@@ -7,7 +8,7 @@ export default interface Client {
   lastUpdated: Date;
 
   // agency data
-  dateOfReferral: Date;
+  dateOfReferral: Date | Timestamp;
   referringAgency: string;
   agencyContactName: string;
   agencyContactEmail: string;
@@ -176,4 +177,16 @@ export function needReason(need: NeedReason): string {
     string = string.substr(0, string.length - 2);
   }
   return string;
+}
+
+export function searchString(client: Client): string {
+  return (
+    Timing.formatDate(client.dateOfReferral) +
+    Area[client.clientArea] +
+    furnitureRequested(client.requestedFurniture) +
+    needReason(client.reasonForNeed) +
+    client.clientName +
+    client.clientAddress +
+    client.clientArea
+  );
 }

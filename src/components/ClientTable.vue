@@ -12,8 +12,8 @@
       item-key="id"
       @click:row="onItemClick"
     >
-      <template v-slot:item.dateAdded="{ item }">
-        {{ item.dateAdded.toDate().toLocaleDateString() }}
+      <template v-slot:item.dateOfReferral="{ item }">
+        {{ item.dateOfReferral.toDate().toLocaleDateString() }}
       </template>
       <template v-slot:item.clientArea="{ item }">
         {{ AREA[item.clientArea] }}
@@ -32,7 +32,9 @@
 import Vue from "vue";
 import { mapActions, mapState } from "vuex";
 import { Component, Prop } from "vue-property-decorator";
-import Client, { furnitureRequested, needReason } from "@/data/Client";
+// eslint-disable-next-line prettier/prettier
+import Client, { furnitureRequested, needReason, searchString } from "@/data/Client";
+
 import collections from "@/network/collections";
 import { Area } from "@/data/Area";
 
@@ -107,7 +109,8 @@ export default class TableItems extends Vue {
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
     const arr = search.split(" ");
-    const valString = "";
+    const valString = searchString(item);
+    console.log(searchString(item));
     let i;
     for (i = 0; i < arr.length; i++) {
       if (valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1) {
