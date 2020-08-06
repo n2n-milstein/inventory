@@ -22,6 +22,7 @@
             <h4>Furniture Requested</h4>
             <v-row>
               <v-checkbox
+                class="mr-10"
                 @change="update('Furniture', $event)"
                 :input-value="requestFilter"
                 v-for="box in requestCheckboxes"
@@ -37,19 +38,20 @@
         <v-row>
           <v-col>
             <h4>Reason for Need</h4>
+            <v-row>
+              <v-checkbox
+                class="mr-10"
+                @change="update('Need', $event)"
+                :input-value="needFilter"
+                v-for="box in needCheckboxes"
+                :key="box.value"
+                :label="box"
+                :value="box"
+                hide-details
+              >
+              </v-checkbox>
+            </v-row>
           </v-col>
-          <v-row>
-            <v-checkbox
-              @change="update('Need', $event)"
-              :input-value="needFilter"
-              v-for="box in needCheckboxes"
-              :key="box.value"
-              :label="box"
-              :value="box"
-              hide-details
-            >
-            </v-checkbox>
-          </v-row>
         </v-row>
         <v-row>
           <v-col>

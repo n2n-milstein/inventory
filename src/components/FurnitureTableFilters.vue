@@ -18,8 +18,7 @@
     <v-expand-transition>
       <v-container v-show="showFilter" class="grey lighten-4 px-6">
         <v-row>
-          <v-spacer class="d-none d-lg-flex" />
-          <v-col class="pa-9 pr-0">
+          <v-col class="pa-7 pr-0">
             <h4>Furniture Class</h4>
             <v-checkbox
               @change="update('Class', $event)"
@@ -32,7 +31,7 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col class="pa-9 pr-0">
+          <v-col class="pa-7 pr-0">
             <h4>Status</h4>
             <v-checkbox
               @change="update('Status', $event)"
@@ -45,7 +44,7 @@
             >
             </v-checkbox>
           </v-col>
-          <v-col class="pa-9 pl-0">
+          <v-col class="pa-7">
             <h4>Address Zone</h4>
             <v-autocomplete
               class="pt-0 mt-0"
@@ -56,7 +55,7 @@
               multiple
               hide-details
             />
-            <h4 class="mt-5">Donor Name</h4>
+            <h4 class="mt-15">Donor Name</h4>
             <v-autocomplete
               class="pt-0 mt-0"
               @change="update('Donor', $event)"
@@ -67,7 +66,7 @@
               hide-details
             />
           </v-col>
-          <v-col class="pa-9">
+          <v-col class="pa-7">
             <h4>Date Added Range</h4>
             <date-picker-menu
               :value="startDateFilter"
@@ -84,7 +83,6 @@
               />
             </div>
           </v-col>
-          <v-spacer class="d-none d-lg-flex" />
         </v-row>
       </v-container>
     </v-expand-transition>
