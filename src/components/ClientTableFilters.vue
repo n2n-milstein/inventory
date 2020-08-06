@@ -17,7 +17,7 @@
 
     <v-expand-transition>
       <v-container v-show="showFilter" class="grey lighten-4 px-6">
-        <v-row>
+        <v-row class="pa-7 pb-0">
           <v-col>
             <h4>Furniture Requested</h4>
             <v-row>
@@ -35,7 +35,7 @@
             </v-row>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="pa-7 pb-0">
           <v-col>
             <h4>Reason for Need</h4>
             <v-row>
@@ -53,7 +53,7 @@
             </v-row>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="pa-7">
           <v-col>
             <h4>Address Zone</h4>
             <v-autocomplete
