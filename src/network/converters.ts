@@ -1,6 +1,7 @@
 import { Furniture } from "@/data/Furniture";
 import { firestore } from "firebase";
 import Timing from "@/data/furniture/Timing";
+import Run from "@/data/Run";
 
 /**
  * Creates a deep copy of object
@@ -73,5 +74,29 @@ export const furnitureConverter: firestore.FirestoreDataConverter<Furniture> = {
       data.comments,
       data.staffNotes,
     );
+  },
+};
+
+/**
+ * Convert objects to and from Firestore
+ */
+export const runConverter: firestore.FirestoreDataConverter<Run> = {
+  toFirestore(run: Run): Run {
+    return deepCopy(run) as Run;
+  },
+  fromFirestore(snapshot, options): Run {
+    const data = snapshot.data(options);
+    return {
+      id: data.id,
+      dateCreated: Timing.toDate(data.dateCreated),
+      lastUpdated: Timing.toDate(data.lastUpdated),
+      date: Timing.toDate(data.date),
+      volunteers: data.volunteers,
+      pickups: data.pickups,
+      dropoffs: data.dropoffs,
+      clients: data.clients,
+      status: data.status,
+      notes: data.notes,
+    };
   },
 };
