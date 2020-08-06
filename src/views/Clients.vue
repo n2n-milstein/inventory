@@ -26,6 +26,22 @@
       />
     </div>
 
+    <client-filters
+      :start-date-filter="startDateFilter"
+      :end-date-filter="endDateFilter"
+      :need-filter="needFilter"
+      :request-filter="requestFilter"
+      :donor-filter="donorFilter"
+      :zone-filter="zoneFilter"
+      :inventory="inventory"
+      @startdate="startDateFilter = $event"
+      @enddate="endDateFilter = $event"
+      @need="needFilter = $event"
+      @request="requestFilter = $event"
+      @donor="donorFilter = $event"
+      @zone="zoneFilter = $event"
+    />
+
     <client-table
       namespace="clients"
       :headers="headers"
@@ -47,10 +63,11 @@ import ClientTable from "@/components/ClientTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
-import TableFilters from "@/components/FurnitureTableFilters.vue";
+import ClientFilters from "@/components/ClientTableFilters.vue";
 // store
 import { action } from "@/store/modules/collection/types";
-import Client, { generateClient } from "../data/Client";
+// eslint-disable-next-line prettier/prettier
+import Client, { generateClient, needOptions, requestOptions } from "../data/Client";
 
 const NAMESPACE = "clients";
 
@@ -60,7 +77,7 @@ const NAMESPACE = "clients";
     FurnitureTableHeader,
     ViewActionGroup,
     FurnitureCardDialog,
-    TableFilters,
+    ClientFilters,
   },
   computed: mapGetters(NAMESPACE, {
     inventory: "getItems",
@@ -109,6 +126,17 @@ export default class Clients extends Vue {
   search = "";
 
   /** start filters */
+  startDateFilter = "";
+
+  endDateFilter = new Date().toISOString().substr(0, 10);
+
+  requestFilter = requestOptions;
+
+  needFilter = needOptions;
+
+  donorFilter = [] as string[];
+
+  zoneFilter = [] as string[];
 
   headers = [
     {

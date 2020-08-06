@@ -150,7 +150,7 @@ export function furnitureRequested(req: RequestedFurniture): string {
 export function needReason(need: NeedReason): string {
   let string = "";
   if (need.leavingHomelessness) {
-    string += "Leaving Homeless, ";
+    string += "Leaving Homelessness, ";
   }
   if (need.recentReleasedPrison) {
     string += "Recently Released from Prison, ";
@@ -190,3 +190,25 @@ export function searchString(client: Client): string {
     client.clientArea
   );
 }
+
+export const requestOptions = [
+  "Full Bed",
+  "Twin Bed",
+  "Couch",
+  "Living Room Chair",
+  "Table and Chairs",
+  "Dresser",
+  "Crib",
+  "Other",
+];
+
+export const needOptions = [
+  "Leaving Homelessness",
+  "Recently Released from Prison",
+  "Pregnant Member",
+  "Children U18",
+  "Disability",
+  "Veteran",
+  "Elderly",
+  "Domestic Violence",
+];
