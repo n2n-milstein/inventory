@@ -18,33 +18,38 @@
     <v-expand-transition>
       <v-container v-show="showFilter" class="grey lighten-4 px-6">
         <v-row>
-          <v-spacer class="d-none d-lg-flex" />
           <v-col>
             <h4>Furniture Requested</h4>
-            <v-checkbox
-              @change="update('Furniture', $event)"
-              :input-value="requestFilter"
-              v-for="box in requestCheckboxes"
-              :key="box"
-              :label="box"
-              :value="box"
-              hide-details
-            >
-            </v-checkbox>
+            <v-row>
+              <v-checkbox
+                @change="update('Furniture', $event)"
+                :input-value="requestFilter"
+                v-for="box in requestCheckboxes"
+                :key="box"
+                :label="box"
+                :value="box"
+                hide-details
+              >
+              </v-checkbox>
+            </v-row>
           </v-col>
+        </v-row>
+        <v-row>
           <v-col>
             <h4>Reason for Need</h4>
+          </v-col>
+          <v-row>
             <v-checkbox
               @change="update('Need', $event)"
               :input-value="needFilter"
               v-for="box in needCheckboxes"
               :key="box.value"
-              :label="box.text"
-              :value="box.value"
+              :label="box"
+              :value="box"
               hide-details
             >
             </v-checkbox>
-          </v-col>
+          </v-row>
         </v-row>
         <v-row>
           <v-col>
@@ -58,7 +63,7 @@
               multiple
               hide-details
             />
-            <h4 class="mt-5">Donor Name</h4>
+            <h4>Donor Name</h4>
             <v-autocomplete
               class="pt-0 mt-0"
               @change="update('Donor', $event)"
@@ -77,16 +82,13 @@
               label="Start Date"
               icon="today"
             />
-            <div class="mt-5">
-              <date-picker-menu
-                :value="endDateFilter"
-                @input="update('EndDate', $event)"
-                label="End Date"
-                icon="event"
-              />
-            </div>
+            <date-picker-menu
+              :value="endDateFilter"
+              @input="update('EndDate', $event)"
+              label="End Date"
+              icon="event"
+            />
           </v-col>
-          <v-spacer class="d-none d-lg-flex" />
         </v-row>
       </v-container>
     </v-expand-transition>
