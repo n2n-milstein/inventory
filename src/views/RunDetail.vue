@@ -1,20 +1,21 @@
 <template>
   <v-col cols="12">
-    <h2>Testing</h2>
-    <header class="mb-4">
-      <div class="d-flex" align="center">
-        <h2>Run ID: {{ id }}</h2>
-        <v-spacer />
-        <view-action-group
-          class="ml-3"
-          disabled-message="Select items to use actions"
-          :actions="runActions"
-        />
-      </div>
-      <h2 class="text-subtitle-1">Status: {{ status }}</h2>
-    </header>
-
     <div v-if="!!run">
+      <header class="mb-4">
+        <div class="d-flex" align="center">
+          <h1 class="text-h5 font-weight-bold text-left">
+            Run for {{ run.date.toDateString() }}
+          </h1>
+          <v-spacer />
+          <view-action-group
+            class="ml-3"
+            disabled-message="Select items to use actions"
+            :actions="runActions"
+          />
+        </div>
+        <h2 class="text-subtitle-1">Status: {{ status }}</h2>
+      </header>
+
       <v-card class="mb-4">
         <v-card-title align="center">
           General Notes

@@ -4,7 +4,7 @@ import { getItem, updateItem } from "@/network/run-service";
 import { firestoreAction } from "vuexfire";
 import collections from "@/network/collections";
 import { db } from "@/network/firebase";
-import { cleanUndefined } from "@/network/converters";
+import { cleanUndefined, runConverter } from "@/network/converters";
 
 export const runDetailModule = {
   namespaced: true,
@@ -117,7 +117,10 @@ export const runDetailModule = {
     bindRun: firestoreAction(({ bindFirestoreRef, state }) => {
       return bindFirestoreRef(
         "run",
-        db.collection(collections.RUNS).doc((state as any).id),
+        db
+          .collection(collections.RUNS)
+          .withConverter(runConverter)
+          .doc((state as any).id),
       );
     }),
   },

@@ -1,4 +1,3 @@
-import { Timestamp } from "./furniture/Timing";
 import { Furniture } from "./Furniture";
 import Client from "./Client";
 import Volunteer from "./Volunteer";
@@ -14,11 +13,11 @@ export default interface Run {
   // metadata
   id: string;
   // TODO: rename to dateAdded?
-  dateCreated: Date | Timestamp;
-  lastUpdated: Date | Timestamp;
+  dateCreated: Date;
+  lastUpdated: Date;
 
   // data
-  date: Date | Timestamp;
+  date: Date;
   // TODO: make this a list of volunteers NOT volunteer IDs
   volunteers: Volunteer[];
 
