@@ -16,8 +16,14 @@
         <v-card-title align="center">
           General Notes
           <v-spacer />
-          <v-btn icon small @click="editNotes = !editNotes">
-            <v-icon>edit</v-icon>
+          <v-btn
+            small
+            fab
+            depressed
+            color="white"
+            @click="editNotes = !editNotes"
+          >
+            <v-icon>{{ editNotes ? "save" : "edit" }}</v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text :class="{ 'readonly-text': !editNotes }">
@@ -154,7 +160,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Prop, Component } from "vue-property-decorator";
+import { Prop, Component, Watch } from "vue-property-decorator";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
 import Run from "@/data/Run";
 import { addItem } from "@/network/run-service";
@@ -175,6 +181,7 @@ import { Furniture } from "../data/Furniture";
     "updateRun",
     "bindRun",
     "setId",
+    "commitRunUpdates",
   ]),
 })
 export default class RunDetail extends Vue {
@@ -189,9 +196,18 @@ export default class RunDetail extends Vue {
 
   readonly bindRun!: () => void;
 
+  readonly commitRunUpdates!: () => Promise<void>;
+
   readonly furniture!: Furniture;
 
   readonly run!: Run;
+
+  @Watch("editNotes")
+  onEditNotesChanged(val: boolean): void {
+    if (!val) {
+      this.commitRunUpdates();
+    }
+  }
 
   editNotes = false;
 

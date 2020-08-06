@@ -102,7 +102,8 @@ export const runDetailModule = {
       commit("ADD_RUN_UPDATES", { updates });
     },
     async commitRunUpdates({ commit, state }: any): Promise<void> {
-      if (Object.keys(state.runUpdates).length === 0) return;
+      if (!state.runUpdates || Object.keys(state.runUpdates).length === 0)
+        return;
 
       try {
         commit("UPDATE_RUN");
@@ -110,7 +111,7 @@ export const runDetailModule = {
         await updateItem(state.run.id, state.runUpdates);
         commit("CLEAR_RUN_UPDATES");
       } catch (err) {
-        console.error("commitRunUpdates", err);
+        console.error("commitRunUpdates error:", err);
       }
     },
     bindRun: firestoreAction(({ bindFirestoreRef, state }) => {
