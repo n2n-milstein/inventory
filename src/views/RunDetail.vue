@@ -1,15 +1,18 @@
 <template>
   <v-col cols="12">
     <h2>Testing</h2>
-    <div class="mb-4 d-flex" align="center">
-      <h2>Run ID: {{ id }}</h2>
-      <v-spacer />
-      <view-action-group
-        class="ml-3"
-        disabled-message="Select items to use actions"
-        :actions="runActions"
-      />
-    </div>
+    <header class="mb-4">
+      <div class="d-flex" align="center">
+        <h2>Run ID: {{ id }}</h2>
+        <v-spacer />
+        <view-action-group
+          class="ml-3"
+          disabled-message="Select items to use actions"
+          :actions="runActions"
+        />
+      </div>
+      <h2 class="text-subtitle-1">Status: {{ status }}</h2>
+    </header>
 
     <div v-if="!!run">
       <v-card class="mb-4">
@@ -162,7 +165,7 @@
 import Vue from "vue";
 import { Prop, Component, Watch } from "vue-property-decorator";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
-import Run from "@/data/Run";
+import Run, { RunStatus } from "@/data/Run";
 import { addItem } from "@/network/run-service";
 import { SampleRun } from "@/data/Sample";
 import ViewAction from "@/data/ViewAction";
@@ -210,6 +213,10 @@ export default class RunDetail extends Vue {
   }
 
   editNotes = false;
+
+  get status(): string {
+    return RunStatus[this.run.status];
+  }
 
   get furnitureDialog(): boolean {
     return !!this.furniture;
