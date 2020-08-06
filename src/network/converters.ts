@@ -23,10 +23,31 @@ export const deepCopy = (obj: any): any => {
   return copy;
 };
 
+/**
+ * Returns the values of an object
+ */
 export const objectValues = (obj: any): any => {
   return Object.keys(obj).map((key) => obj[key]);
 };
 
+/**
+ * Returns copy of object with undefined fields cleaned from object
+ */
+export const cleanUndefined = (obj: any): any => {
+  const copy = deepCopy(obj);
+  Object.keys(copy).forEach((key) => {
+    if (copy[key] && typeof copy[key] === "object") cleanUndefined(copy[key]);
+    else if (copy[key] === undefined) {
+      // eslint-disable-next-line no-param-reassign
+      delete copy[key];
+    }
+  });
+  return copy;
+};
+
+/**
+ * Convert objects to and from Firestore
+ */
 export const furnitureConverter: firestore.FirestoreDataConverter<Furniture> = {
   toFirestore(furniture: Furniture): Furniture {
     return deepCopy(furniture) as Furniture;

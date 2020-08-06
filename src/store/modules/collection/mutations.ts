@@ -1,5 +1,6 @@
 import { Furniture } from "@/data/Furniture";
 import { MutationTree } from "vuex";
+import { cleanUndefined } from "@/network/converters";
 import { CollectionState, mutation } from "./types";
 
 const mutations: MutationTree<CollectionState> = {
@@ -20,18 +21,7 @@ const mutations: MutationTree<CollectionState> = {
   },
   [mutation.CLEAN_CURRENT](state): void {
     if (state.current === null) return;
-    const current = { ...state.current } as Furniture;
-    const cleanUndefined = (obj: any): void => {
-      Object.keys(obj).forEach((key) => {
-        if (obj[key] && typeof obj[key] === "object") cleanUndefined(obj[key]);
-        else if (obj[key] === undefined) {
-          // eslint-disable-next-line no-param-reassign
-          delete obj[key];
-        }
-      });
-    };
-    cleanUndefined(current);
-    state.current = current;
+    state.current = cleanUndefined(state.current);
   },
   [mutation.ADD_UPDATES](
     state,
