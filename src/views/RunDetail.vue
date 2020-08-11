@@ -43,67 +43,18 @@
         </v-card-text>
       </v-card>
 
-      <v-card class="mb-4">
-        <v-card-title>Volunteers</v-card-title>
-        <v-card-text>
-          <v-list three-line>
-            <div v-if="run.volunteers.length === 0">
-              No volunteers available.
-            </div>
-            <v-list-item v-for="vol in run.volunteers" :key="vol.id">
-              <v-list-item-icon>
-                <v-icon>{{
-                  vol.role === "Driver" ? "drive_eta" : "person"
-                }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ vol.role }} - {{ vol.name }}
-                </v-list-item-title>
-                {{ vol.address }}<br />{{ vol.phone }}
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
+      <run-detail-section
+        class="mb-4"
+        title="Volunteers"
+        :items="run.volunteers"
+      />
 
-      <v-card class="mb-4">
-        <v-card-title>
-          {{ `${Object.keys(run.pickups).length} ` }}
-          {{ Object.keys(run.pickups).length === 1 ? "Pickup" : "Pickups" }}
-        </v-card-title>
-        <v-card-text>
-          <div v-if="Object.keys(run.pickups).length === 0">
-            No pickups available.
-          </div>
-          <v-list>
-            <v-list-item
-              v-for="pic in run.pickups"
-              :key="pic.id"
-              @click="showFurniture(pic)"
-            >
-              <v-list-item-icon>
-                <v-icon v-if="pic.physical.class === 'Chair'"
-                  >event_seat</v-icon
-                >
-                <v-icon v-if="pic.physical.class === 'Bed'">mdi-bed</v-icon>
-                <v-icon v-if="pic.physical.class === 'Couch'">weekend</v-icon>
-                <v-icon v-if="pic.physical.class === 'Table'">
-                  mdi-table-furniture
-                </v-icon>
-                <v-icon v-if="pic.physical.class === 'Dresser'">
-                  mdi-dresser
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>{{ pic.donor.address }}</v-list-item-title>
-                {{ pic.donor.name }} ({{ pic.donor.phone }})<br />
-                {{ pic.physical.class }}
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
+      <run-detail-section
+        class="mb-4"
+        title="Pickups"
+        :items="run.pickups"
+        @show="showFurniture($event)"
+      />
 
       <v-card class="mb-4">
         <v-card-title>
@@ -121,17 +72,7 @@
               @click="() => {}"
             >
               <v-list-item-icon>
-                <v-icon v-if="drop.physical.class === 'Chair'"
-                  >event_seat</v-icon
-                >
-                <v-icon v-if="drop.physical.class === 'Bed'">mdi-bed</v-icon>
-                <v-icon v-if="drop.physical.class === 'Couch'">weekend</v-icon>
-                <v-icon v-if="drop.physical.class === 'Table'">
-                  mdi-table-furniture
-                </v-icon>
-                <v-icon v-if="drop.physical.class === 'Dresser'"
-                  >mdi-dresser</v-icon
-                >
+                <furniture-class-v-icon :item="pic" />
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title>
@@ -172,10 +113,17 @@ import { SampleRun } from "@/data/Sample";
 import ViewAction from "@/data/ViewAction";
 import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import { mapActions, mapGetters } from "vuex";
-import { Furniture } from "../data/Furniture";
+import RunDetailSection from "@/components/RunDetailSection.vue";
+import { Furniture } from "@/data/Furniture";
+import FurnitureClassVIcon from "@/components/FurnitureClassVIcon.vue";
 
 @Component({
-  components: { ViewActionGroup, FurnitureCardDialog },
+  components: {
+    ViewActionGroup,
+    FurnitureCardDialog,
+    RunDetailSection,
+    FurnitureClassVIcon,
+  },
   computed: mapGetters("run-detail", {
     furniture: "getCurrent",
     run: "getRun",
