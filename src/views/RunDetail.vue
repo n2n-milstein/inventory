@@ -46,12 +46,14 @@
       <run-detail-section
         class="mb-4"
         title="Volunteers"
+        variant="volunteer"
         :items="run.volunteers"
       />
 
       <run-detail-section
         class="mb-4"
         title="Pickups"
+        variant="furniture"
         :items="run.pickups"
         @show="showFurniture($event)"
       />

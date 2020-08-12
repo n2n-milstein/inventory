@@ -11,24 +11,24 @@
         </div>
         <v-list-item v-else v-for="it in items" :key="it.id" @click="show(it)">
           <v-list-item-icon>
-            <v-icon v-if="type === 'volunteer'">
+            <v-icon v-if="variant === 'volunteer'">
               {{ it.role === "Driver" ? "drive_eta" : "person" }}
             </v-icon>
-            <furniture-class-v-icon v-if="type === 'furniture'" :item="it" />
+            <furniture-class-v-icon v-if="variant === 'furniture'" :item="it" />
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <span v-if="type === 'volunteer'">
+              <span v-if="variant === 'volunteer'">
                 {{ it.role }} - {{ it.name }}
               </span>
-              <span v-if="type === 'furniture'">
+              <span v-if="variant === 'furniture'">
                 {{ it.donor.address }}
               </span>
             </v-list-item-title>
-            <span v-if="type === 'volunteer'">
+            <span v-if="variant === 'volunteer'">
               {{ it.address }}<br />{{ it.phone }}
             </span>
-            <span v-if="type === 'furniture'">
+            <span v-if="variant === 'furniture'">
               {{ it.donor.name }} ({{ it.donor.phone }})<br />
               {{ it.physical.class }}
             </span>
@@ -52,24 +52,17 @@ export default class RunDetailSection extends Vue {
   @Prop({ default: "Default" })
   readonly title!: string;
 
-  get type(): string {
-    if (this.items[0] !== undefined) {
-      return "volunteer";
-    }
-    if (this.items[Object.keys(this.items)[0]].status !== undefined) {
-      return "furniture";
-    }
-    return "unknown";
-  }
+  @Prop({ default: "unknown" })
+  readonly variant!: string;
 
   get itemsLength(): number {
-    if (this.type === "volunteer") return this.items.length;
-    if (this.type === "furniture") return Object.keys(this.items).length;
+    if (this.variant === "volunteer") return this.items.length;
+    if (this.variant === "furniture") return Object.keys(this.items).length;
     return 0;
   }
 
   show(item: any): void {
-    if (this.type === "furniture") this.$emit("show", item);
+    if (this.variant === "furniture") this.$emit("show", item);
   }
 }
 </script>
