@@ -68,9 +68,27 @@
         @show="showFurniture($event)"
       />
 
-      <v-btn :block="$vuetify.breakpoint.xsOnly" color="success">
-        Mark as complete
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            :block="$vuetify.breakpoint.xsOnly"
+            color="success"
+          >
+            Set run status as...
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="stat in statusValues"
+            :key="stat"
+            @click="status = stat"
+          >
+            <v-list-item-title>{{ stat }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
 
     <furniture-card-dialog
@@ -141,10 +159,19 @@ export default class RunDetail extends Vue {
     }
   }
 
+  readonly statusValues = Object.values(RunStatus).filter(
+    (val) => typeof val !== "number",
+  );
+
   editNotes = false;
 
-  get status(): string {
-    return RunStatus[this.run.status];
+  get status(): keyof typeof RunStatus {
+    return RunStatus[this.run.status] as keyof typeof RunStatus;
+  }
+
+  set status(value: keyof typeof RunStatus) {
+    this.updateRun({ updates: { status: RunStatus[value] } });
+    this.commitRunUpdates();
   }
 
   get furnitureDialog(): boolean {
