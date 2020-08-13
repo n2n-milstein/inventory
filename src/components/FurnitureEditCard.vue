@@ -42,11 +42,20 @@
               :class="{ 'readonly-text': !isEdit }"
               lazy-validation
             >
+              <div v-if="isStaff">
+                <h2>Staff Notes</h2>
+                <v-textarea
+                  v-model="staffNotes"
+                  label="Staff Notes"
+                  auto-grow
+                  filled
+                  :readonly="!isEdit"
+                />
+              </div>
+
               <!-- Donor Info -->
               <h2>Donor Info</h2>
 
-              <!-- TODO: make these just normal text when in readonly -->
-              <!-- :value="donor ? donor.name : ''" -->
               <v-text-field
                 :value="donor.name"
                 @input="updateDonor('name', $event)"
@@ -183,17 +192,6 @@
                 filled
                 readonly
               />
-
-              <div v-if="isStaff">
-                <h2>Staff Notes</h2>
-                <v-textarea
-                  v-model="staffNotes"
-                  label="Staff Notes"
-                  auto-grow
-                  filled
-                  :readonly="!isEdit"
-                />
-              </div>
             </v-form>
           </v-col>
         </v-row>
