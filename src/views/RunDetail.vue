@@ -14,6 +14,7 @@
           />
         </div>
         <h2 class="text-subtitle-1">Status: {{ status }}</h2>
+        <run-detail-progress-slider :value="run.status" />
       </header>
 
       <v-card class="mb-4">
@@ -93,6 +94,7 @@ import { mapActions, mapGetters } from "vuex";
 import RunDetailSection from "@/components/RunDetailSection.vue";
 import { Furniture } from "@/data/Furniture";
 import FurnitureClassVIcon from "@/components/FurnitureClassVIcon.vue";
+import RunDetailProgressSlider from "@/components/RunDetailProgressSlider.vue";
 
 @Component({
   components: {
@@ -100,6 +102,7 @@ import FurnitureClassVIcon from "@/components/FurnitureClassVIcon.vue";
     FurnitureCardDialog,
     RunDetailSection,
     FurnitureClassVIcon,
+    RunDetailProgressSlider,
   },
   computed: mapGetters("run-detail", {
     furniture: "getCurrent",
@@ -157,11 +160,12 @@ export default class RunDetail extends Vue {
   }
 
   readonly runMenuActions: ViewAction[] = [
-    { icon: "archive", desc: "Archive run", emit: "archive" },
+    { icon: "archive", desc: "Archive run", emit: "archive", disabled: true },
     {
       icon: "cloud_download",
       desc: "Export run",
       emit: "download",
+      disabled: true,
     },
   ];
 
