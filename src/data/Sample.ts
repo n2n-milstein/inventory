@@ -48,45 +48,10 @@ export const Approvals: Furniture[] = [
         url: "assets/logo.png",
         caption: "test caption 1",
       },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.1",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.2",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.3",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.4",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.5",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.6",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.7",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.8",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.9",
-      },
     ],
     comments: "this is a comment that the donor has made",
     staffNotes: "",
+    clientId: "",
   },
   {
     id: "",
@@ -128,37 +93,10 @@ export const Approvals: Furniture[] = [
         url: "assets/logo.png",
         caption: "test caption 1",
       },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.1",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.2",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.3",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.4",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.5",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.6",
-      },
-      {
-        url: "assets/logo.png",
-        caption: "test caption 1.7",
-      },
     ],
     comments: "this is a comment that the donor has made",
     staffNotes: "",
+    clientId: "",
   },
 ];
 
@@ -270,6 +208,7 @@ export const SampleRun: Run = {
       },
       comments: "this is a comment that the donor has made",
       staffNotes: "",
+      clientId: "",
       id: "3QzT3qNRNN6u0tMuIcEu",
     },
     h58u1dTR48DpZjsP1Bgz: {
@@ -309,6 +248,7 @@ export const SampleRun: Run = {
       comments: "",
       id: "h58u1dTR48DpZjsP1Bgz",
       staffNotes: "I'm listening to Worlds.",
+      clientId: "",
       status: 4,
     },
   },
