@@ -53,44 +53,19 @@
       <run-detail-section
         class="mb-4"
         title="Pickups"
-        variant="furniture"
+        variant="pickup"
         :items="run.pickups"
         @show="showFurniture($event)"
       />
 
-      <v-card class="mb-4">
-        <v-card-title>
-          {{ `${Object.keys(run.dropoffs).length} ` }}
-          {{ Object.keys(run.dropoffs).length === 1 ? "Dropoff" : "Dropoffs" }}
-        </v-card-title>
-        <v-card-text>
-          <div v-if="Object.keys(run.dropoffs).length === 0">
-            No dropoffs available.
-          </div>
-          <v-list>
-            <v-list-item
-              v-for="(drop, index) in run.dropoffs"
-              :key="drop.id"
-              @click="() => {}"
-            >
-              <v-list-item-icon>
-                <furniture-class-v-icon :item="pic" />
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ run.clients[index].clientAddress }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ run.clients[index].clientName }} ({{
-                    run.clients[index].clientPhone
-                  }})<br />
-                  {{ drop.physical.class }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
+      <run-detail-section
+        class="mb-4"
+        title="Dropoffs"
+        variant="dropoff"
+        :clients="run.clients"
+        :items="run.dropoffs"
+        @show="showFurniture($event)"
+      />
 
       <v-btn :block="$vuetify.breakpoint.xsOnly" color="success">
         Mark as complete
