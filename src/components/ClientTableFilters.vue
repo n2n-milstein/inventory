@@ -20,44 +20,56 @@
         <v-row class="pa-7 pb-0">
           <v-col>
             <h4>Furniture Requested</h4>
-            <v-row>
-              <v-checkbox
-                class="mr-10"
-                @change="update('Furniture', $event)"
-                :input-value="requestFilter"
+            <v-row class="d-flex flex-wrap">
+              <v-col
                 v-for="box in requestCheckboxes"
                 :key="box"
-                :label="box"
-                :value="box"
-                hide-details
+                cols="3"
+                class="align-self-center"
               >
-              </v-checkbox>
+                <v-checkbox
+                  class="pa-0 ma-0 mr-5"
+                  @change="update('Furniture', $event)"
+                  :input-value="requestFilter"
+                  :key="box"
+                  :label="box"
+                  :value="box"
+                  hide-details
+                >
+                </v-checkbox>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
         <v-row class="pa-7 pb-0">
           <v-col>
             <h4>Reason for Need</h4>
-            <v-row>
-              <v-checkbox
-                class="mr-10"
-                @change="update('Need', $event)"
-                :input-value="needFilter"
+            <v-row class="d-flex flex-wrap">
+              <v-col
                 v-for="box in needCheckboxes"
-                :key="box.value"
-                :label="box"
-                :value="box"
-                hide-details
+                :key="box"
+                cols="3"
+                class="align-self-center"
               >
-              </v-checkbox>
+                <v-checkbox
+                  class="pa-0 ma-0 mr-5"
+                  @change="update('Need', $event)"
+                  :input-value="needFilter"
+                  :key="box.value"
+                  :label="box"
+                  :value="box"
+                  hide-details
+                >
+                </v-checkbox>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
         <v-row class="pa-7">
-          <v-col>
+          <v-col class="pr-7">
             <h4>Address Zone</h4>
             <v-autocomplete
-              class="pt-0 mt-0"
+              class="pb-7 mt-0"
               @change="update('Zone', $event)"
               :value="zoneFilter"
               :items="zoneOptions"
