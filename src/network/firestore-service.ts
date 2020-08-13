@@ -68,9 +68,12 @@ export default class FirestoreService {
 
     // setup queries for individual item and runs containing item
     const itemRef = db.collection(this.collection).doc(id);
-    const runQuery = db
+    const pickupQuery = db
       .collection(collections.RUNS)
       .where(`pickups.${id}.id`, "==", id);
+    const dropoffQuery = db
+      .collection(collections.RUNS)
+      .where(`dropoffs.${id}.id`, "==", id);
 
     try {
       // run transaction
@@ -84,14 +87,16 @@ export default class FirestoreService {
         }
 
         // get every run that contains the furniture item
-        const runQuerySnapshot = await runQuery.get();
+        const pickupQuerySnapshot = await pickupQuery.get();
+        const dropoffQuerySnapshot = await dropoffQuery.get();
 
-        // for each run, generate nested updates (e.g., pickups.id.<field>),
+        // generate nested updates for the run (e.g., pickups.id.<field>),
         // and update the run
-        runQuerySnapshot.forEach((doc) => {
-          console.log("run:", doc.id, "=>", doc.data());
-
-          const nestedUpdatesKey = `pickups.${id}`;
+        const nestedUpdate = (
+          group: "pickups" | "dropoffs",
+          doc: any,
+        ): void => {
+          const nestedUpdatesKey = `${group}.${id}`;
           let nestedUpdates = {};
           Object.keys(updates).forEach((key) => {
             nestedUpdates = {
@@ -100,11 +105,18 @@ export default class FirestoreService {
             };
           });
 
-          console.log("nestedUpdates", nestedUpdates);
-
           // get the run document reference and call transaction update
           const docRef = db.collection(collections.RUNS).doc(doc.id);
           transaction.update(docRef, nestedUpdates);
+        };
+
+        // generate nested updates for each run
+        pickupQuerySnapshot.forEach((doc) => {
+          nestedUpdate("pickups", doc);
+        });
+
+        dropoffQuerySnapshot.forEach((doc) => {
+          nestedUpdate("dropoffs", doc);
         });
 
         // write to individual furniture
