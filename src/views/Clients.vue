@@ -169,18 +169,15 @@ export default class Clients extends Vue {
         text: "Furniture",
         value: "requestedFurniture",
         filter: (value: any): boolean => {
-          console.log(
-            this.requestFilter.reduce((acc, x) => acc || value[x], false),
-          );
           return this.requestFilter.reduce((acc, x) => acc || value[x], false);
         },
       },
       {
         text: "Need",
         value: "reasonForNeed",
-        // filter: (value: any): boolean => {
-        //   return this.needFilter.reduce((acc, x) => acc && value[x], true);
-        // },
+        filter: (value: any): boolean => {
+          return this.needFilter.reduce((acc, x) => acc || value[x], false);
+        },
       },
       {
         text: "Date Requested",
