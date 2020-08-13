@@ -25,13 +25,6 @@ export const deepCopy = (obj: any): any => {
 };
 
 /**
- * Returns the values of an object
- */
-export const objectValues = (obj: any): any => {
-  return Object.keys(obj).map((key) => obj[key]);
-};
-
-/**
  * Returns copy of object with undefined fields cleaned from object
  */
 export const cleanUndefined = (obj: any): any => {
