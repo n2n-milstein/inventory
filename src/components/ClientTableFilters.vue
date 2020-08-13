@@ -141,7 +141,11 @@ export default class ClientTableFilters extends Vue {
 
   readonly needCheckboxes = needOptions;
 
+  readonly needValues = this.needCheckboxes.map((x) => x.value);
+
   readonly requestCheckboxes = requestOptions;
+
+  readonly requestValues = this.requestCheckboxes.map((x) => x.value);
 
   get donorOptions(): any {
     return this.inventory.map((x) => x.clientName);
@@ -230,9 +234,9 @@ export default class ClientTableFilters extends Vue {
   closeChip(filter: string, index: number): void {
     this.filterChips.splice(index, 1);
     if (filter === "Furniture") {
-      this.$emit("request", this.requestCheckboxes);
+      this.$emit("request", this.requestValues);
     } else if (filter === "Need") {
-      this.$emit("status", this.needCheckboxes);
+      this.$emit("need", this.needValues);
     } else if (filter === "Date") {
       this.$emit("startdate", "");
       this.$emit("enddate", this.today);
