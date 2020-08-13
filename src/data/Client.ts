@@ -192,23 +192,26 @@ export function searchString(client: Client): string {
 }
 
 export const requestOptions = [
-  "Full Bed",
-  "Twin Bed",
-  "Couch",
-  "Living Room Chair",
-  "Table and Chairs",
-  "Dresser",
-  "Crib",
-  "Other",
+  { text: "Full Bed", value: "queenOrFullBed" },
+  { text: "Twin Bed", value: "twinBed" },
+  { text: "Couch", value: "couch" },
+  { text: "Living Room Chair", value: "livingRoomChair" },
+  { text: "Table and Chairs", value: "tableAndChairs" },
+  { text: "Dresser", value: "dresser" },
+  { text: "Crib", value: "crib" },
+  { text: "Other", value: "other" },
 ];
 
 export const needOptions = [
-  "Leaving Homelessness",
-  "Recently Released from Prison",
-  "Pregnant Member",
-  "Children U18",
-  "Disability",
-  "Veteran",
-  "Elderly",
-  "Domestic Violence",
+  { text: "Leaving Homelessness", value: "leavingHomelessness" },
+  {
+    text: "Recently Released from Prison",
+    value: "recentlyReleasedFromPrison",
+  },
+  { text: "Pregnant Member", value: "pregnantMember" },
+  { text: "Children U18", value: "childrenUnder18" },
+  { text: "Disability", value: "hasDisability" },
+  { text: "Veteran", value: "isVeteran" },
+  { text: "Elderly", value: "isElderly" },
+  { text: "Domestic Violence", value: "domesticViolence" },
 ];

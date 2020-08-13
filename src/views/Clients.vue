@@ -66,8 +66,9 @@ import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
 import ClientFilters from "@/components/ClientTableFilters.vue";
 // store
 import { action } from "@/store/modules/collection/types";
+import Timing from "@/data/furniture/Timing";
 // eslint-disable-next-line prettier/prettier
-import Client, { generateClient, needOptions, requestOptions } from "../data/Client";
+import Client, {generateClient, needOptions, requestOptions} from "../data/Client";
 
 const NAMESPACE = "clients";
 
@@ -130,40 +131,75 @@ export default class Clients extends Vue {
 
   endDateFilter = new Date().toISOString().substr(0, 10);
 
-  requestFilter = requestOptions;
+  requestFilter = requestOptions.map((x) => x.value);
 
-  needFilter = needOptions;
+  needFilter = needOptions.map((x) => x.value);
 
   donorFilter = [] as string[];
 
   zoneFilter = [] as string[];
 
-  headers = [
-    {
-      text: "Client",
-      value: "clientName",
-    },
-    {
-      text: "Address",
-      value: "clientAddress",
-    },
-    {
-      text: "Zone",
-      value: "clientArea",
-    },
-    {
-      text: "Furniture",
-      value: "requestedFurniture",
-    },
-    {
-      text: "Need",
-      value: "reasonForNeed",
-    },
-    {
-      text: "Date Requested",
-      value: "dateOfReferral",
-    },
-  ];
+  get headers(): any {
+    return [
+      {
+        text: "Client",
+        value: "clientName",
+        filter: (value: any): boolean => {
+          if (this.donorFilter.length === 0) return true;
+          return this.donorFilter.includes(value);
+        },
+      },
+      {
+        text: "Address",
+        value: "clientAddress",
+        // filter: (value: any): boolean => {
+        //   if (this.addressFilter.length === 0) return true;
+        //   return this.addressFilter.includes(value);
+        // },
+      },
+      {
+        text: "Zone",
+        value: "clientArea",
+        filter: (value: any): boolean => {
+          if (this.zoneFilter.length === 0) return true;
+          return this.zoneFilter.includes(value);
+        },
+      },
+      {
+        text: "Furniture",
+        value: "requestedFurniture",
+        // filter: (value: any): boolean => {
+        //   return this.requestFilter.reduce(
+        //     (acc, x) => acc && value.requestedFurniture[x],
+        //     true,
+        //   );
+        // },
+      },
+      {
+        text: "Need",
+        value: "reasonForNeed",
+        // filter: (value: any): boolean => {
+        //   return this.needFilter.reduce(
+        //     (acc, x) => acc && value.reasonForNeed[x],
+        //     true,
+        //   );
+        // },
+      },
+      {
+        text: "Date Requested",
+        value: "dateOfReferral",
+        filter: (value: any): boolean => {
+          const valDate = new Date(Timing.formatDate(value));
+          const endDate = new Date(this.endDateFilter);
+          if (this.startDateFilter === "") {
+            return valDate <= endDate;
+          }
+          const startDate = new Date(this.startDateFilter);
+          return Timing.inRange(valDate, startDate, endDate);
+        },
+      },
+    ];
+  }
 
   /** end filters */
 

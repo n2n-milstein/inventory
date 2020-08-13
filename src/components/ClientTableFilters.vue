@@ -23,7 +23,7 @@
             <v-row class="d-flex flex-wrap">
               <v-col
                 v-for="box in requestCheckboxes"
-                :key="box"
+                :key="box.value"
                 cols="3"
                 class="align-self-center"
               >
@@ -31,9 +31,9 @@
                   class="pa-0 ma-0 mr-5"
                   @change="update('Furniture', $event)"
                   :input-value="requestFilter"
-                  :key="box"
-                  :label="box"
-                  :value="box"
+                  :key="box.value"
+                  :label="box.text"
+                  :value="box.value"
                   hide-details
                 >
                 </v-checkbox>
@@ -47,7 +47,7 @@
             <v-row class="d-flex flex-wrap">
               <v-col
                 v-for="box in needCheckboxes"
-                :key="box"
+                :key="box.value"
                 cols="3"
                 class="align-self-center"
               >
@@ -56,8 +56,8 @@
                   @change="update('Need', $event)"
                   :input-value="needFilter"
                   :key="box.value"
-                  :label="box"
-                  :value="box"
+                  :label="box.text"
+                  :value="box.value"
                   hide-details
                 >
                 </v-checkbox>
@@ -113,6 +113,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Client, { needOptions, requestOptions } from "@/data/Client";
+import { Area } from "@/data/Area";
 import DatePickerMenu from "@/components/DatePickerMenu.vue";
 
 @Component({ components: { DatePickerMenu } })
@@ -147,7 +148,7 @@ export default class ClientTableFilters extends Vue {
   }
 
   get zoneOptions(): any {
-    return this.inventory.map((x) => x.clientArea);
+    return this.inventory.map((x) => Area[x.clientArea]);
   }
 
   filterChips = [] as string[];
