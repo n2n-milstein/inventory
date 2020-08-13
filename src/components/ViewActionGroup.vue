@@ -33,6 +33,7 @@
           <v-list v-if="action.menu">
             <v-list-item
               v-for="item in action.menu"
+              :disabled="item.disabled"
               :key="item.emit"
               @click="$emit(item.emit)"
             >
