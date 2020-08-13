@@ -13,7 +13,7 @@
       @click:row="onItemClick"
     >
       <template v-slot:item.timing.dateAdded="{ item }">
-        {{ item.timing.dateAdded.toDate().toLocaleDateString() }}
+        {{ item.timing.dateAdded.toLocaleDateString() }}
       </template>
       <template v-slot:item.physical.class="{ item }">
         {{ item.physical.class }}{{ item.physical.set ? ", Set" : "" }}

@@ -31,17 +31,16 @@ export default class Timing {
     dateDelivered?: Date | Timestamp,
   ) {
     this.urgent = urgent;
-    this.pickupBy = pickupBy;
-    this.dateOffered = dateOffered;
+    this.pickupBy = Timing.toDate(pickupBy);
+    this.dateOffered = Timing.toDate(dateOffered);
     // TODO: just set this to `new Date()` - user shouldn't control this metadata
-    this.dateAdded = dateAdded;
+    this.dateAdded = Timing.toDate(dateAdded);
     if (confirmedPickupDate)
       this.confirmedPickupDate = Timing.toDate(confirmedPickupDate);
     if (dateCollected) this.dateCollected = Timing.toDate(dateCollected);
     if (dateDelivered) this.dateDelivered = Timing.toDate(dateDelivered);
   }
 
-  // TODO: is this necessary?
   static toDate(date: Date | Timestamp): Date {
     if (date instanceof Timestamp) {
       return date.toDate();
