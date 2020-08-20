@@ -215,3 +215,18 @@ export const needOptions = [
   { text: "Elderly", value: "isElderly" },
   { text: "Domestic Violence", value: "domesticViolence" },
 ];
+
+export const agencyData = [
+  { name: "referringAgency", label: "Referring Agency", icon: "" },
+  { name: "agencyContactName", label: "Contact Name", icon: "" },
+  { name: "agencyContactPhone", label: "Contact Phone", icon: "" },
+  { name: "agencyContactEmail", label: "Contact Email", icon: "" },
+  { name: "dateOfReferral", label: "Date of Referral", icon: "" },
+];
+
+export const clientData = [
+  { name: "clientName", label: "Client Name", icon: "" },
+  { name: "clientPhone", label: "Client Phone", icon: "" },
+  { name: "clientAddress", label: "Client Address", icon: "" },
+  { name: "clientArea", label: "Client Adress Zone", icon: "" },
+];
