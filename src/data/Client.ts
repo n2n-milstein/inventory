@@ -25,31 +25,12 @@ export default interface Client {
   comments: string;
   staffNotes: string;
 
-  requestedFurniture: RequestedFurniture;
-  reasonForNeed: NeedReason;
+  requestedFurniture: BoolElems;
+  reasonForNeed: BoolElems;
 }
 
-interface RequestedFurniture {
-  queenOrFullBed: boolean;
-  twinBed: boolean;
-  couch: boolean;
-  livingRoomChair: boolean;
-  tableAndChairs: boolean;
-  otherTables: boolean;
-  dresser: boolean;
-  crib: boolean;
-  other: boolean;
-}
-
-interface NeedReason {
-  leavingHomelessness: boolean;
-  recentReleasedPrison: boolean;
-  pregnantMember: boolean;
-  childrenUnder18: boolean;
-  hasDisability: boolean;
-  isVeteran: boolean;
-  isElderly: boolean;
-  domesticViolence: boolean;
+export interface BoolElems {
+  [attr: string]: boolean;
 }
 
 function randomPhone(): string {
@@ -115,7 +96,7 @@ export function generateClient(): Client {
   };
 }
 
-export function furnitureRequested(req: RequestedFurniture): string {
+export function furnitureRequested(req: BoolElems): string {
   let string = "";
   if (req.queenOrFullBed) {
     string += "Full Bed, ";
@@ -147,7 +128,7 @@ export function furnitureRequested(req: RequestedFurniture): string {
   return string;
 }
 
-export function needReason(need: NeedReason): string {
+export function needReason(need: BoolElems): string {
   let string = "";
   if (need.leavingHomelessness) {
     string += "Leaving Homelessness, ";

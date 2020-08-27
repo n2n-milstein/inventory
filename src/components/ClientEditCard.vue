@@ -80,6 +80,7 @@
                 :key="box.value"
                 :label="box.text"
                 :value="box.value"
+                :readonly="!isEdit"
                 hide-details
               >
               </v-checkbox>
@@ -94,6 +95,7 @@
                 :key="box.value"
                 :label="box.text"
                 :value="box.value"
+                :readonly="!isEdit"
                 hide-details
               >
               </v-checkbox>
@@ -150,7 +152,7 @@ import { mapActions, mapState } from "vuex";
 // data
 import ViewAction from "@/data/ViewAction";
 // eslint-disable-next-line prettier/prettier
-import Client, { agencyData, clientData, requestOptions, needOptions } from "@/data/Client";
+import Client, { agencyData, clientData, requestOptions, needOptions, BoolElems } from "@/data/Client";
 // components
 import PhysicalAttributes from "./FurnitureEditCard/PhysicalAttributes.vue";
 import ConditionalDate from "./FurnitureEditCard/ConditionalDate.vue";
@@ -274,44 +276,38 @@ export default class EditCard extends Vue {
 
   get furnitureValue(): any {
     return Object.entries(this.current.requestedFurniture)
-      .filter((x) => x.values)
-      .map((x) => x.keys);
+      .filter((e) => e[1])
+      .map((e) => e[0]);
   }
 
-  updateFurniture(key: string, value: boolean): void {
-    this.updateCurrent({
-      updates: {
-        requestedFurniture: {
-          ...this.current.requestedFurniture,
-          [key]: value,
-        },
-      },
+  updateFurniture(keys: string[]): void {
+    const newFurniture = {} as BoolElems;
+
+    Object.keys(this.current.requestedFurniture).forEach((k) => {
+      newFurniture[k] = keys.includes(k);
     });
+
+    this.updateCurrent({ updates: { requestedFurniture: newFurniture } });
   }
 
   get needValue(): any {
     return Object.entries(this.current.reasonForNeed)
-      .filter((x) => x.values)
-      .map((x) => x.keys);
+      .filter((e) => e[1])
+      .map((e) => e[0]);
   }
 
-  updateNeed(key: string, value: boolean): void {
-    this.updateCurrent({
-      updates: {
-        reasonForNeed: {
-          ...this.current.reasonForNeed,
-          [key]: value,
-        },
-      },
+  updateNeed(keys: string[]): void {
+    const newFurniture = {} as BoolElems;
+
+    Object.keys(this.current.reasonForNeed).forEach((k) => {
+      newFurniture[k] = keys.includes(k);
     });
+
+    this.updateCurrent({ updates: { requestedFurniture: newFurniture } });
   }
 
   get comments(): string {
     return this.current.comments;
-  }
-
-  set comments(value: string) {
-    this.updateCurrent({ updates: { comments: value } });
   }
 
   get staffNotes(): string {
