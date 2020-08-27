@@ -46,7 +46,7 @@
               <v-text-field
                 v-for="field in clientInfo"
                 :key="field.name"
-                :value="field.name"
+                :value="current[field.name]"
                 @input="updateClient(field.name, $event)"
                 :rules="required"
                 :label="field.label"
@@ -61,7 +61,7 @@
               <v-text-field
                 v-for="field in agencyInfo"
                 :key="field.name"
-                :value="field.name"
+                :value="current[field.name]"
                 @input="updateClient(field.name, $event)"
                 :rules="required"
                 :label="field.label"
@@ -89,7 +89,7 @@
               <h2>Reason for Need</h2>
               <v-checkbox
                 v-for="box in needBoxes"
-                @change="updateFurniture($event)"
+                @change="updateNeed($event)"
                 :input-value="needValue"
                 :key="box.value"
                 :label="box.text"
@@ -196,7 +196,7 @@ export default class EditCard extends Vue {
 
   /* Props */
 
-  @Prop({ default: "inventory" })
+  @Prop({ default: "clients" })
   readonly namespace!: string;
 
   @Prop({ default: false })
@@ -254,19 +254,13 @@ export default class EditCard extends Vue {
 
   /* Data */
 
-  agencyInfo = agencyData;
+  readonly agencyInfo = agencyData;
 
-  clientInfo = clientData;
+  readonly clientInfo = clientData;
 
-  furnitureBoxes = requestOptions;
+  readonly furnitureBoxes = requestOptions;
 
-  // fix
-  furnitureValue = [];
-
-  needBoxes = needOptions;
-
-  // fix
-  needValue = [];
+  readonly needBoxes = needOptions;
 
   /* Getters and setters for form fields */
 
@@ -278,8 +272,46 @@ export default class EditCard extends Vue {
     this.updateCurrent({ updates: { [key]: value } });
   }
 
+  get furnitureValue(): any {
+    return Object.entries(this.current.requestedFurniture)
+      .filter((x) => x.values)
+      .map((x) => x.keys);
+  }
+
+  updateFurniture(key: string, value: boolean): void {
+    this.updateCurrent({
+      updates: {
+        requestedFurniture: {
+          ...this.current.requestedFurniture,
+          [key]: value,
+        },
+      },
+    });
+  }
+
+  get needValue(): any {
+    return Object.entries(this.current.reasonForNeed)
+      .filter((x) => x.values)
+      .map((x) => x.keys);
+  }
+
+  updateNeed(key: string, value: boolean): void {
+    this.updateCurrent({
+      updates: {
+        reasonForNeed: {
+          ...this.current.reasonForNeed,
+          [key]: value,
+        },
+      },
+    });
+  }
+
   get comments(): string {
     return this.current.comments;
+  }
+
+  set comments(value: string) {
+    this.updateCurrent({ updates: { comments: value } });
   }
 
   get staffNotes(): string {

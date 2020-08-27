@@ -8,10 +8,10 @@
       @click:outside="closeDialog()"
       @keydown.escape="closeDialog()"
     >
-      <furniture-edit-card
+      <client-edit-card
         :namespace="namespace"
         :is-edit="isEdit"
-        :is-add="isAdd"
+        :is-add="false"
         :menu-actions="menuActions"
         :menu-loading="menuLoading"
         :loading="updatesLoading"
@@ -38,11 +38,11 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import { mapActions, mapState } from "vuex";
 import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
-import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
+import ClientEditCard from "@/components/ClientEditCard.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
 
 @Component({
-  components: { FurnitureEditCard, UnsavedDialog },
+  components: { ClientEditCard, UnsavedDialog },
   computed: mapState({
     updatesLength(state, getters) {
       return getters[`${this.namespace}/getUpdatesLength`];
@@ -60,7 +60,7 @@ import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
     },
   }),
 })
-export default class CardDialog extends Vue {
+export default class ClientCardDialog extends Vue {
   @Prop({ default: false })
   readonly dialog!: boolean;
 

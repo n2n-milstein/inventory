@@ -49,6 +49,18 @@
       :items="inventory"
       :collection="COLLECTION"
     />
+
+    <client-card-dialog
+      namespace="clients"
+      :dialog="editCard"
+      :is-add="isAdd"
+      :menu-actions="menuActions"
+      :menu-loading="menuLoading"
+      @add="commitAddItem()"
+      @archive="commitArchive()"
+      @export="commitExport()"
+      @close="isAdd = false"
+    />
   </v-col>
 </template>
 
@@ -62,7 +74,7 @@ import collections from "@/network/collections";
 import ClientTable from "@/components/ClientTable.vue";
 import FurnitureTableHeader from "@/components/FurnitureTableHeader.vue";
 import ViewActionGroup from "@/components/ViewActionGroup.vue";
-import FurnitureCardDialog from "@/components/FurnitureCardDialog.vue";
+import ClientCardDialog from "@/components/ClientCardDialog.vue";
 import ClientFilters from "@/components/ClientTableFilters.vue";
 // store
 import { action } from "@/store/modules/collection/types";
@@ -77,7 +89,7 @@ const NAMESPACE = "clients";
     ClientTable,
     FurnitureTableHeader,
     ViewActionGroup,
-    FurnitureCardDialog,
+    ClientCardDialog,
     ClientFilters,
   },
   computed: mapGetters(NAMESPACE, {
