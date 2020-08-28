@@ -42,11 +42,20 @@
               :class="{ 'readonly-text': !isEdit }"
               lazy-validation
             >
+              <div v-if="isStaff">
+                <h2>Staff Notes</h2>
+                <v-textarea
+                  v-model="staffNotes"
+                  label="Staff Notes"
+                  auto-grow
+                  filled
+                  :readonly="!isEdit"
+                />
+              </div>
+
               <!-- Donor Info -->
               <h2>Donor Info</h2>
 
-              <!-- TODO: make these just normal text when in readonly -->
-              <!-- :value="donor ? donor.name : ''" -->
               <v-text-field
                 :value="donor.name"
                 @input="updateDonor('name', $event)"
@@ -183,17 +192,6 @@
                 filled
                 readonly
               />
-
-              <div v-if="isStaff">
-                <h2>Staff Notes</h2>
-                <v-textarea
-                  v-model="staffNotes"
-                  label="Staff Notes"
-                  auto-grow
-                  filled
-                  :readonly="!isEdit"
-                />
-              </div>
             </v-form>
           </v-col>
         </v-row>
@@ -278,6 +276,9 @@ export default class FurnitureEditCard extends Vue {
   readonly namespace!: string;
 
   @Prop({ default: false })
+  readonly readonly!: boolean;
+
+  @Prop({ default: false })
   readonly isEdit!: boolean;
 
   @Prop({ default: false })
@@ -286,7 +287,7 @@ export default class FurnitureEditCard extends Vue {
   @Prop({ default: true })
   readonly isStaff!: boolean;
 
-  @Prop({ default: [] })
+  @Prop({})
   readonly menuActions!: ViewAction[];
 
   @Prop({ default: false })
@@ -317,6 +318,10 @@ export default class FurnitureEditCard extends Vue {
   ];
 
   get ACTIONS(): ViewAction[] {
+    if (this.readonly) {
+      return [{ icon: "close", desc: "Close", emit: "close" }];
+    }
+
     return [
       { icon: "edit", desc: "Edit Item", emit: "edit" },
       {

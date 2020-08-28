@@ -124,6 +124,7 @@ export default class RunPreview extends Vue {
       },
       clients: { pic1: generateClient(), pic2: generateClient() },
       status: RunStatus.Planning,
+      notes: "Hello these are some notes",
     },
   ];
 }

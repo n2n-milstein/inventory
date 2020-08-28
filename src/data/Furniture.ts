@@ -109,6 +109,8 @@ export class Furniture {
 
   public staffNotes: string;
 
+  public clientId: string;
+
   public constructor(
     id = "",
     donor = new DonorInfo(),
@@ -119,6 +121,7 @@ export class Furniture {
     images = [] as Image[],
     comments = "",
     staffNotes = "",
+    clientId = "",
   ) {
     this.id = id;
     this.donor = donor;
@@ -129,5 +132,6 @@ export class Furniture {
     this.images = images;
     this.comments = comments;
     this.staffNotes = staffNotes;
+    this.clientId = clientId;
   }
 }

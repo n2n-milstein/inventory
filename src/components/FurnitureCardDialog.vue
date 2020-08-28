@@ -9,6 +9,7 @@
       @keydown.escape="closeDialog()"
     >
       <furniture-edit-card
+        :readonly="readonly"
         :namespace="namespace"
         :is-edit="isEdit"
         :is-add="isAdd"
@@ -66,6 +67,9 @@ export default class FurnitureCardDialog extends Vue {
 
   @Prop({})
   readonly collection!: collections;
+
+  @Prop({ default: false })
+  readonly readonly!: boolean;
 
   @Prop({ default: false })
   readonly isAdd!: boolean;

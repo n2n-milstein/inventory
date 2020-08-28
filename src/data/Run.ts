@@ -1,4 +1,3 @@
-import { Timestamp } from "./furniture/Timing";
 import { Furniture } from "./Furniture";
 import Client from "./Client";
 import Volunteer from "./Volunteer";
@@ -13,21 +12,19 @@ export enum RunStatus {
 export default interface Run {
   // metadata
   id: string;
-  // TODO: rename to dateAdded?
-  dateCreated: Date | Timestamp;
-  lastUpdated: Date | Timestamp;
+  dateCreated: Date;
+  lastUpdated: Date;
 
   // data
-  date: Date | Timestamp;
-  // TODO: make this a list of volunteers NOT volunteer IDs
+  date: Date;
   volunteers: Volunteer[];
 
-  pickups: { [id: string]: Furniture }; // list of furniture
-  // pickups: Furniture[]; // list of furniture
-  // TODO: think of better way of mapping client --> dropoff
-  // dropoff and client order matters
-  dropoffs: { [id: string]: Furniture };
-  clients: { [id: string]: Client }; // id should be the furniture ID
+  pickups: { [furnitureId: string]: Furniture };
+  // furniture items have a clientId property that maps clients to dropoffs
+  dropoffs: { [furnitureId: string]: Furniture };
+  clients: { [clientId: string]: Client };
 
   status: RunStatus;
+
+  notes: string;
 }

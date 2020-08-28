@@ -9,17 +9,17 @@ export const { Timestamp } = firebase.firestore;
 export default class Timing {
   public urgent: boolean;
 
-  public pickupBy: Date | Timestamp;
+  public pickupBy: Date;
 
-  public dateOffered: Date | Timestamp;
+  public dateOffered: Date;
 
-  public dateAdded: Date | Timestamp;
+  public dateAdded: Date;
 
-  public confirmedPickupDate?: Date | Timestamp;
+  public confirmedPickupDate?: Date;
 
-  public dateCollected?: Date | Timestamp;
+  public dateCollected?: Date;
 
-  public dateDelivered?: Date | Timestamp;
+  public dateDelivered?: Date;
 
   public constructor(
     urgent = false,
@@ -31,13 +31,21 @@ export default class Timing {
     dateDelivered?: Date | Timestamp,
   ) {
     this.urgent = urgent;
-    this.pickupBy = pickupBy;
-    this.dateOffered = dateOffered;
+    this.pickupBy = Timing.toDate(pickupBy);
+    this.dateOffered = Timing.toDate(dateOffered);
     // TODO: just set this to `new Date()` - user shouldn't control this metadata
-    this.dateAdded = dateAdded;
-    if (confirmedPickupDate) this.confirmedPickupDate = confirmedPickupDate;
-    if (dateCollected) this.dateCollected = dateCollected;
-    if (dateDelivered) this.dateDelivered = dateDelivered;
+    this.dateAdded = Timing.toDate(dateAdded);
+    if (confirmedPickupDate)
+      this.confirmedPickupDate = Timing.toDate(confirmedPickupDate);
+    if (dateCollected) this.dateCollected = Timing.toDate(dateCollected);
+    if (dateDelivered) this.dateDelivered = Timing.toDate(dateDelivered);
+  }
+
+  static toDate(date: Date | Timestamp): Date {
+    if (date instanceof Timestamp) {
+      return date.toDate();
+    }
+    return date;
   }
 
   static formatDate(date?: Date | Timestamp): string {

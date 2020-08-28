@@ -3,6 +3,7 @@ import { db } from "@/network/firebase";
 import FirestoreService from "@/network/firestore-service";
 import { Furniture } from "@/data/Furniture";
 import { ActionTree } from "vuex";
+import { furnitureConverter } from "@/network/converters";
 import { CollectionState, mutation, action } from "./types";
 import { RootState } from "../../types";
 
@@ -61,7 +62,10 @@ const actions: ActionTree<CollectionState, RootState> = {
   },
   [action.BIND_ITEMS]: firestoreAction<CollectionState, RootState>(
     ({ bindFirestoreRef, state }) => {
-      return bindFirestoreRef("items", db.collection(state.collection!));
+      return bindFirestoreRef(
+        "items",
+        db.collection(state.collection!).withConverter(furnitureConverter),
+      );
     },
   ),
   [action.UNBIND_ITEMS]: firestoreAction(({ unbindFirestoreRef }) => {
