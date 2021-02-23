@@ -45,16 +45,17 @@
     />
 
     <furniture-table
-      namespace="inventory"
+      :current="current"
       :headers="headers"
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
+      @item-click="setCurrent({ item: $event })"
     />
 
     <furniture-card-dialog
-      namespace="inventory"
+      :current="current"
       :dialog="editCard"
       :is-add="isAdd"
       :menu-actions="menuActions"
@@ -62,8 +63,9 @@
       @add="commitAddItem()"
       @archive="commitArchive()"
       @export="commitExport()"
-      @close="isAdd = false"
+      @close="closeDialog()"
     />
+    <!-- TODO: edit @close function -->
   </v-col>
 </template>
 
@@ -267,6 +269,11 @@ export default class Inventory extends Vue {
   addItem(): void {
     this.setCurrent({ item: new Furniture() });
     this.isAdd = true;
+  }
+
+  closeDialog(): void {
+    this.clearCurrent();
+    this.isAdd = false;
   }
 
   /**
