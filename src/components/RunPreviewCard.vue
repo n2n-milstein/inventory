@@ -96,9 +96,7 @@
     <v-card-actions class="pr-5 pb-5">
       <v-spacer />
       <router-link :to="`/runs/${run.id}`">
-        <v-btn depressed color="primary" class="px-4">
-          View Details
-        </v-btn>
+        <v-btn depressed color="primary" class="px-4"> View Details </v-btn>
       </router-link>
     </v-card-actions>
   </v-card>

@@ -5,9 +5,7 @@
         <h2>Rejections</h2>
       </v-col>
       <v-col cols="12" v-if="rejected.length === 0">
-        <p>
-          No rejections.
-        </p>
+        <p>No rejections.</p>
       </v-col>
       <v-col lg="8" md="9" cols="12">
         <approval-card
