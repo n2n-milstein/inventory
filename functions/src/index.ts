@@ -1,6 +1,7 @@
 import admin = require("firebase-admin");
 import XLSX = require("xlsx");
 import functions = require("firebase-functions");
+import itemFunctions = require("./item-functions");
 // const serviceAccount = require("../firebase.json");
 
 admin.initializeApp();
@@ -189,3 +190,9 @@ exports.getInventoryXLSX = functions.https.onCall(
     return getData(data.id, data.collection);
   },
 );
+
+exports.addItem = functions.firestore
+  .document("furniture/{id}")
+  .onCreate(async (snap, context) => {
+    await itemFunctions.addItem(snap);
+  });

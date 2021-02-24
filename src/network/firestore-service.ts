@@ -42,12 +42,13 @@ export default class FirestoreService {
     // TODO: eventually make this into a Firebase function
     // onCreate ==> set ID, dateAdded + other metadata
     // this will allow us to avoid using deepCopy and creating a ref
-    const data = deepCopy(item) as Furniture;
-    const ref = db.collection(this.collection).doc();
-    data.id = ref.id;
-    console.log("addItem id:", data.id);
-    data.timing.dateAdded = new Date();
-    return ref.set(data);
+    // const data = deepCopy(item) as Furniture;
+    // const ref = db.collection(this.collection).doc();
+    // data.id = ref.id;
+    // console.log("addItem id:", data.id);
+    // data.timing.dateAdded = new Date();
+    // return ref.set(data);
+    return db.collection(this.collection).doc().set(item);
   };
 
   /**
