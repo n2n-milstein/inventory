@@ -5,9 +5,7 @@
         <h2>Pending Approvals</h2>
       </v-col>
       <v-col cols="12" v-if="pending.length === 0">
-        <p>
-          No pending approvals.
-        </p>
+        <p>No pending approvals.</p>
       </v-col>
       <v-col lg="8" md="9" cols="12">
         <approval-card

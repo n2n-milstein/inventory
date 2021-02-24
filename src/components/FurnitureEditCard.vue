@@ -133,9 +133,7 @@
               <!-- Physical Attributes -->
               <h2>Physical Attributes</h2>
 
-              <h3 v-if="!fclass">
-                Select a furniture class
-              </h3>
+              <h3 v-if="!fclass">Select a furniture class</h3>
 
               <v-text-field
                 v-if="!isEdit"

@@ -40,9 +40,7 @@
         <v-slide-y-transition>
           <div v-show="show" class="text-left">
             <v-divider class="py-2" />
-            <h3 class="pb-2">
-              Attributes
-            </h3>
+            <h3 class="pb-2">Attributes</h3>
             <v-row>
               <v-col cols="4">
                 <div
@@ -50,9 +48,7 @@
                   v-for="attr in pros"
                   :key="attr.key"
                 >
-                  <v-icon class="f-attr-icon" left>
-                    thumb_up
-                  </v-icon>
+                  <v-icon class="f-attr-icon" left> thumb_up </v-icon>
                   {{ attr.pretty }}
                 </div>
               </v-col>
@@ -62,19 +58,15 @@
                   v-for="attr in cons"
                   :key="attr.key"
                 >
-                  <v-icon class="f-attr-icon" left>
-                    thumb_down
-                  </v-icon>
+                  <v-icon class="f-attr-icon" left> thumb_down </v-icon>
                   {{ attr.pretty }}
                 </div>
               </v-col>
             </v-row>
 
-            <h3 class="pt-4 pb-2">
-              Images
-            </h3>
+            <h3 class="pt-4 pb-2">Images</h3>
 
-            <v-row class="flex-nowrap" style="overflow-x: scroll;">
+            <v-row class="flex-nowrap" style="overflow-x: scroll">
               <div v-for="(image, i) in request.images" :key="i" class="mr-3">
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -90,15 +82,11 @@
                 </v-tooltip>
               </div>
             </v-row>
-            <h3 class="pt-4 pb-2">
-              Donor Comments
-            </h3>
+            <h3 class="pt-4 pb-2">Donor Comments</h3>
             <div class="f-comments py-2 px-3">
               {{ request.comments }}
             </div>
-            <h3 class="pt-4 pb-2">
-              Staff Notes
-            </h3>
+            <h3 class="pt-4 pb-2">Staff Notes</h3>
             <v-textarea
               :value="request.staffNotes"
               label="Staff Notes"

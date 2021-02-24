@@ -13,9 +13,7 @@
       <v-col cols="12">
         <v-dialog v-model="dialog" width="750" scrollable>
           <template v-slot:activator="{ on: edit }">
-            <v-btn v-on="{ ...edit }">
-              Show Edit Dialog
-            </v-btn>
+            <v-btn v-on="{ ...edit }"> Show Edit Dialog </v-btn>
           </template>
           <furniture-edit-card />
         </v-dialog>
@@ -28,9 +26,7 @@
 
     <v-row v-if="showStoreCmp">
       <v-col>
-        <v-btn @click="updateSample()">
-          Update sample
-        </v-btn>
+        <v-btn @click="updateSample()"> Update sample </v-btn>
       </v-col>
     </v-row>
 
