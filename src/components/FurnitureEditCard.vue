@@ -216,7 +216,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Prop, Component } from "vue-property-decorator";
+import { Prop, Component, Emit } from "vue-property-decorator";
 // data
 import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
@@ -247,6 +247,9 @@ export default class FurnitureEditCard extends Vue {
 
   @Prop({})
   readonly current!: Furniture;
+
+  @Prop({})
+  readonly updates!: Partial<Furniture>;
 
   @Prop({ default: "inventory" })
   readonly namespace!: string;
@@ -313,8 +316,6 @@ export default class FurnitureEditCard extends Vue {
 
   /** Variables for updates */
 
-  updates: Partial<Furniture> = {};
-
   get updatesLength(): number {
     return Object.keys(this.updates).length;
   }
@@ -326,9 +327,17 @@ export default class FurnitureEditCard extends Vue {
   /**
    * Written like this to maintain compatibility with stores
    */
-  updateCurrent({ updates }: { updates: Partial<Furniture> }): void {
-    this.updates = { ...this.updates, ...updates };
+  @Emit("update")
+  /* eslint-disable object-curly-newline */
+  // eslint-disable-next-line class-methods-use-this
+  updateCurrent({
+    updates,
+  }: {
+    updates: Partial<Furniture>;
+  }): Partial<Furniture> {
+    return updates;
   }
+  /* eslint-enable object-curly-newline */
 
   /* Getters and setters for form fields */
 

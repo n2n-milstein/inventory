@@ -16,6 +16,8 @@
         :menu-actions="menuActions"
         :menu-loading="menuLoading"
         :loading="updatesLoading"
+        :updates="updates"
+        @update="addUpdates($event)"
         @edit="toggleEdit()"
         @close="closeDialog()"
         @save="saveChanges()"
@@ -85,6 +87,16 @@ export default class FurnitureCardDialog extends Vue {
     if (val) this.isEdit = this.isAdd;
   }
 
+  /**
+   * Add updates
+   */
+  addUpdates(updates: Partial<Furniture>): void {
+    this.updates = { ...this.updates, ...updates };
+  }
+
+  /**
+   * Clears updates object
+   */
   clearUpdates(): void {
     this.updates = {};
   }
@@ -99,7 +111,8 @@ export default class FurnitureCardDialog extends Vue {
     if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
       this.isEdit = false;
-      this.$emit("close"); // used to set isAdd to false
+      this.clearUpdates();
+      this.$emit("close");
     } else {
       this.unsavedDialog = true;
     }
@@ -119,15 +132,10 @@ export default class FurnitureCardDialog extends Vue {
   /**
    * Commits updates to Firestore
    */
-  async saveChanges(): Promise<void> {
-    if (this.isAdd) {
-      this.$emit("add");
-    } else {
-      this.updatesLoading = true;
-      this.$emit("commit");
-      this.isEdit = false;
-      this.updatesLoading = false;
-    }
+  saveChanges(): void {
+    this.$emit("save-changes", this.updates);
+    this.clearUpdates();
+    this.isEdit = false;
   }
 }
 </script>

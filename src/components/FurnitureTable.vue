@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Emit, Prop } from "vue-property-decorator";
 import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 import Timing from "@/data/furniture/Timing";
@@ -58,9 +58,10 @@ export default class FurnitureTable extends Vue {
   /**
    * Activates dialog that displays the item information
    */
-  onItemClick(item: Furniture): void {
-    console.log(item);
-    this.$emit("item-click", item);
+  @Emit()
+  // eslint-disable-next-line class-methods-use-this
+  onItemClick(item: Furniture): Furniture {
+    return item;
   }
 
   setSelected({ list }: { list: Furniture[] }): void {

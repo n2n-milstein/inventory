@@ -51,7 +51,7 @@
       :items="inventory"
       :collection="COLLECTION"
       @download="getSpreadsheet()"
-      @item-click="setCurrent({ item: $event })"
+      @on-item-click="setCurrent({ item: $event })"
     />
 
     <furniture-card-dialog
@@ -60,7 +60,7 @@
       :is-add="isAdd"
       :menu-actions="menuActions"
       :menu-loading="menuLoading"
-      @add="commitAddItem()"
+      @save-changes="commitItem($event)"
       @archive="commitArchive()"
       @export="commitExport()"
       @close="closeDialog()"
@@ -109,9 +109,11 @@ const NAMESPACE = "inventory";
     action.CLEAR_CURRENT,
     action.EXPORT_SELECTED,
     action.EXPORT_CURRENT,
+    action.COMMIT_UPDATES,
+    action.UPDATE_CURRENT,
     "archiveSelected",
     "archiveCurrent",
-    "commitItem",
+    "commitAddItem",
   ]),
 })
 export default class Inventory extends Vue {
@@ -130,7 +132,17 @@ export default class Inventory extends Vue {
 
   readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
 
-  readonly commitItem!: () => Promise<void>;
+  readonly [action.COMMIT_UPDATES]!: () => Promise<void>;
+
+  /* eslint-disable object-curly-newline */
+  readonly [action.UPDATE_CURRENT]!: ({
+    updates,
+  }: {
+    updates: Partial<Furniture>;
+  }) => Promise<void>;
+  /* eslint-enable object-curly-newline */
+
+  readonly commitAddItem!: () => Promise<void>;
 
   readonly archiveCurrent!: () => Promise<void>;
 
@@ -271,6 +283,9 @@ export default class Inventory extends Vue {
     this.isAdd = true;
   }
 
+  /**
+   * Closes dialog by clearing current
+   */
   closeDialog(): void {
     this.clearCurrent();
     this.isAdd = false;
@@ -279,10 +294,15 @@ export default class Inventory extends Vue {
   /**
    * Commits new item to Firestore
    */
-  async commitAddItem(): Promise<void> {
-    await this.commitItem();
-    this.isAdd = false;
-    this.clearCurrent();
+  async commitItem(updates: Partial<Furniture>): Promise<void> {
+    this.updateCurrent({ updates });
+    if (this.isAdd) {
+      await this.commitAddItem();
+      this.isAdd = false;
+      this.clearCurrent();
+    } else {
+      await this.commitUpdates();
+    }
   }
 
   async commitArchive(): Promise<void> {
