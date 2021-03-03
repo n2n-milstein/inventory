@@ -35,7 +35,6 @@
     />
 
     <furniture-table
-      namespace="archive"
       :headers="headers"
       :search="search"
       :items="archive"
@@ -44,7 +43,6 @@
     />
 
     <furniture-card-dialog
-      namespace="archive"
       :dialog="editCard"
       :menu-actions="menuActions"
       :menu-loading="menuLoading"

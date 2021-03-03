@@ -251,9 +251,6 @@ export default class FurnitureEditCard extends Vue {
   @Prop({})
   readonly updates!: Partial<Furniture>;
 
-  @Prop({ default: "inventory" })
-  readonly namespace!: string;
-
   @Prop({ default: false })
   readonly readonly!: boolean;
 

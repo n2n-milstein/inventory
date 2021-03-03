@@ -32,7 +32,7 @@ import { Status, Furniture } from "@/data/Furniture";
 import collections from "@/network/collections";
 import Timing from "@/data/furniture/Timing";
 
-@Component({ components: {} })
+@Component({})
 export default class FurnitureTable extends Vue {
   @Prop({})
   readonly current!: Furniture;
@@ -76,10 +76,18 @@ export default class FurnitureTable extends Vue {
   /* eslint-disable */
   searchFilter(value: any, search: string, item: any): boolean {
     const arr = search.split(" ");
-    const valString = item.donor.address + item.donor.name + item.physical.class + Timing.formatDate(item.timing.dateAdded) + Status[item.status] + item.donor.zone;
+    const valString =
+      item.donor.address +
+      item.donor.name +
+      item.physical.class +
+      Timing.formatDate(item.timing.dateAdded) +
+      Status[item.status] +
+      item.donor.zone;
     let i;
     for (i = 0; i < arr.length; i++) {
-      if (valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1) {
+      if (
+        valString.toString().toLowerCase().indexOf(arr[i].toLowerCase()) === -1
+      ) {
         return false;
       }
     }
