@@ -66,68 +66,7 @@ export default class FirestoreService {
     if (Object.keys(updates).length === 0) {
       throw new Error("Updates are empty.");
     }
-
-    // setup queries for individual item and runs containing item
-    const itemRef = db.collection(this.collection).doc(id);
-    const pickupQuery = db
-      .collection(collections.RUNS)
-      .where(`pickups.${id}.id`, "==", id);
-    const dropoffQuery = db
-      .collection(collections.RUNS)
-      .where(`dropoffs.${id}.id`, "==", id);
-
-    try {
-      // run transaction
-      await db.runTransaction(async (transaction) => {
-        // get individual item
-        const itemDoc = await transaction.get(itemRef);
-
-        // make sure item exists
-        if (!itemDoc.exists) {
-          throw new Error("Document doesn't exist");
-        }
-
-        // get every run that contains the furniture item
-        const pickupQuerySnapshot = await pickupQuery.get();
-        const dropoffQuerySnapshot = await dropoffQuery.get();
-
-        // generate nested updates for the run (e.g., pickups.id.<field>),
-        // and update the run
-        const nestedUpdate = (
-          group: "pickups" | "dropoffs",
-          doc: any,
-        ): void => {
-          const nestedUpdatesKey = `${group}.${id}`;
-          let nestedUpdates = {};
-          Object.keys(updates).forEach((key) => {
-            nestedUpdates = {
-              ...nestedUpdates,
-              [`${nestedUpdatesKey}.${key}`]: (updates as any)[key],
-            };
-          });
-
-          // get the run document reference and call transaction update
-          const docRef = db.collection(collections.RUNS).doc(doc.id);
-          transaction.update(docRef, nestedUpdates);
-        };
-
-        // generate nested updates for each run
-        pickupQuerySnapshot.forEach((doc) => {
-          nestedUpdate("pickups", doc);
-        });
-
-        dropoffQuerySnapshot.forEach((doc) => {
-          nestedUpdate("dropoffs", doc);
-        });
-
-        // write to individual furniture
-        console.log("updateItem (updates):", updates);
-        transaction.update(itemRef, updates);
-      });
-      console.log("Transaction success!");
-    } catch (e) {
-      console.log("Transaction failure:", e);
-    }
+    return db.collection(this.collection).doc(id).update(updates);
   };
 
   /**

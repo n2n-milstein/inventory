@@ -196,3 +196,9 @@ exports.addItem = functions.firestore
   .onCreate(async (snap, context) => {
     await itemFunctions.addItem(snap);
   });
+
+exports.updateItem = functions.firestore
+  .document("furniture/{id}")
+  .onUpdate(async (change, context) => {
+    await itemFunctions.updateItem(change);
+  });
