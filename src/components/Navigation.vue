@@ -126,25 +126,11 @@ export default class Navigation extends Vue {
   ];
 
   readonly items = [
-    // { icon: "home", text: "Home", route: "hello" },
     { icon: "view_list", text: "Inventory", route: "inventory" },
     { icon: "archive", text: "Archive", route: "archive" },
-    { icon: "mdi-truck-fast", text: "Runs", route: "runs" },
-    // { icon: "check_circle", text: "Approval", route: "approval" },
-    // {
-    //   icon: "keyboard_arrow_up",
-    //   "icon-alt": "keyboard_arrow_down",
-    //   text: "Approvals",
-    //   model: false,
-    //   children: [
-    //     { icon: "check_circle", text: "Pending", route: "pending" },
-    //     { icon: "cancel", text: "Rejected", route: "rejected" },
-    //   ],
-    // },
     { divider: true },
     { icon: "settings", text: "Settings" },
     { icon: "chat_bubble", text: "Send feedback", route: "feedback" },
-    // { icon: "info", text: "About", route: "about" },
   ];
 
   goTo(route: string): void {

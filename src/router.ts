@@ -51,17 +51,6 @@ const router = new Router({
           component: () => import("./views/Archive.vue"),
         },
         {
-          path: "/runs/:id",
-          name: "run-detail",
-          component: () => import("./views/RunDetail.vue"),
-          props: true,
-        },
-        {
-          path: "/runs",
-          name: "runs",
-          component: () => import("./views/RunPreview.vue"),
-        },
-        {
           path: "/about",
           name: "about",
           // route level code-splitting
@@ -69,21 +58,6 @@ const router = new Router({
           // which is lazy-loaded when the route is visited.
           component: () =>
             import(/* webpackChunkName: "about" */ "./views/About.vue"),
-        },
-        {
-          path: "/pending",
-          name: "pending",
-          component: () => import("./views/Pending.vue"),
-        },
-        {
-          path: "/hello",
-          name: "hello",
-          component: () => import("./views/Hello.vue"),
-        },
-        {
-          path: "/rejected",
-          name: "rejected",
-          component: () => import("./views/Rejected.vue"),
         },
         {
           path: "/feedback",
