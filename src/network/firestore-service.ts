@@ -1,7 +1,6 @@
 import { Furniture } from "@/data/Furniture";
 import { db, functions, storage } from "./firebase";
 import collections from "./collections";
-import { deepCopy } from "./converters";
 
 export default class FirestoreService {
   collection: collections;

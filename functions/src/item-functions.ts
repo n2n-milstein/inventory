@@ -15,16 +15,20 @@ export async function updateItem(
   change: Change<DocumentSnapshot>,
 ): Promise<void> {
   const itemDoc = change.after.data();
-  // const oldDoc = change.before.data();
+  const oldDoc = change.before.data();
+
   const db = admin.firestore();
+
   if (itemDoc !== undefined) {
     const { id } = itemDoc;
+
     const pickupQuery = db
       .collection("runs")
       .where(`pickups.${id}.id`, "==", id);
     const dropoffQuery = db
       .collection("runs")
       .where(`dropoffs.${id}.id`, "==", id);
+
     try {
       // run transaction
       await db.runTransaction(async (transaction) => {
@@ -63,9 +67,9 @@ export async function updateItem(
       });
     } catch (e) {
       console.log("Transaction failure:", e);
-      // if (oldDoc !== undefined) {
-      //   await change.after.ref.set(oldDoc);
-      // }
+      if (oldDoc !== undefined) {
+        await change.after.ref.set(oldDoc);
+      }
     }
   }
 }

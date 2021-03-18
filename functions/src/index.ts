@@ -193,12 +193,12 @@ exports.getInventoryXLSX = functions.https.onCall(
 
 exports.addItem = functions.firestore
   .document("furniture/{id}")
-  .onCreate(async (snap, context) => {
+  .onCreate(async (snap) => {
     await itemFunctions.addItem(snap);
   });
 
 exports.updateItem = functions.firestore
   .document("furniture/{id}")
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (change) => {
     await itemFunctions.updateItem(change);
   });
