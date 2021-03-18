@@ -25,6 +25,11 @@
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @archive="archiveSelected()"
+        @donor="updateStatusSelected('donor')"
+        @ontruck="updateStatusSelected('ontruck')"
+        @shed="updateStatusSelected('shed')"
+        @delivered="updateStatusSelected('delivered')"
+        @unknown="updateStatusSelected('unknown')"
       />
     </div>
 
@@ -219,6 +224,14 @@ export default class Inventory extends Vue {
 
   downloading = false;
 
+  statusIcons = [
+    "face",
+    "local_shipping",
+    "storefront",
+    "mood", // could also use "check" or "beenhere"
+    "not_listed_location",
+  ];
+
   get inventoryActions(): ViewAction[] {
     return [
       { icon: "archive", desc: "Archive selected items", emit: "archive" },
@@ -232,6 +245,16 @@ export default class Inventory extends Vue {
         icon: "playlist_add",
         desc: "Add selected items to run",
         emit: "list-add",
+      },
+      {
+        icon: "edit_location_alt",
+        desc: "Edit selected items' statuses",
+        emit: "edit-status",
+        menu: this.statusFilter.map((status, index) => ({
+          icon: this.statusIcons[index],
+          desc: Status[status],
+          emit: Status[status].toLowerCase(),
+        })),
       },
     ];
   }
