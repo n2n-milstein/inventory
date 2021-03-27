@@ -45,4 +45,5 @@ export enum action {
   ADD_SELECTED = "addSelected",
   BIND_ITEMS = "bindItems",
   UNBIND_ITEMS = "unbindItems",
+  UPDATE_SELECTED_STATUS = "updateSelectedStatus",
 }

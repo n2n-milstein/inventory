@@ -25,11 +25,11 @@
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @archive="archiveSelected()"
-        @donor="updateStatusSelected('donor')"
-        @ontruck="updateStatusSelected('ontruck')"
-        @shed="updateStatusSelected('shed')"
-        @delivered="updateStatusSelected('delivered')"
-        @unknown="updateStatusSelected('unknown')"
+        @donor="updateSelected(STATUS.Donor)"
+        @ontruck="updateSelected(STATUS.OnTruck)"
+        @shed="updateSelected(STATUS.Shed)"
+        @delivered="updateSelected(STATUS.Delivered)"
+        @unknown="updateSelected(STATUS.Unknown)"
       />
     </div>
 
@@ -112,6 +112,7 @@ const NAMESPACE = "inventory";
     action.CLEAR_CURRENT,
     action.EXPORT_SELECTED,
     action.EXPORT_CURRENT,
+    action.UPDATE_SELECTED_STATUS,
     "archiveSelected",
     "archiveCurrent",
     "commitItem",
@@ -132,6 +133,14 @@ export default class Inventory extends Vue {
   readonly [action.CLEAR_CURRENT]!: () => void;
 
   readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
+
+  /* eslint-disable object-curly-newline */
+  readonly [action.UPDATE_SELECTED_STATUS]!: ({
+    status,
+  }: {
+    status: Status;
+  }) => void;
+  /* eslint-enable object-curly-newline */
 
   readonly commitItem!: () => Promise<void>;
 
@@ -224,7 +233,9 @@ export default class Inventory extends Vue {
 
   downloading = false;
 
-  statusIcons = [
+  readonly STATUS = Status;
+
+  readonly statusIcons = [
     "face",
     "local_shipping",
     "storefront",
@@ -312,6 +323,10 @@ export default class Inventory extends Vue {
     this.menuLoading = true;
     await this.exportCurrent();
     this.menuLoading = false;
+  }
+
+  async updateSelected(status: Status): Promise<void> {
+    await this.updateSelectedStatus({ status });
   }
 }
 </script>

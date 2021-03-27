@@ -1,7 +1,7 @@
 import { firestoreAction } from "vuexfire";
 import { db } from "@/network/firebase";
 import FirestoreService from "@/network/firestore-service";
-import { Furniture } from "@/data/Furniture";
+import { Furniture, Status } from "@/data/Furniture";
 import { ActionTree } from "vuex";
 import { furnitureConverter } from "@/network/converters";
 import { CollectionState, mutation, action } from "./types";
@@ -71,6 +71,20 @@ const actions: ActionTree<CollectionState, RootState> = {
   [action.UNBIND_ITEMS]: firestoreAction(({ unbindFirestoreRef }) => {
     unbindFirestoreRef("items");
   }),
+  [action.UPDATE_SELECTED_STATUS](
+    { commit, state },
+    { status }: { status: Status },
+  ): void {
+    try {
+      const service = new FirestoreService(state.collection!);
+      state.selected.map(async (furniture) => {
+        await service.updateItem(furniture.id, { status });
+      });
+      commit(mutation.CLEAR_SELECTED);
+    } catch (e) {
+      console.error("updateSelectedStatus error:", e);
+    }
+  },
 };
 
 export default actions;
