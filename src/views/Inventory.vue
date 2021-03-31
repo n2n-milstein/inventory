@@ -242,11 +242,6 @@ export default class Inventory extends Vue {
         emit: "download",
         loading: (): boolean => this.downloading,
       },
-      {
-        icon: "playlist_add",
-        desc: "Add selected items to run",
-        emit: "list-add",
-      },
     ];
   }
 
