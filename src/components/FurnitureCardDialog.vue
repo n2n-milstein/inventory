@@ -9,13 +9,15 @@
       @keydown.escape="closeDialog()"
     >
       <furniture-edit-card
+        :current="current"
         :readonly="readonly"
-        :namespace="namespace"
         :is-edit="isEdit"
         :is-add="isAdd"
         :menu-actions="menuActions"
         :menu-loading="menuLoading"
         :loading="updatesLoading"
+        :updates="updates"
+        @update="addUpdates($event)"
         @edit="toggleEdit()"
         @close="closeDialog()"
         @save="saveChanges()"
@@ -36,32 +38,17 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { mapActions, mapState } from "vuex";
 import ViewAction from "@/data/ViewAction";
 import collections from "@/network/collections";
 import FurnitureEditCard from "@/components/FurnitureEditCard.vue";
 import UnsavedDialog from "@/components/FurnitureCardUnsavedDialog.vue";
+import { Furniture } from "@/data/Furniture";
 
-@Component({
-  components: { FurnitureEditCard, UnsavedDialog },
-  computed: mapState({
-    updatesLength(state, getters) {
-      return getters[`${this.namespace}/getUpdatesLength`];
-    },
-  }),
-  methods: mapActions({
-    clearCurrent(dispatch) {
-      return dispatch(`${this.namespace}/clearCurrent`);
-    },
-    clearUpdates(dispatch) {
-      return dispatch(`${this.namespace}/clearUpdates`);
-    },
-    async commitUpdates(dispatch) {
-      return dispatch(`${this.namespace}/commitUpdates`);
-    },
-  }),
-})
+@Component({ components: { FurnitureEditCard, UnsavedDialog } })
 export default class FurnitureCardDialog extends Vue {
+  @Prop({})
+  readonly current!: Furniture;
+
   @Prop({ default: false })
   readonly dialog!: boolean;
 
@@ -75,21 +62,12 @@ export default class FurnitureCardDialog extends Vue {
   readonly isAdd!: boolean;
 
   @Prop({})
-  readonly namespace!: string;
-
-  @Prop({})
   readonly menuActions!: ViewAction[];
 
   @Prop({ default: false })
   readonly menuLoading!: boolean;
 
-  readonly updatesLength!: number;
-
-  readonly clearCurrent!: () => void;
-
-  readonly clearUpdates!: () => void;
-
-  readonly commitUpdates!: () => Promise<void>;
+  updates: Partial<Furniture> = {};
 
   updatesLoading = false;
 
@@ -97,12 +75,30 @@ export default class FurnitureCardDialog extends Vue {
 
   isEdit = false;
 
+  get updatesLength(): number {
+    return Object.keys(this.updates).length;
+  }
+
   /**
    * Watch for change in dialog; if it opens, set isEdit to isAdd
    */
   @Watch("dialog")
   onDialogChanged(val: boolean): void {
     if (val) this.isEdit = this.isAdd;
+  }
+
+  /**
+   * Add updates
+   */
+  addUpdates(updates: Partial<Furniture>): void {
+    this.updates = { ...this.updates, ...updates };
+  }
+
+  /**
+   * Clears updates object
+   */
+  clearUpdates(): void {
+    this.updates = {};
   }
 
   /**
@@ -115,8 +111,8 @@ export default class FurnitureCardDialog extends Vue {
     if (this.updatesLength === 0 || forceClose) {
       this.unsavedDialog = false;
       this.isEdit = false;
-      this.$emit("close"); // used to set isAdd to false
-      this.clearCurrent();
+      this.clearUpdates();
+      this.$emit("close");
     } else {
       this.unsavedDialog = true;
     }
@@ -136,15 +132,10 @@ export default class FurnitureCardDialog extends Vue {
   /**
    * Commits updates to Firestore
    */
-  async saveChanges(): Promise<void> {
-    if (this.isAdd) {
-      this.$emit("add");
-    } else {
-      this.updatesLoading = true;
-      await this.commitUpdates();
-      this.isEdit = false;
-      this.updatesLoading = false;
-    }
+  saveChanges(): void {
+    this.$emit("save-changes", this.updates);
+    this.clearUpdates();
+    this.isEdit = false;
   }
 }
 </script>

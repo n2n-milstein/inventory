@@ -133,9 +133,7 @@
               <!-- Physical Attributes -->
               <h2>Physical Attributes</h2>
 
-              <h3 v-if="!fclass">
-                Select a furniture class
-              </h3>
+              <h3 v-if="!fclass">Select a furniture class</h3>
 
               <v-text-field
                 v-if="!isEdit"
@@ -218,8 +216,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Prop, Component } from "vue-property-decorator";
-import { mapActions, mapState } from "vuex";
+import { Prop, Component, Emit } from "vue-property-decorator";
 // data
 import { Furniture, Status } from "@/data/Furniture";
 import Physical, { FClass } from "@/data/furniture/Physical";
@@ -244,36 +241,15 @@ import ViewActionGroup from "./ViewActionGroup.vue";
     TimingDates,
     ViewActionGroup,
   },
-  computed: mapState({
-    getCurrent(state, getters) {
-      return getters[`${this.namespace}/getCurrent`];
-    },
-    updatesLength(state, getters) {
-      return getters[`${this.namespace}/getUpdatesLength`];
-    },
-    updates(state, getters) {
-      return getters[`${this.namespace}/getCurrentUpdates`];
-    },
-  }),
-  methods: mapActions({
-    updateCurrent(dispatch, payload) {
-      return dispatch(`${this.namespace}/updateCurrent`, payload);
-    },
-  }),
 })
 export default class FurnitureEditCard extends Vue {
-  /* Properties for Vuex mapGetters and mapActions */
-
-  updates!: Partial<Furniture>;
-
-  getCurrent!: Furniture;
-
-  updateCurrent!: ({ updates }: { updates: Partial<Furniture> }) => void;
-
   /* Props */
 
-  @Prop({ default: "inventory" })
-  readonly namespace!: string;
+  @Prop({})
+  readonly current!: Furniture;
+
+  @Prop({})
+  readonly updates!: Partial<Furniture>;
 
   @Prop({ default: false })
   readonly readonly!: boolean;
@@ -335,26 +311,47 @@ export default class FurnitureEditCard extends Vue {
     ];
   }
 
-  /* Getters and setters for form fields */
+  /** Variables for updates */
 
-  get current(): Furniture {
-    return { ...this.getCurrent, ...this.updates };
+  get updatesLength(): number {
+    return Object.keys(this.updates).length;
   }
 
+  get currentWithUpdates(): Furniture {
+    return { ...this.current, ...this.updates };
+  }
+
+  /**
+   * Written like this to maintain compatibility with stores
+   */
+  @Emit("update")
+  /* eslint-disable object-curly-newline */
+  // eslint-disable-next-line class-methods-use-this
+  updateCurrent({
+    updates,
+  }: {
+    updates: Partial<Furniture>;
+  }): Partial<Furniture> {
+    return updates;
+  }
+  /* eslint-enable object-curly-newline */
+
+  /* Getters and setters for form fields */
+
   get donor(): Donor {
-    return this.current.donor || new Donor();
+    return this.currentWithUpdates.donor || new Donor();
   }
 
   updateDonor(key: string, value: string): void {
     /* eslint-disable object-curly-newline */
     this.updateCurrent({
-      updates: { donor: { ...this.current.donor, [key]: value } },
+      updates: { donor: { ...this.currentWithUpdates.donor, [key]: value } },
     });
     /* eslint-enable */
   }
 
   get status(): Status {
-    return this.current.status;
+    return this.currentWithUpdates.status;
   }
 
   set status(value: Status) {
@@ -376,13 +373,17 @@ export default class FurnitureEditCard extends Vue {
   ];
 
   get fclass(): FClass {
-    return this.current.physical ? this.current.physical.class : FClass.Bed;
+    return this.currentWithUpdates.physical
+      ? this.currentWithUpdates.physical.class
+      : FClass.Bed;
   }
 
   set fclass(value: FClass) {
     /* eslint-disable object-curly-newline */
     this.updateCurrent({
-      updates: { physical: { ...this.current.physical, class: value } },
+      updates: {
+        physical: { ...this.currentWithUpdates.physical, class: value },
+      },
     });
     /* eslint-enable */
   }
@@ -390,7 +391,7 @@ export default class FurnitureEditCard extends Vue {
   readonly classOptions = Object.keys(FClass);
 
   get physical(): Physical {
-    return this.current.physical || new Physical();
+    return this.currentWithUpdates.physical || new Physical();
   }
 
   set physical(value: Physical) {
@@ -399,7 +400,7 @@ export default class FurnitureEditCard extends Vue {
   }
 
   get timing(): Timing {
-    return this.current.timing || new Timing();
+    return this.currentWithUpdates.timing || new Timing();
   }
 
   set timing(value: Timing) {
@@ -407,11 +408,11 @@ export default class FurnitureEditCard extends Vue {
   }
 
   get comments(): string {
-    return this.current.comments;
+    return this.currentWithUpdates.comments;
   }
 
   get staffNotes(): string {
-    return this.current.staffNotes;
+    return this.currentWithUpdates.staffNotes;
   }
 
   set staffNotes(value: string) {
@@ -419,7 +420,7 @@ export default class FurnitureEditCard extends Vue {
   }
 
   get attributes(): Attributes {
-    return this.current.attributes || new Attributes();
+    return this.currentWithUpdates.attributes || new Attributes();
   }
 
   set attributes(value: Attributes) {

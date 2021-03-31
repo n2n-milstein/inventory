@@ -23,7 +23,7 @@ export const actions: ActionTree<CollectionState, RootState> = {
       console.error("archiveSelected error:", e);
     }
   },
-  async commitItem({ commit, state }): Promise<void> {
+  async commitAddItem({ commit, state }): Promise<void> {
     try {
       commit(mutation.UPDATE_CURRENT, { updates: state.currentUpdates });
       commit(mutation.CLEAN_CURRENT);
