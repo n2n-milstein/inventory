@@ -7,9 +7,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" text @click="$emit('cancel')">
-          Cancel
-        </v-btn>
+        <v-btn color="primary" text @click="$emit('cancel')">Cancel</v-btn>
         <v-btn color="primary" text @click="$emit('discard')">Discard</v-btn>
       </v-card-actions>
     </v-card>

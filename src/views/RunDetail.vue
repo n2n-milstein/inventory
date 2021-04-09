@@ -91,11 +91,7 @@
       </v-menu>
     </div>
 
-    <furniture-card-dialog
-      :readonly="true"
-      :dialog="furnitureDialog"
-      namespace="run-detail"
-    />
+    <furniture-card-dialog :readonly="true" :dialog="furnitureDialog" />
   </v-col>
 </template>
 

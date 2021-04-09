@@ -2,15 +2,9 @@
   <v-container class="fill-height no-overflow pt-0" fluid>
     <v-row justify="center" align="center">
       <v-col class="text-center text-md-left" lg="2" md="3" cols="12">
-        <h2 class="head">
-          Neighbor to Neighbor
-        </h2>
-        <p class="subhead">
-          Inventory
-        </p>
-        <v-btn color="white" @click="checkUser()">
-          Sign in with Google
-        </v-btn>
+        <h2 class="head">Neighbor to Neighbor</h2>
+        <p class="subhead">Inventory</p>
+        <v-btn color="white" @click="checkUser()"> Sign in with Google </v-btn>
       </v-col>
     </v-row>
   </v-container>
