@@ -55,6 +55,7 @@
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
+      @on-item-selected="setSelected({ list: $event })"
       @download="getSpreadsheet()"
       @on-item-click="setCurrent({ item: $event })"
     />
@@ -117,6 +118,7 @@ const NAMESPACE = "inventory";
     action.UPDATE_SELECTED_STATUS,
     action.COMMIT_UPDATES,
     action.UPDATE_CURRENT,
+    action.SET_SELECTED,
     "archiveSelected",
     "archiveCurrent",
     "commitAddItem",
