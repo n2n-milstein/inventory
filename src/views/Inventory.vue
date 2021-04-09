@@ -25,6 +25,11 @@
         :disabled="selected.length < 1"
         @download="getSpreadsheet"
         @archive="archiveSelected()"
+        @donor="updateSelected(STATUS.Donor)"
+        @ontruck="updateSelected(STATUS.OnTruck)"
+        @shed="updateSelected(STATUS.Shed)"
+        @delivered="updateSelected(STATUS.Delivered)"
+        @unknown="updateSelected(STATUS.Unknown)"
       />
     </div>
 
@@ -50,6 +55,7 @@
       :search="search"
       :items="inventory"
       :collection="COLLECTION"
+      @on-item-selected="setSelected({ list: $event })"
       @download="getSpreadsheet()"
       @on-item-click="setCurrent({ item: $event })"
     />
@@ -109,8 +115,10 @@ const NAMESPACE = "inventory";
     action.CLEAR_CURRENT,
     action.EXPORT_SELECTED,
     action.EXPORT_CURRENT,
+    action.UPDATE_SELECTED_STATUS,
     action.COMMIT_UPDATES,
     action.UPDATE_CURRENT,
+    action.SET_SELECTED,
     "archiveSelected",
     "archiveCurrent",
     "commitAddItem",
@@ -131,6 +139,14 @@ export default class Inventory extends Vue {
   readonly [action.CLEAR_CURRENT]!: () => void;
 
   readonly [action.EXPORT_CURRENT]!: () => Promise<void>;
+
+  /* eslint-disable object-curly-newline */
+  readonly [action.UPDATE_SELECTED_STATUS]!: ({
+    status,
+  }: {
+    status: Status;
+  }) => void;
+  /* eslint-enable object-curly-newline */
 
   readonly [action.COMMIT_UPDATES]!: () => Promise<void>;
 
@@ -233,6 +249,16 @@ export default class Inventory extends Vue {
 
   downloading = false;
 
+  readonly STATUS = Status;
+
+  readonly statusIcons = [
+    "face",
+    "local_shipping",
+    "storefront",
+    "mood", // could also use "check" or "beenhere"
+    "not_listed_location",
+  ];
+
   get inventoryActions(): ViewAction[] {
     return [
       { icon: "archive", desc: "Archive selected items", emit: "archive" },
@@ -241,6 +267,16 @@ export default class Inventory extends Vue {
         desc: "Export selected items to spreadsheet",
         emit: "download",
         loading: (): boolean => this.downloading,
+      },
+      {
+        icon: "edit_location_alt",
+        desc: "Edit selected items' statuses",
+        emit: "edit-status",
+        menu: this.statusFilter.map((status, index) => ({
+          icon: this.statusIcons[index],
+          desc: Status[status],
+          emit: Status[status].toLowerCase(),
+        })),
       },
     ];
   }
@@ -311,6 +347,10 @@ export default class Inventory extends Vue {
     this.menuLoading = true;
     await this.exportCurrent();
     this.menuLoading = false;
+  }
+
+  async updateSelected(status: Status): Promise<void> {
+    await this.updateSelectedStatus({ status });
   }
 }
 </script>

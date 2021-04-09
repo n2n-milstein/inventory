@@ -2,7 +2,7 @@
   <div>
     <v-data-table
       :value="selected"
-      @input="setSelected({ list: $event })"
+      @input="onItemSelected($event)"
       :search="search"
       :custom-filter="searchFilter"
       :headers="headers"
@@ -64,8 +64,10 @@ export default class FurnitureTable extends Vue {
     return item;
   }
 
-  setSelected({ list }: { list: Furniture[] }): void {
+  @Emit()
+  onItemSelected(list: Furniture[]): Furniture[] {
     this.selected = list;
+    return this.selected;
   }
 
   /**
