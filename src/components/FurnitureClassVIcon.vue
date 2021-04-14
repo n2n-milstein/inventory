@@ -6,9 +6,7 @@
     <v-icon v-else-if="item.physical.class === 'Table'">
       mdi-table-furniture
     </v-icon>
-    <v-icon v-else-if="item.physical.class === 'Dresser'">
-      mdi-dresser
-    </v-icon>
+    <v-icon v-else-if="item.physical.class === 'Dresser'"> mdi-dresser </v-icon>
   </span>
 </template>
 
