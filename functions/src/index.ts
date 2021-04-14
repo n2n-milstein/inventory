@@ -1,7 +1,6 @@
 import admin = require("firebase-admin");
 import XLSX = require("xlsx");
 import functions = require("firebase-functions");
-// const serviceAccount = require("../firebase.json");
 
 admin.initializeApp();
 
@@ -173,7 +172,7 @@ async function getData(id: string[], collection: string): Promise<string> {
 
   const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
   const storage = admin.storage();
-  const bucket = storage.bucket("n2n-inventory");
+  const bucket = storage.bucket("n2n-inventory-prod");
   const today = new Date();
   const date = `${today.getFullYear()}-${
     today.getMonth() + 1
@@ -181,7 +180,7 @@ async function getData(id: string[], collection: string): Promise<string> {
   const fileName = collection.concat(`${date}.xlsx`);
   const file = bucket.file(fileName);
   await file.save(buffer);
-  return `/n2n-inventory/${fileName}`;
+  return `/n2n-inventory-prod/${fileName}`;
 }
 
 exports.getInventoryXLSX = functions.https.onCall(
