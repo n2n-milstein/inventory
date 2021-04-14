@@ -5,6 +5,27 @@ import functions = require("firebase-functions");
 admin.initializeApp();
 
 /**
+ * Returns status string associated with the status number we store in
+ * Firestore.
+ */
+function getStatusString(status: number): string {
+  switch (status) {
+    case 0:
+      return "Donor";
+    case 1:
+      return "OnTruck";
+    case 2:
+      return "Shed";
+    case 3:
+      return "Delivered";
+    case 4:
+      return "Unknown";
+    default:
+      return status.toString();
+  }
+}
+
+/**
  * Takes nested JSON object and flattens to one level
  * @param ob original multi-level JSON object
  * @param prefix prefix to attach to keys
@@ -107,7 +128,10 @@ function renameSubheaders(mainHeaders: string[], subheaders: string[]): any {
   return newHeaders;
 }
 
-async function getData(id: string[], collection: string): Promise<string> {
+async function getData(
+  selectedIdList: string[],
+  collection: string,
+): Promise<string> {
   const inventory: any = [];
   const furniture = admin.firestore().collection(collection);
   const wb = XLSX.utils.book_new();
@@ -117,7 +141,7 @@ async function getData(id: string[], collection: string): Promise<string> {
   furnitureData.forEach((doc) => {
     const item = doc.data();
     // only putting selected items into spreadsheet
-    if (id.includes(item.id)) {
+    if (selectedIdList.includes(item.id)) {
       Object.keys(item.timing).forEach((field) => {
         // changing the way time data is represented
         if (item.timing[field] !== undefined && field !== "urgent") {
@@ -125,6 +149,7 @@ async function getData(id: string[], collection: string): Promise<string> {
           item.timing[field] = day.toDateString();
         }
       });
+      item.status = getStatusString(item.status);
       const newJSON = flattenObject(item, "");
       inventory.push(newJSON);
     }
