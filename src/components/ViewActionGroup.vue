@@ -2,7 +2,12 @@
   <v-tooltip bottom :disabled="!disabled">
     <template v-slot:activator="{ on: disable }">
       <div v-on="{ ...disable }">
-        <v-menu v-for="action in actions" offset-y :key="action.emit">
+        <v-menu
+          v-for="action in actions"
+          offset-y
+          :key="action.emit"
+          :disabled="disabled"
+        >
           <template v-slot:activator="{ on: menu }">
             <v-tooltip bottom :disabled="disabled">
               <template v-slot:activator="{ on: tooltip }">
@@ -11,6 +16,7 @@
                   v-on="{ ...tooltip, ...menu }"
                   v-if="action.menu"
                   :loading="action.loading && action.loading()"
+                  :disabled="disabled"
                 >
                   <v-icon>
                     {{ action.icon }}
