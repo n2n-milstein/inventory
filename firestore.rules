@@ -4,45 +4,51 @@ service cloud.firestore {
     function isSignedIn() {
     		return (request.auth != null) && (request.auth.token.firebase.sign_in_provider == "google.com");
     }
-    
+
     // check that email ends with correct domain
     function containsDomain() {
-    		return request.auth.token.email.matches('.*@n2ntompkins[.]org');
+    		return request.auth.token.email.matches('.*@n2ntompkins[.]org') || request.auth.token.email.matches('.*@cornell[.]edu');
     }
-    
-    // check for staff role associated with uid...needs testing
+
+    // check for staff role associated with user uid
     function isStaff() {
-    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "staff";
+    	return containsDomain() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "staff";
     }
-    
-    // check for driver role associated with uid
+
+    // check for driver role associated with user uid
     function isDriver() {
     	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "driver";
     }
-    
-    // anyone signed in & with email domain can read (ADD DOMAIN BACK!!!)
-    match /{document=**} {
-      allow read: if isSignedIn(); 
+
+    // check for volunteer role associated with user uid
+    function isVolunteer() {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "volunteer";
     }
-    
+
+    // anyone signed in & has a role assigned to them
+    match /{document=**} {
+      allow read: if isSignedIn() && (isStaff() || isDriver() || isVolunteer());
+    }
+
     // only driver can update furniture items; only staff can delete/add items
     match /furniture/{document=**} {
     	allow update: if isSignedIn() && isVolunteer();
       allow write: if isSignedIn() && isStaff();
     }
-    
+
+    match /archive/{document=**} {
+      allow update: if isSignedIn() && isVolunteer();
+      allow write: if isSignedIn() && isStaff();
+    }
+
     // only staff can edit pending/rejected items
     match /pending/{document=**} {
     	allow write: if isSignedIn() && isStaff();
     }
-    
+
     match /rejected/{document=**} {
     	allow write: if isSignedIn() && isStaff();
     }
-    
-    // TESTING PURPOSES ONLY; MUST BE DELETED
-    match /formTest/{document=**} {
-    	allow read,write;
-    }
+
   }
 }

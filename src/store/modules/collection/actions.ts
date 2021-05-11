@@ -72,7 +72,7 @@ const actions: ActionTree<CollectionState, RootState> = {
     unbindFirestoreRef("items");
   }),
   [action.UPDATE_SELECTED_STATUS](
-    { commit, state },
+    { state },
     { status }: { status: Status },
   ): void {
     try {
@@ -80,7 +80,6 @@ const actions: ActionTree<CollectionState, RootState> = {
       state.selected.map(async (furniture) => {
         await service.updateItem(furniture.id, { status });
       });
-      commit(mutation.CLEAR_SELECTED);
     } catch (e) {
       console.error("updateSelectedStatus error:", e);
     }
