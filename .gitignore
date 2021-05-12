@@ -26,5 +26,6 @@ yarn-error.log*
 .firebase/**
 firebase.json
 credentials.json
+firebase-debug.log
 
 .env*
