@@ -23,7 +23,9 @@ const router = new Router({
               .doc(user?.uid)
               .get()
               .then((doc) => {
-                if (!doc.exists) {
+                if (doc.exists) {
+                  next("/home");
+                } else {
                   console.warn("Invalid permissions");
                   firebase.auth().signOut();
                   next();
@@ -32,7 +34,6 @@ const router = new Router({
               .catch((err) => {
                 console.error(`Something went wrong: ${err}`);
               });
-            next("/home");
           } else {
             next();
           }
