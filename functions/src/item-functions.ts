@@ -1,6 +1,6 @@
 import { Change } from "firebase-functions/lib/cloud-functions";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
-import admin = require("firebase-admin");
+import * as admin from "firebase-admin";
 
 export async function addItem(snap: DocumentSnapshot): Promise<void> {
   const data = snap.data();
