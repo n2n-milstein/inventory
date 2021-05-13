@@ -24,7 +24,6 @@ yarn-error.log*
 # Firebase
 *.cache
 .firebase/**
-firebase.json
 credentials.json
 firebase-debug.log
 
