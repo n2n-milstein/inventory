@@ -50,5 +50,11 @@ service cloud.firestore {
     	allow write: if isSignedIn() && isStaff();
     }
 
+    // anyone can read users database to validate accounts
+    // TODO: make this private
+    match /users/{document=**} {
+      allow read: if isSignedIn()
+    }
+
   }
 }

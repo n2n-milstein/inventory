@@ -17,7 +17,23 @@ const router = new Router({
       beforeEnter(to, from, next): void {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
-            next("/home");
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(user?.uid)
+              .get()
+              .then((doc) => {
+                if (doc.exists) {
+                  next("/home");
+                } else {
+                  console.warn("Invalid permissions");
+                  firebase.auth().signOut();
+                  next();
+                }
+              })
+              .catch((err) => {
+                console.error(`Something went wrong: ${err}`);
+              });
           } else {
             next();
           }
